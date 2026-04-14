@@ -1,0 +1,46 @@
+{
+  "output_dir": "clone/src/components",
+  "framework": "nextjs",
+  "components": [
+    {
+      "name": "HeroSection",
+      "description": "Full-screen hero with headline and two product CTAs",
+      "props": ["headline", "subline", "ctaPrimaryLabel", "ctaPrimaryHref", "ctaSecondaryLabel", "ctaSecondaryHref"]
+    },
+    {
+      "name": "BreakthroughIntro",
+      "description": "Two-column intro section — text left, image right",
+      "props": ["label", "headline", "body", "imageSrc", "imageAlt"]
+    },
+    {
+      "name": "MissionList",
+      "description": "Mission / Vision / Ambition three-item bullet section",
+      "props": []
+    },
+    {
+      "name": "InvisibleApproach",
+      "description": "Product showcase section with full-bleed images and captions",
+      "props": ["sectionLabel", "headline", "body"]
+    },
+    {
+      "name": "ProgressMethod",
+      "description": "Editorial copy section describing approach or method",
+      "props": ["label", "headline", "body"]
+    },
+    {
+      "name": "OurAim",
+      "description": "Large impact statement section",
+      "props": ["label", "statement"]
+    },
+    {
+      "name": "ThreeCardGrid",
+      "description": "Three-card grid: Scientific Evidence / Driven by People / Get in Touch",
+      "props": []
+    },
+    {
+      "name": "SiteFooter",
+      "description": "Footer with page links, social links, legal links, and country",
+      "props": []
+    }
+  ]
+}

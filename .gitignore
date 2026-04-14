@@ -1,0 +1,32 @@
+# Environment
+.env
+
+# Temp / scrape output (regenerable — not committed)
+.tmp/
+
+# Node
+node_modules/
+.next/
+.nuxt/
+dist/
+.astro/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Build artifacts
+*.tsbuildinfo
