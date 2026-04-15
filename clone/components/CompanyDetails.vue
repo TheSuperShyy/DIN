@@ -9,7 +9,7 @@ const { company } = content
     <!-- Top: title + mission items -->
     <div class="top">
       <div class="container home-company-details-container">
-        <div class="head">
+        <div class="head reveal">
           <h3 class="cd-title">
             <span>{{ company.titleLine1 }}</span>
             <span class="title-blue">{{ company.titleLine2 }}</span>
@@ -20,7 +20,7 @@ const { company } = content
           <li
             v-for="item in company.items"
             :key="item.number"
-            class="top-item"
+            class="top-item reveal"
           >
             <div class="item-head">
               <span class="item-head-number">{{ item.number }}</span>
@@ -38,7 +38,7 @@ const { company } = content
     <!-- Bottom: data cells + abbreviations -->
     <div class="bottom">
       <div class="container home-company-details-container">
-        <ul class="bottom-items">
+        <ul class="bottom-items reveal">
           <li
             v-for="cell in company.cells"
             :key="cell.label"
@@ -53,7 +53,7 @@ const { company } = content
 
         <div class="bottom-line" />
 
-        <div class="bottom-services">
+        <div class="bottom-services reveal">
           <div class="item-head">
             <span class="item-head-number">0.4</span>
             <span>{{ company.abbreviations.length ? 'How We Talk' : '' }}</span>

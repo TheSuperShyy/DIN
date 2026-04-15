@@ -17,38 +17,13 @@ onUnmounted(() => clearInterval(interval))
 
 <template>
   <section class="section bg-grey-light home-intro" data-section-theme="off-white">
+    <!-- Section header — top of section -->
+    <h1 class="section-header">{{ breakthrough.sectionHeader }}</h1>
+
     <div class="home-intro-container container">
-      <!-- Left: label column (col 2 on desktop) -->
-      <div class="head">
-        <h2 class="intro-title">
-          <span class="muted">{{ breakthrough.labelTop }}</span>
-          <span>{{ breakthrough.labelBottom }}</span>
-        </h2>
-      </div>
-
-      <!-- Right: copy column (cols 3–5 on desktop) -->
-      <div class="intro-content">
-        <p class="intro-copy">
-          {{ breakthrough.copy }}
-          <span class="copy-lines-wrapper">
-            <span class="copy-line-slot">
-              <Transition name="rotate-line" mode="out-in">
-                <span :key="currentLine" class="rotating-line">
-                  {{ breakthrough.rotatingLines[currentLine] }}
-                </span>
-              </Transition>
-            </span>
-          </span>
-        </p>
-
-        <NuxtLink :to="breakthrough.linkHref" class="arrow-link intro-link">
-          <span class="arrow-oval">
-            <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.18252 2.51959L4.71493 1.05199L5.19807 0.568848L7.30658 2.67736L7.54815 2.91893L7.30658 3.1605L5.19807 5.26902L4.71493 4.78588L6.29795 3.20285H0.972656V2.51959H6.18252Z" fill="currentColor"/>
-            </svg>
-          </span>
-          <span>{{ breakthrough.linkLabel }}</span>
-        </NuxtLink>
+      <!-- Copy column -->
+      <div class="intro-content reveal" data-delay="1">
+        <p class="intro-copy">{{ breakthrough.copy }}</p>
       </div>
     </div>
   </section>
@@ -57,15 +32,34 @@ onUnmounted(() => clearInterval(interval))
 <style scoped>
 .home-intro {
   background-color: var(--color-greyLight);
-  padding: 23.077vw 0;
+  padding: 4vw 0 8vw;
 }
 
 @media only screen and (min-width: 834px) {
-  .home-intro { padding: 15.278vw 0; }
+  .home-intro { padding: 3vw 0 6vw; }
 }
 
 .home-intro-container {
   /* inherits .container 5-col grid */
+}
+
+/* Section header */
+.section-header {
+  text-align: center;
+  direction: rtl;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-offBlack);
+  margin: 0 0 3vw;
+  padding: 0 var(--grid-outerGutter);
+}
+
+@media only screen and (min-width: 834px) {
+  .section-header {
+    font-size: 3.2rem;
+    margin-bottom: 2vw;
+  }
 }
 
 /* Label column */
@@ -106,8 +100,8 @@ onUnmounted(() => clearInterval(interval))
 
 @media only screen and (min-width: 834px) {
   .intro-content {
-    align-items: flex-start;
-    grid-column: 3 / 5;
+    align-items: flex-end;
+    grid-column: 1 / 5;
   }
 }
 
@@ -117,15 +111,17 @@ onUnmounted(() => clearInterval(interval))
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin-top: 17.949vw;
-  text-align: center;
+  text-align: right;
+  direction: rtl;
   color: var(--color-offBlack);
 }
 
 @media only screen and (min-width: 834px) {
   .intro-copy {
     margin-top: 0;
-    max-width: 50rem;
-    text-align: left;
+    max-width: 55rem;
+    text-align: right;
+    margin-right: 8vw;
   }
 }
 

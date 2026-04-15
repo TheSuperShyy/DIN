@@ -43,9 +43,10 @@ export const content = {
   },
 
   breakthrough: {
+    sectionHeader: 'שירותי הדברה',
     labelTop: 'Overview',
     labelBottom: 'Precision',
-    copy: 'DIN is the first to engineer sense-driven, precision computing for the human scale —',
+    copy: 'חברת "טל שולמרק בע"מ" הינה החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף. החברה מציעה מגוון רחב של פתרונות יצירתיים וחוקיים לשוק התעשייתי, המוסדי והפרטי. עבודות ההדברה מתבצעות במקצועיות, אפקטיביות וברמת האיכות הגבוהה ביותר ועפ״י כל הנהלים והדרישות בהתאם לתקן ניהול האיכות :2008 9001 O.S.I ותקן ניהול סביבתי 14001:2004 O.S.I. מדבירי החברה מורשים מטעם המשרד לאיכות הסביבה, בעלי רישיונות והיתרים מקצועיים ומצויידים בידע וניסיון רב שנים לאיתור וניטור הדברת מזיקים.',
     rotatingLines: ['enhancing everyday life.', 'advancing human potential.', 'redefining what is possible.'],
     linkLabel: 'Research Insight',
     linkHref: '/updates'

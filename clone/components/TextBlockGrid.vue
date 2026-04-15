@@ -13,7 +13,7 @@ const { textBlocks } = content
         class="tb-item"
         :class="`item-${i}`"
       >
-        <div class="tb-content">
+        <div class="tb-content reveal">
           <div class="tb-number">{{ block.number }}</div>
           <div class="tb-inner">
             <h2 class="tb-title">{{ block.title }}</h2>

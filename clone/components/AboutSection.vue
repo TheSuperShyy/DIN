@@ -9,9 +9,9 @@ const { about } = content
     <div class="container">
       <!-- Item A: Our Progress -->
       <div class="home-about-item">
-        <h2 class="about-label">{{ about.progress.label }}</h2>
+        <h2 class="about-label reveal">{{ about.progress.label }}</h2>
 
-        <div class="about-head">
+        <div class="about-head reveal">
           <h3 class="about-subtitle">{{ about.progress.subtitle }}</h3>
           <NuxtLink :to="about.progress.linkHref" class="arrow-link about-link">
             <span class="arrow-oval">
@@ -23,12 +23,12 @@ const { about } = content
           </NuxtLink>
         </div>
 
-        <div class="about-copy">
+        <div class="about-copy reveal">
           <h3>{{ about.progress.heading }}</h3>
           <p v-for="(para, i) in about.progress.paragraphs" :key="i">{{ para }}</p>
         </div>
 
-        <p class="about-sub-copy">
+        <p class="about-sub-copy reveal">
           <span>*</span> {{ about.progress.subCopy.replace(/^\*\s*/, '') }}
         </p>
 
@@ -37,9 +37,9 @@ const { about } = content
 
       <!-- Item B: Our Aim -->
       <div class="home-about-item">
-        <h2 class="about-label">{{ about.aim.label }}</h2>
+        <h2 class="about-label reveal">{{ about.aim.label }}</h2>
 
-        <div class="about-head">
+        <div class="about-head reveal">
           <h3 class="about-subtitle">{{ about.aim.subtitle }}</h3>
           <NuxtLink :to="about.aim.linkHref" class="arrow-link about-link">
             <span class="arrow-oval">
@@ -51,12 +51,12 @@ const { about } = content
           </NuxtLink>
         </div>
 
-        <div class="about-copy">
+        <div class="about-copy reveal">
           <h3>{{ about.aim.heading }}</h3>
           <p v-for="(para, i) in about.aim.paragraphs" :key="i">{{ para }}</p>
         </div>
 
-        <p class="about-sub-copy">
+        <p class="about-sub-copy reveal">
           <span>*</span> {{ about.aim.subCopy.replace(/^\*\s*/, '') }}
         </p>
       </div>
