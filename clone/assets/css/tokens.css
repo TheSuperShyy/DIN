@@ -1,0 +1,62 @@
+:root {
+  /* Colors — augen.pro palette */
+  --color-blue: #0071e3;
+  --color-offBlack: #0f1012;
+  --color-greyLight: #efefef;
+  --color-greyLighter: #f8f8f8;
+  --color-offWhite: #f2f2f4;
+  --color-white: #fff;
+  --color-black: #000;
+
+  /* Fonts */
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Type scale (1rem = 10px) */
+  --text-xs: 1.1rem;
+  --text-sm: 1.4rem;
+  --text-base: 1.6rem;
+  --text-lg: 1.8rem;
+  --text-xl: 2rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3rem;
+  --text-4xl: 3.5rem;
+  --text-5xl: 5rem;
+  --text-6xl: 7rem;
+  --text-7xl: 9rem;
+
+  /* Spacing (1rem = 10px) */
+  --space-1: 0.4rem;
+  --space-2: 0.8rem;
+  --space-3: 1.2rem;
+  --space-4: 1.6rem;
+  --space-6: 2.4rem;
+  --space-8: 3.2rem;
+  --space-12: 4.8rem;
+  --space-16: 6.4rem;
+  --space-24: 9.6rem;
+  --space-32: 12.8rem;
+  --space-48: 19.2rem;
+
+  /* Border radius */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 5.4rem;
+  --radius-full: 9999px;
+
+  /* Grid — augen.pro 5-column system */
+  --grid-columnCount: 5;
+  --grid-gutter: 2.3980815348vw;
+  --grid-outerGutter: 4.7961630695vw;
+
+  /* Layout */
+  --header-height: 7.9rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(15, 16, 18, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 16, 18, 0.10);
+  --shadow-lg: 0 8px 40px rgba(15, 16, 18, 0.14);
+}

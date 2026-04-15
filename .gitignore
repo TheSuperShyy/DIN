@@ -1,8 +1,13 @@
 # Environment
 .env
 
-# Temp / scrape output (regenerable — not committed)
-.tmp/
+# Claude Code memory (local only)
+.claude/
+
+# Temp / scrape output (raw HTML is regenerable — not committed)
+.tmp/scrape/
+# analysis.md is tracked — it's the Phase 1 blueprint
+
 
 # Node
 node_modules/

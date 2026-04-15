@@ -1,45 +1,50 @@
 {
   "output_dir": "clone/src/components",
-  "framework": "nextjs",
+  "framework": "nuxt",
   "components": [
     {
+      "name": "SiteNav",
+      "description": "Frosted-glass pill navbar. 5 items: Wearable (dropdown→A1Sense,B1Eye), Neural (dropdown→A1Neuro), Programs, Updates, Search. Logo top-left. Burger on mobile.",
+      "props": []
+    },
+    {
       "name": "HeroSection",
-      "description": "Full-screen hero with headline and two product CTAs",
-      "props": ["headline", "subline", "ctaPrimaryLabel", "ctaPrimaryHref", "ctaSecondaryLabel", "ctaSecondaryHref"]
+      "description": "Full-viewport hero. Announcement bar top. Brand wordmark. H1 headline. Three category pills (A1Sense, B1Eye, A1Neuro). Scroll indicator. Full-bleed background image.",
+      "props": ["headline", "announcementText", "announcementHref", "heroImageSrc", "heroImageAlt"]
     },
     {
       "name": "BreakthroughIntro",
-      "description": "Two-column intro section — text left, image right",
-      "props": ["label", "headline", "body", "imageSrc", "imageAlt"]
+      "description": "Two-col section on grey-light bg. Left: 2-line label (Overview/Breakthrough). Right: copy paragraph with rotating text line + arrow link.",
+      "props": ["label", "copy", "rotatingLines", "linkLabel", "linkHref"]
     },
     {
-      "name": "MissionList",
-      "description": "Mission / Vision / Ambition three-item bullet section",
+      "name": "CompanyDetails",
+      "description": "Dark bg section (off-black). Top: 2-line title + 3 numbered mission items (0.1 Mission, 0.2 Vision, 0.3 Ambition) each with hairline rule. Bottom: 3 data cells (Industries, Core Business, Domain) + 0.4 abbreviations row.",
       "props": []
     },
     {
       "name": "InvisibleApproach",
-      "description": "Product showcase section with full-bleed images and captions",
-      "props": ["sectionLabel", "headline", "body"]
+      "description": "Off-white bg. Section label 'Meet Our'. Large display headline (blue, clamp ~9.7vw). Floating product image (parallax, switches between products). Body copy left col. Explore pills right col.",
+      "props": ["sectionLabel", "headline", "copy", "subCopy"]
     },
     {
-      "name": "ProgressMethod",
-      "description": "Editorial copy section describing approach or method",
-      "props": ["label", "headline", "body"]
+      "name": "AboutSection",
+      "description": "Dark bg (off-black). Two stacked sub-items: (A) Our Progress — subtitle 'The new Method' + rich text + arrow link to Updates. (B) Our Aim — subtitle 'A Radical Impact' + rich text + arrow link to Programs.",
+      "props": []
     },
     {
-      "name": "OurAim",
-      "description": "Large impact statement section",
-      "props": ["label", "statement"]
+      "name": "ScientificEvidence",
+      "description": "Full-width blue bg section. Number '1.0'. Title. Short copy. Down-arrow CTA link. Centered layout.",
+      "props": ["number", "title", "copy", "linkLabel", "linkHref"]
     },
     {
-      "name": "ThreeCardGrid",
-      "description": "Three-card grid: Scientific Evidence / Driven by People / Get in Touch",
+      "name": "TextBlockGrid",
+      "description": "Off-white bg. Two-col grid on desktop. Item 2.0 Driven by People + Item 3.0 Get in Touch. Each: number + title + body copy + arrow link.",
       "props": []
     },
     {
       "name": "SiteFooter",
-      "description": "Footer with page links, social links, legal links, and country",
+      "description": "Off-black bg. Wordmark top-left. Two link groups: 1.0 Pages (all routes) + 2.0 Follow (LinkedIn, X). Brand icon. Legal links row (Privacy, Terms, Cookie). Location label 'Italy'.",
       "props": []
     }
   ]
