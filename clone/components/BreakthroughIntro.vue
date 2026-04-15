@@ -40,7 +40,7 @@ onUnmounted(() => {
 <template>
   <section class="section bg-grey-light home-intro" data-section-theme="off-white">
     <!-- Section header — top of section -->
-    <h1 class="section-header">{{ breakthrough.sectionHeader }}</h1>
+    <h1 class="section-header reveal">{{ breakthrough.sectionHeader }}</h1>
 
     <div class="home-intro-container container">
       <!-- Copy column -->
@@ -140,7 +140,7 @@ onUnmounted(() => {
 }
 
 .intro-copy {
-  font-size: 2.5rem;
+  font-size: 1.6rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -156,6 +156,7 @@ onUnmounted(() => {
 
 @media only screen and (min-width: 834px) {
   .intro-copy {
+    font-size: 2.5rem;
     margin-top: 0;
     max-width: 100%;
     text-align: right;
@@ -172,7 +173,7 @@ onUnmounted(() => {
   .intro-rat {
     display: block;
     position: absolute;
-    bottom: 6vw;
+    bottom: 2vw;
     left: var(--grid-outerGutter);
     width: 32rem;
     height: auto;
@@ -190,7 +191,7 @@ onUnmounted(() => {
   .intro-bird {
     display: block;
     position: absolute;
-    bottom: 6vw;
+    bottom: 2vw;
     right: var(--grid-outerGutter);
     width: 32rem;
     height: auto;

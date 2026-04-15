@@ -56,15 +56,14 @@ import { content } from '~/content'
 
 @keyframes revealRTL {
   0% {
-    clip-path: inset(0 0 0 100%);
-    filter: blur(4px);
-  }
-  30% {
-    filter: blur(0);
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateX(4rem);
   }
   100% {
-    clip-path: inset(0 0 0 0);
+    opacity: 1;
     filter: blur(0);
+    transform: translateX(0);
   }
 }
 
