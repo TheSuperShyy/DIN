@@ -10,26 +10,11 @@ export const content = {
 
   nav: {
     items: [
-      {
-        number: '01',
-        label: 'Wearable',
-        type: 'dropdown' as const,
-        key: 'wearable',
-        children: [
-          { label: 'D¹ Sight', href: '/products/a1-sense' },
-          { label: 'D¹ Form', href: '/products/b1-eye' }
-        ]
-      },
-      {
-        number: '02',
-        label: 'Neural',
-        type: 'dropdown' as const,
-        key: 'neural',
-        children: [{ label: 'D¹ Core', href: '/neurals/a1-neuro' }]
-      },
-      { number: '03', label: 'Programs', type: 'link' as const, key: null, href: '/programs', children: [] },
-      { number: '04', label: 'Updates', type: 'link' as const, key: null, href: '/updates', children: [] },
-      { number: '05', label: 'Search', type: 'search' as const, key: null, href: null, children: [] }
+      { number: '01', label: 'THEMIS', type: 'link' as const, key: null, href: '#', children: [] },
+      { number: '02', label: 'שירותים', type: 'link' as const, key: null, href: '#', children: [] },
+      { number: '03', label: 'עלינו', type: 'link' as const, key: null, href: '#', children: [] },
+      { number: '04', label: 'דרושים', type: 'link' as const, key: null, href: '#', children: [] },
+      { number: '05', label: 'צור קשר', type: 'link' as const, key: null, href: '#', children: [] }
     ]
   },
 
@@ -46,7 +31,7 @@ export const content = {
     sectionHeader: 'שירותי הדברה',
     labelTop: 'Overview',
     labelBottom: 'Precision',
-    copy: 'חברת "טל שולמרק בע"מ" הינה החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף. החברה מציעה מגוון רחב של פתרונות יצירתיים וחוקיים לשוק התעשייתי, המוסדי והפרטי. עבודות ההדברה מתבצעות במקצועיות, אפקטיביות וברמת האיכות הגבוהה ביותר ועפ״י כל הנהלים והדרישות בהתאם לתקן ניהול האיכות :2008 9001 O.S.I ותקן ניהול סביבתי 14001:2004 O.S.I. מדבירי החברה מורשים מטעם המשרד לאיכות הסביבה, בעלי רישיונות והיתרים מקצועיים ומצויידים בידע וניסיון רב שנים לאיתור וניטור הדברת מזיקים.',
+    copy: 'חברת "טל שולמרק בע"מ" הינה החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף.<br>החברה מציעה מגוון רחב של פתרונות יצירתיים וחוקיים לשוק התעשייתי, המוסדי והפרטי. עבודות ההדברה<br>מתבצעות במקצועיות, אפקטיביות וברמת האיכות הגבוהה ביותר ועפ״י כל הנהלים והדרישות בהתאם לתקן<br>ניהול האיכות <span class="text-blue">9001:2008</span> <span class="text-blue">O.S.I</span> ותקן ניהול סביבתי <span class="text-blue">14001:2004</span> <span class="text-blue">O.S.I.</span> מדבירי החברה מורשים מטעם<br>המשרד לאיכות הסביבה, בעלי רישיונות והיתרים מקצועיים ומצויידים בידע וניסיון רב שנים לאיתור וניטור<br>הדברת מזיקים.',
     rotatingLines: ['enhancing everyday life.', 'advancing human potential.', 'redefining what is possible.'],
     linkLabel: 'Research Insight',
     linkHref: '/updates'
