@@ -57,6 +57,8 @@ onUnmounted(() => {
       preload="auto"
       class="intro-rat"
     />
+
+    <img src="/eagle.svg" alt="" class="intro-bird reveal" data-delay="2" />
   </section>
 </template>
 
@@ -175,6 +177,23 @@ onUnmounted(() => {
     width: 32rem;
     height: auto;
     filter: none !important;
+    pointer-events: none;
+  }
+}
+
+/* Bird image */
+.intro-bird {
+  display: none;
+}
+
+@media only screen and (min-width: 834px) {
+  .intro-bird {
+    display: block;
+    position: absolute;
+    bottom: 6vw;
+    right: var(--grid-outerGutter);
+    width: 32rem;
+    height: auto;
     pointer-events: none;
   }
 }
