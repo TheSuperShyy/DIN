@@ -6,13 +6,35 @@ const { breakthrough } = content
 const currentLine = ref(0)
 let interval: ReturnType<typeof setInterval>
 
+const ratVideo = ref<HTMLVideoElement | null>(null)
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
   interval = setInterval(() => {
     currentLine.value = (currentLine.value + 1) % breakthrough.rotatingLines.length
   }, 3000)
+  if (ratVideo.value) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (ratVideo.value) ratVideo.value.playbackRate = 1.2
+          ratVideo.value?.play()
+        } else {
+          if (ratVideo.value) {
+            ratVideo.value.pause()
+            ratVideo.value.currentTime = 0
+          }
+        }
+      })
+    }, { threshold: 0.3 })
+    observer.observe(ratVideo.value)
+  }
 })
 
-onUnmounted(() => clearInterval(interval))
+onUnmounted(() => {
+  clearInterval(interval)
+  observer?.disconnect()
+})
 </script>
 
 <template>
@@ -23,20 +45,30 @@ onUnmounted(() => clearInterval(interval))
     <div class="home-intro-container container">
       <!-- Copy column -->
       <div class="intro-content reveal" data-delay="1">
-        <p class="intro-copy">{{ breakthrough.copy }}</p>
+        <p class="intro-copy" v-html="breakthrough.copy"></p>
       </div>
     </div>
+
+    <video
+      ref="ratVideo"
+      src="/rat-vid.mp4"
+      muted
+      playsinline
+      preload="auto"
+      class="intro-rat"
+    />
   </section>
 </template>
 
 <style scoped>
 .home-intro {
   background-color: var(--color-greyLight);
-  padding: 4vw 0 8vw;
+  padding: 8vw 0 30vw;
+  position: relative;
 }
 
 @media only screen and (min-width: 834px) {
-  .home-intro { padding: 3vw 0 6vw; }
+  .home-intro { padding: 6vw 0 20vw; }
 }
 
 .home-intro-container {
@@ -116,12 +148,34 @@ onUnmounted(() => clearInterval(interval))
   color: var(--color-offBlack);
 }
 
+.intro-copy :deep(.text-blue) {
+  color: var(--color-blue);
+}
+
 @media only screen and (min-width: 834px) {
   .intro-copy {
     margin-top: 0;
-    max-width: 55rem;
+    max-width: 100%;
     text-align: right;
-    margin-right: 8vw;
+    margin-right: -8vw;
+  }
+}
+
+/* Rat video */
+.intro-rat {
+  display: none;
+}
+
+@media only screen and (min-width: 834px) {
+  .intro-rat {
+    display: block;
+    position: absolute;
+    bottom: 6vw;
+    left: var(--grid-outerGutter);
+    width: 32rem;
+    height: auto;
+    filter: none !important;
+    pointer-events: none;
   }
 }
 
