@@ -164,33 +164,29 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 <style scoped>
 /* ── Base menu wrapper ── */
 .menu {
+  align-items: flex-start;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 101;
-  column-gap: 0.5rem;
-  justify-content: center;
+  padding-top: 3rem;
+  column-gap: 0.6rem;
 }
 
-/* ── Logo (circular frosted pill, top-left) ── */
+/* ── Logo (circular frosted pill, beside nav) ── */
 .logo {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 50%;
-  height: 4.9rem;
-  width: 4.9rem;
-  margin-left: var(--grid-outerGutter);
-  margin-top: 3rem;
-  position: absolute;
-  left: 0;
-  top: 0;
+  height: 4.5rem;
+  width: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  flex-shrink: 0;
   overflow: hidden;
 }
 
@@ -215,7 +211,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 .nav {
   display: none;
   height: 4.5rem;
-  margin: 3.4rem 0 0;
   position: relative;
 }
 
@@ -404,15 +399,14 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   border-radius: 50%;
   display: flex;
   flex-direction: column;
-  height: 4.9rem;
+  height: 4.5rem;
   justify-content: center;
   margin-right: var(--grid-outerGutter);
-  margin-top: 3rem;
   position: absolute;
   right: 0;
   row-gap: 0.8rem;
-  top: 0;
-  width: 4.9rem;
+  top: 3rem;
+  width: 4.5rem;
   z-index: 1;
 }
 
@@ -559,6 +553,5 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 @media only screen and (min-width: 834px) {
   .nav-container { display: none; }
-  .logo { height: 4.5rem; width: 4.5rem; }
 }
 </style>
