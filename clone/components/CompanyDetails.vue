@@ -6,8 +6,43 @@ const { company } = content
 
 <template>
   <section class="section bg-off-black home-company-details" data-section-theme="off-black">
-    <!-- Top: title + mission items -->
+    <!-- Top: data cells + abbreviations -->
     <div class="top">
+      <div class="container home-company-details-container">
+        <div class="top-header reveal">
+          <h3 class="cd-title">סוגי <span class="title-blue">שירותי ההדברה</span></h3>
+        </div>
+
+        <div class="bottom-line" />
+
+        <div class="services-grid reveal">
+          <div class="services-columns">
+            <div class="services-divider" />
+            <div class="services-column">
+              <div class="services-cell"><span class="check-icon">✓</span> הקמת מערך ניטור והדברה ממוחשב</div>
+              <div class="services-cell"><span class="check-icon">✓</span> הדברת מזיקי מחסן - ממגורות, מכולות, ספריות ועוד...</div>
+              <div class="services-cell"><span class="check-icon">✓</span> חברתנו מתמחה בכל סוגי הדברת המזיקים - מכרסמים / זוחלים / מעופפים</div>
+              <div class="services-cell"><span class="check-icon">✓</span> טיפול במטרדי בעלי כנף</div>
+            </div>
+            <div class="services-divider" />
+            <div class="services-column">
+              <div class="services-cell"><span class="check-icon">✓</span> איוד בגז, ערפול חם / קר</div>
+              <div class="services-cell"><span class="check-icon">✓</span> התמחות מיוחדת בהדברת התיקן הגרמני בבתי מלון, בתי חולים, מפעלי מזון, אולמות אירועים, שירותי הסעדה ועוד...</div>
+              <div class="services-cell"><span class="check-icon">✓</span> חיטוי נגד מזהמים בקטריאליים, עובשים ושמרים.</div>
+            </div>
+            <div class="services-divider" />
+            <div class="services-column">
+              <div class="services-cell"><span class="check-icon">✓</span> בקרת מזיקים בפרמצבטיקה</div>
+              <div class="services-cell"><span class="check-icon">✓</span> ייעוץ ועריכת מבדקים תברואתיים</div>
+              <div class="services-cell"><span class="check-icon">✓</span> הכנה למבדקים - HCCP, GMP, FDA, משרד הבריאות מכון התקנים ועוד...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: title + mission items -->
+    <div class="bottom">
       <div class="container home-company-details-container">
         <div class="head reveal">
           <h3 class="cd-title">
@@ -34,43 +69,6 @@ const { company } = content
         </ul>
       </div>
     </div>
-
-    <!-- Bottom: data cells + abbreviations -->
-    <div class="bottom">
-      <div class="container home-company-details-container">
-        <ul class="bottom-items reveal">
-          <li
-            v-for="cell in company.cells"
-            :key="cell.label"
-            class="bottom-item"
-          >
-            <div class="bottom-item-title">{{ cell.label }}</div>
-            <div class="bottom-item-copy">
-              <span>{{ cell.value }}</span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="bottom-line" />
-
-        <div class="bottom-services reveal">
-          <div class="item-head">
-            <span class="item-head-number">0.4</span>
-            <span>{{ company.abbreviations.length ? 'How We Talk' : '' }}</span>
-          </div>
-          <div class="bottom-services-items">
-            <div
-              v-for="abbr in company.abbreviations"
-              :key="abbr.label"
-              class="bottom-services-item"
-            >
-              <div class="bracket-text">{{ abbr.label }}</div>
-              <div class="bottom-services-item-name">{{ abbr.desc }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -82,16 +80,26 @@ const { company } = content
 
 /* ── Top ── */
 .top {
-  background-color: rgba(29, 30, 32, 0.5);
   padding: 21.026vw 0;
 }
 
 @media only screen and (min-width: 834px) {
-  .top { padding: 7.847vw 0; }
+  .top { padding: 5vw 0 7.847vw; }
 }
 
 .home-company-details-container {
   /* inherits .container 5-col grid */
+}
+
+.top-header {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.top-header .cd-title {
+  font-size: 3.5rem;
+  white-space: nowrap;
+  margin-bottom: 3rem;
 }
 
 .head {
@@ -110,7 +118,7 @@ const { company } = content
 }
 
 .cd-title span {
-  display: block;
+  display: inline;
 }
 
 .title-blue {
@@ -198,6 +206,7 @@ const { company } = content
 
 /* ── Bottom ── */
 .bottom {
+  background-color: rgba(29, 30, 32, 0.5);
   padding: 23.077vw 0 19.231vw;
 }
 
@@ -264,76 +273,92 @@ const { company } = content
   .bottom-line { grid-column: 2 / 6; }
 }
 
-/* Abbreviations row */
-.bottom-services {
+/* Services grid */
+.services-grid {
+  grid-column: 1 / -1;
+  padding-top: 4rem;
+  direction: rtl;
   display: flex;
   flex-direction: column;
-  grid-column: 1 / -1;
-  padding-top: 5.6rem;
-  row-gap: 5.2rem;
+  row-gap: 2rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .bottom-services {
-    column-gap: var(--grid-gutter);
-    display: grid;
-    grid-column: 2 / 6;
-    grid-template-columns: repeat(4, 1fr);
-    padding-top: 4.2rem;
+  .services-grid {
+    grid-column: 1 / -1;
   }
 }
 
-.bottom-services-items {
+.services-columns {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  row-gap: 2rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .bottom-services-items {
-    column-gap: 6rem;
-    grid-column: 2 / 5;
-    justify-content: flex-start;
+  .services-columns {
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 3rem;
+    padding-right: 5rem;
   }
 }
 
-.bottom-services-item {
-  width: 9rem;
+.services-column {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.6rem;
+  flex: 1;
+  min-width: 0;
+  border-bottom: 1px solid var(--color-blue);
+  padding-bottom: 2rem;
+}
+
+.services-column:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 @media only screen and (min-width: 834px) {
-  .bottom-services-item { width: 7rem; }
+  .services-column {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 }
 
-/* Bracket text like [Pha¹] */
-.bracket-text {
+.services-divider {
+  display: none;
+}
+
+@media only screen and (min-width: 834px) {
+  .services-divider {
+    display: block;
+    width: 1px;
+    background-color: var(--color-blue);
+    align-self: stretch;
+  }
+}
+
+.services-cell {
+  display: flex;
   align-items: center;
-  color: var(--color-offWhite);
-  display: inline-flex;
-  column-gap: 0.5rem;
-  font-size: 1.8rem;
+  column-gap: 0.8rem;
+  font-size: 1.4rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  white-space: nowrap;
-}
-
-.bracket-text::before {
-  content: "[";
-  color: var(--color-blue);
-}
-
-.bracket-text::after {
-  content: "]";
-  color: var(--color-blue);
-}
-
-.bottom-services-item-name {
-  font-size: 1.2rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-top: 2.8rem;
   color: var(--color-offWhite);
-  opacity: 0.7;
+  padding: 0.4rem 0;
+}
+
+@media only screen and (min-width: 834px) {
+  .services-cell {
+    font-size: 1.6rem;
+  }
+}
+
+.check-icon {
+  color: var(--color-blue);
+  font-size: 1.4rem;
 }
 </style>
