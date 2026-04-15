@@ -29,6 +29,45 @@ import { content } from '~/content'
 </template>
 
 <style scoped>
+/* ── Load animations ── */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes appearIn {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes revealRTL {
+  0% {
+    clip-path: inset(0 0 0 100%);
+    filter: blur(4px);
+  }
+  30% {
+    filter: blur(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+  }
+}
+
 .home-hero {
   background-color: var(--color-white);
   overflow: hidden;
@@ -67,6 +106,7 @@ import { content } from '~/content'
 .head {
   display: none;
   grid-column: 1 / -1;
+  animation: slideDown 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both;
 }
 
 @media only screen and (min-width: 834px) {
@@ -118,6 +158,7 @@ import { content } from '~/content'
   color: var(--color-offBlack);
   direction: rtl;
   z-index: 2;
+  animation: revealRTL 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.8s both;
 }
 
 @media only screen and (max-width: 833px) {
@@ -136,6 +177,7 @@ import { content } from '~/content'
   align-items: center;
   justify-content: center;
   z-index: 0;
+  animation: appearIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
 .hero-product-image {

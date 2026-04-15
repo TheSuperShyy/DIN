@@ -81,13 +81,17 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
     aria-label="Scroll to top"
     @click="scrollToTop"
   >
-    <span class="side-logo-text">{{ content.brand.name }}</span>
+    <svg class="side-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
+    </svg>
   </button>
 
   <div class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
     <!-- Logo beside nav pill -->
     <NuxtLink to="/" class="nav-logo" aria-label="Go to homepage" @click="closeAll">
-      <span class="nav-logo-text">{{ content.brand.name }}</span>
+      <svg class="nav-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
+      </svg>
     </NuxtLink>
 
     <!-- Desktop centered nav pill -->
@@ -205,6 +209,18 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 </template>
 
 <style scoped>
+/* ── Load animation ── */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ── Base menu wrapper ── */
 .menu {
   align-items: flex-start;
@@ -218,6 +234,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   padding-top: 3rem;
   column-gap: 0.6rem;
   transition: opacity 0.3s, visibility 0.3s;
+  animation: slideDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
 .menu.is-hidden {
@@ -370,11 +387,17 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, filter 0.3s, color 0.3s;
 }
 
-.nav-list-item-link:hover {
-  opacity: 0.6;
+.nav-list-item:hover ~ .nav-list-item .nav-list-item-link,
+.nav-list-item:has(~ .nav-list-item:hover) .nav-list-item-link {
+  opacity: 0.35;
+}
+
+.nav-list-item:hover .nav-list-item-link {
+  opacity: 1;
+  color: var(--color-offBlack);
 }
 
 /* ── Dropdown sub-panel ── */
