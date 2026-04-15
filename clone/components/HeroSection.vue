@@ -17,57 +17,27 @@ import { content } from '~/content'
         </NuxtLink>
       </div>
 
-      <!-- Left content column -->
-      <div class="content">
-        <div class="content-inner">
-          <!-- Brand wordmark -->
-          <div class="brand-wordmark">{{ content.brand.name }}</div>
-
-          <!-- Headline -->
-          <h1 class="hero-title">{{ content.hero.headline }}</h1>
-
-          <!-- Category pills -->
-          <div class="category-wrapper">
-            <span class="category-label">Explore</span>
-            <div class="categories">
-              <NuxtLink
-                v-for="pill in content.hero.pills"
-                :key="pill.label"
-                :to="pill.href"
-                class="pill pill-outline"
-              >
-                {{ pill.label }}
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-
-        <!-- Scroll indicator -->
-        <button class="scroll-indicator" type="button" aria-label="Scroll to next section">
-          <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.92737 6.71384L2.92737 0.15979L3.76869 0.15979L3.76869 6.57215L5.576 4.76484L6.1709 5.35975L3.57464 7.956L3.27719 8.25346L2.97974 7.956L0.383476 5.35974L0.978378 4.76484L2.92737 6.71384Z" fill="currentColor"/>
-          </svg>
-        </button>
-      </div>
+      <!-- Hero tagline (bottom-right) -->
+      <p class="hero-tagline">טל שולמרק. השקט שלכם ממזיקים.</p>
     </div>
 
-    <!-- Hero background gradient (replaces image) -->
+    <!-- Hero product image -->
     <div class="hero-image-wrapper" aria-hidden="true">
-      <div class="hero-gradient" />
+      <img src="/TAL-logo.png" alt="TAL" class="hero-product-image" />
     </div>
   </header>
 </template>
 
 <style scoped>
 .home-hero {
-  background-color: #fdfdfd;
+  background-color: var(--color-white);
   overflow: hidden;
   position: relative;
   min-height: 100svh;
 }
 
 .home-hero::before {
-  background: linear-gradient(0deg, #fdfdfe, rgba(253, 253, 254, 0));
+  background: linear-gradient(0deg, #fff, rgba(255, 255, 255, 0));
   bottom: 0;
   content: "";
   height: 55%;
@@ -137,151 +107,48 @@ import { content } from '~/content'
   width: 2.2rem;
 }
 
-/* ── Main content column ── */
-.content {
-  align-self: end;
-  display: flex;
-  flex-direction: column;
-  grid-column: 1 / -1;
-  height: 70svh;
-  justify-content: space-between;
-}
-
-@media only screen and (min-width: 834px) {
-  .content {
-    grid-column: 1 / 3;
-    height: auto;
-    padding-top: 6rem;
-  }
-}
-
-.content-inner {
-  text-align: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .content-inner { text-align: left; }
-}
-
-/* ── Brand wordmark ── */
-.brand-wordmark {
-  font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-offBlack);
-  opacity: 0.5;
-  margin: 0 auto;
-}
-
-@media only screen and (min-width: 834px) {
-  .brand-wordmark { margin: 0; }
-}
-
-/* ── Hero title ── */
-.hero-title {
-  font-size: 2.5rem;
+/* ── Hero tagline (bottom-right) ── */
+.hero-tagline {
+  position: absolute;
+  bottom: 5rem;
+  right: var(--grid-outerGutter);
+  font-size: 2rem;
   font-weight: 350;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 1.2rem auto 0;
-  max-width: 22rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .hero-title { margin: 1.2rem 0 0; }
-}
-
-/* ── Category pills ── */
-.category-wrapper {
-  margin-top: 2.6rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .category-wrapper {
-    align-items: center;
-    column-gap: 0.6rem;
-    display: flex;
-  }
-}
-
-.category-label {
-  display: none;
-}
-
-@media only screen and (min-width: 834px) {
-  .category-label {
-    color: var(--color-offBlack);
-    display: inline-block;
-    font-size: 1.4rem;
-    font-weight: 350;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    opacity: 0.5;
-  }
-}
-
-.categories {
-  column-gap: 0.3rem;
-  display: flex;
-  justify-content: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .categories { justify-content: flex-start; }
-}
-
-/* ── Scroll indicator ── */
-.scroll-indicator {
-  align-items: center;
-  background-color: rgba(12, 13, 15, 0.05);
-  border-radius: 3.4rem;
   color: var(--color-offBlack);
-  display: flex;
-  height: 5.1rem;
-  justify-content: center;
-  overflow: hidden;
-  width: 2.4rem;
-  animation: scroll-pulse 2.5s ease-in-out infinite;
+  direction: rtl;
+  z-index: 2;
 }
 
-@media only screen and (min-width: 834px) {
-  .scroll-indicator {
-    border-radius: 2.6rem;
-    height: 4rem;
-    margin-top: 7.2rem;
-    width: 1.8rem;
+@media only screen and (max-width: 833px) {
+  .hero-tagline {
+    bottom: 2rem;
+    right: 2rem;
+    font-size: 1.2rem;
   }
-}
-
-@keyframes scroll-pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
 }
 
 /* ── Hero background ── */
 .hero-image-wrapper {
-  height: 60%;
-  left: 0;
   position: absolute;
-  bottom: 0;
-  top: unset;
-  width: 100%;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 0;
 }
 
-@media only screen and (min-width: 834px) {
-  .hero-image-wrapper {
-    height: 100%;
-    top: 0;
-    bottom: unset;
-  }
+.hero-product-image {
+  max-height: 68%;
+  width: auto;
+  margin-top: 8rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1rem 3rem rgba(0, 0, 0, 0.3));
 }
 
-.hero-gradient {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(ellipse at 65% 50%, rgba(15, 16, 18, 0.15) 0%, transparent 70%),
-              radial-gradient(ellipse at 80% 20%, rgba(15, 16, 18, 0.08) 0%, transparent 60%);
+@media only screen and (max-width: 833px) {
+  .hero-product-image {
+    max-height: 40%;
+  }
 }
 </style>

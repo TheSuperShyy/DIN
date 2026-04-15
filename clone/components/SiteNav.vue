@@ -5,6 +5,9 @@ import { content } from '~/content'
 const isMenuOpen = ref(false)
 const activeDropdown = ref<string | null>(null)
 const sectionTheme = ref('off-white')
+const sideLogoTheme = ref('off-white')
+const showSideLogo = ref(false)
+const hideNav = ref(false)
 
 function toggleDropdown(key: string) {
   activeDropdown.value = activeDropdown.value === key ? null : key
@@ -13,6 +16,10 @@ function toggleDropdown(key: string) {
 function closeAll() {
   activeDropdown.value = null
   isMenuOpen.value = false
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 function detectTheme() {
@@ -27,6 +34,35 @@ function detectTheme() {
     }
   })
   sectionTheme.value = theme
+
+  // Compute side logo theme based on viewport midpoint
+  const midY = window.innerHeight / 2
+  let sideTheme = 'off-white'
+  sections.forEach((el) => {
+    const rect = (el as HTMLElement).getBoundingClientRect()
+    if (rect.top <= midY && rect.bottom > midY) {
+      sideTheme = (el as HTMLElement).dataset.sectionTheme || 'off-white'
+    }
+  })
+  sideLogoTheme.value = sideTheme
+
+  // Show side logo only after hero and before footer
+  const hero = document.querySelector('.home-hero')
+  const footer = document.querySelector('.site-footer')
+  if (hero && footer) {
+    const heroBottom = hero.getBoundingClientRect().bottom
+    const footerTop = footer.getBoundingClientRect().top
+    showSideLogo.value = heroBottom < 0 && footerTop > window.innerHeight * 0.5
+  } else {
+    showSideLogo.value = false
+  }
+
+  // Hide nav when footer is in view
+  const footerEl = document.querySelector('.site-footer')
+  if (footerEl) {
+    const footerTop = footerEl.getBoundingClientRect().top
+    hideNav.value = footerTop < 100
+  }
 }
 
 onMounted(() => {
@@ -37,10 +73,21 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 </script>
 
 <template>
-  <div class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown }]">
-    <!-- Logo (circular pill, top-left) -->
-    <NuxtLink to="/" class="logo" aria-label="Go to homepage" @click="closeAll">
-      <span class="logo-text">{{ content.brand.name }}</span>
+  <!-- Side logo (fixed left-center, visible between hero and footer) -->
+  <button
+    class="side-logo"
+    :class="[sideLogoTheme, { 'is-visible': showSideLogo }]"
+    type="button"
+    aria-label="Scroll to top"
+    @click="scrollToTop"
+  >
+    <span class="side-logo-text">{{ content.brand.name }}</span>
+  </button>
+
+  <div class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
+    <!-- Logo beside nav pill -->
+    <NuxtLink to="/" class="nav-logo" aria-label="Go to homepage" @click="closeAll">
+      <span class="nav-logo-text">{{ content.brand.name }}</span>
     </NuxtLink>
 
     <!-- Desktop centered nav pill -->
@@ -60,14 +107,12 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
             >
               {{ item.label }}
             </button>
-            <NuxtLink
+            <span
               v-else-if="item.type === 'link'"
-              :to="item.href!"
               class="nav-list-item-link"
-              @click="closeAll"
             >
               {{ item.label }}
-            </NuxtLink>
+            </span>
             <button v-else class="nav-list-item-link" type="button">
               {{ item.label }}
             </button>
@@ -134,14 +179,12 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
             >
               {{ item.label }}
             </button>
-            <NuxtLink
+            <span
               v-else-if="item.type === 'link'"
-              :to="item.href!"
               class="mobile-nav-link"
-              @click="closeAll"
             >
               {{ item.label }}
-            </NuxtLink>
+            </span>
             <button v-else class="mobile-nav-link" type="button">{{ item.label }}</button>
           </div>
           <div v-if="item.type === 'dropdown' && activeDropdown === item.key" class="mobile-sub">
@@ -164,48 +207,107 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 <style scoped>
 /* ── Base menu wrapper ── */
 .menu {
+  align-items: flex-start;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 101;
-  column-gap: 0.5rem;
-  justify-content: center;
+  padding-top: 3rem;
+  column-gap: 0.6rem;
+  transition: opacity 0.3s, visibility 0.3s;
 }
 
-/* ── Logo (circular frosted pill, top-left) ── */
-.logo {
+.menu.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── Nav logo (beside nav pill) ── */
+.nav-logo {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 50%;
-  height: 4.9rem;
-  width: 4.9rem;
-  margin-left: var(--grid-outerGutter);
-  margin-top: 3rem;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
+  height: 4.5rem;
+  width: 4.5rem;
+  display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  flex-shrink: 0;
   overflow: hidden;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.off-white .logo {
+@media only screen and (min-width: 834px) {
+  .nav-logo { display: flex; }
+}
+
+.off-white .nav-logo {
   background-color: rgba(15, 16, 18, 0.06);
   color: var(--color-offBlack);
 }
 
-.off-black .logo,
-.blue .logo {
+.off-black .nav-logo,
+.blue .nav-logo {
   background-color: rgba(255, 255, 255, 0.12);
   color: var(--color-white);
 }
 
-.logo-text {
+.nav-logo-text {
+  font-size: 1.2rem;
+  font-weight: 350;
+  letter-spacing: 0.04em;
+}
+
+/* ── Side logo (fixed left-center) ── */
+.side-logo {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.6rem;
+  height: 4.5rem;
+  width: 4.5rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: var(--grid-outerGutter);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 102;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+}
+
+@media only screen and (min-width: 834px) {
+  .side-logo { display: flex; }
+}
+
+.side-logo.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.side-logo.is-visible:hover {
+  opacity: 0.7;
+}
+
+.side-logo.off-white {
+  background-color: rgba(15, 16, 18, 0.06);
+  color: var(--color-offBlack);
+}
+
+.side-logo.off-black,
+.side-logo.blue {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-white);
+}
+
+.side-logo-text {
   font-size: 1.2rem;
   font-weight: 350;
   letter-spacing: 0.04em;
@@ -215,7 +317,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 .nav {
   display: none;
   height: 4.5rem;
-  margin: 3.4rem 0 0;
   position: relative;
 }
 
@@ -234,14 +335,14 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   align-items: center;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 10rem;
-  column-gap: 4rem;
+  border-radius: 1rem;
+  column-gap: 5.5rem;
   display: flex;
   flex-direction: row;
   grid-column: 1 / -1;
   grid-row: 1;
   height: 4.5rem;
-  padding: 0 2.8rem;
+  padding: 0 3.6rem;
   list-style: none;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -263,7 +364,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 }
 
 .nav-list-item-link {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -404,15 +505,14 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   border-radius: 50%;
   display: flex;
   flex-direction: column;
-  height: 4.9rem;
+  height: 4.5rem;
   justify-content: center;
   margin-right: var(--grid-outerGutter);
-  margin-top: 3rem;
   position: absolute;
   right: 0;
   row-gap: 0.8rem;
-  top: 0;
-  width: 4.9rem;
+  top: 3rem;
+  width: 4.5rem;
   z-index: 1;
 }
 
@@ -559,6 +659,5 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 @media only screen and (min-width: 834px) {
   .nav-container { display: none; }
-  .logo { height: 4.5rem; width: 4.5rem; }
 }
 </style>

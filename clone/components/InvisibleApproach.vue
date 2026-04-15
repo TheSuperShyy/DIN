@@ -8,7 +8,7 @@ const { approach } = content
   <section class="section bg-off-white home-products" data-section-theme="off-white">
     <div class="container home-products-container">
       <!-- Section head (icon + label) -->
-      <div class="home-products-section-head">
+      <div class="home-products-section-head reveal">
         <div class="section-icon-wrapper">
           <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M6.20742 9.02441H0.12651C0.0566404 9.02441 0 9.08105 0 9.15092V9.85095C0 9.92081 0.0566404 9.97745 0.12651 9.97745H6.20742C6.27728 9.97745 6.33392 9.92081 6.33392 9.85095V9.15092C6.33392 9.08105 6.27728 9.02441 6.20742 9.02441Z" fill="currentColor"/>
@@ -21,7 +21,7 @@ const { approach } = content
       </div>
 
       <!-- Big display title -->
-      <div class="title-wrapper">
+      <div class="title-wrapper reveal">
         <div class="title-inner">
           <h2 class="products-title">{{ approach.headline }}</h2>
         </div>
@@ -32,7 +32,7 @@ const { approach } = content
       </div>
 
       <!-- Body copy -->
-      <div class="products-content">
+      <div class="products-content reveal">
         <p class="products-copy">
           <span class="copy-muted">{{ approach.copy }}</span>
           <span class="copy-sub">{{ approach.subCopy }}</span>
@@ -40,7 +40,7 @@ const { approach } = content
       </div>
 
       <!-- Explore links -->
-      <div class="links-wrapper">
+      <div class="links-wrapper reveal">
         <div class="links-label">Explore in depth</div>
         <div class="links">
           <NuxtLink

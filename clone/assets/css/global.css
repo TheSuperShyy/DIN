@@ -6,9 +6,14 @@
 
 html {
   font-size: 10px;
+  scrollbar-width: none;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -16,7 +21,7 @@ body {
   font-size: var(--text-base);
   font-weight: 350;
   color: var(--color-offBlack);
-  background-color: var(--color-greyLight);
+  background-color: var(--color-offBlack);
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -28,6 +33,7 @@ a {
 
 button {
   font-family: inherit;
+  color: inherit;
   cursor: pointer;
   border: none;
   background: none;
@@ -51,14 +57,17 @@ img, svg {
 /* Scroll reveal animations */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(48px);
+  filter: blur(8px);
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
 .reveal-fade {

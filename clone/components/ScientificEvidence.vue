@@ -7,7 +7,7 @@ const { evidence } = content
 <template>
   <section class="section bg-blue home-master-plan" data-section-theme="blue">
     <div class="container home-master-plan-container">
-      <div class="mp-content">
+      <div class="mp-content reveal">
         <!-- Number -->
         <div class="mp-number">{{ evidence.number }}</div>
 

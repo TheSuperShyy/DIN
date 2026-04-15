@@ -8,17 +8,20 @@ const route = useRoute()
 
 <template>
   <footer class="site-footer" data-section-theme="off-black">
-    <div class="container footer-container">
-      <!-- Top row: wordmark left, link groups right -->
-      <div class="footer-top">
+    <div class="footer-inner">
+      <!-- Top section -->
+      <div class="footer-top reveal">
         <!-- Wordmark -->
         <NuxtLink to="/" class="footer-wordmark">{{ brand.name }}</NuxtLink>
 
-        <!-- Link groups -->
-        <div class="footer-groups">
+        <!-- Right side: groups -->
+        <div class="footer-right">
           <!-- Pages -->
           <div class="footer-group">
-            <span class="footer-group-label">{{ footer.pagesLabel }}</span>
+            <div class="footer-group-label">
+              <span class="footer-group-number">1.0</span>
+              <span>Pages</span>
+            </div>
             <nav class="footer-links">
               <NuxtLink
                 v-for="page in footer.pages"
@@ -32,7 +35,10 @@ const route = useRoute()
 
           <!-- Follow -->
           <div class="footer-group">
-            <span class="footer-group-label">{{ footer.followLabel }}</span>
+            <div class="footer-group-label">
+              <span class="footer-group-number">2.0</span>
+              <span>Follow</span>
+            </div>
             <div class="footer-links">
               <a
                 v-for="social in footer.social"
@@ -47,20 +53,25 @@ const route = useRoute()
         </div>
       </div>
 
-      <!-- Hairline -->
-      <div class="footer-line" />
 
-      <!-- Bottom row: legal + location -->
+      <!-- Bottom row -->
       <div class="footer-bottom">
-        <div class="footer-legal">
-          <a
-            v-for="link in footer.legal"
-            :key="link.label"
-            :href="link.href"
-            class="footer-legal-link"
-          >{{ link.label }}</a>
+        <NuxtLink to="/" class="footer-icon" aria-label="Go to homepage">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
+          </svg>
+        </NuxtLink>
+        <div class="footer-bottom-right">
+          <div class="footer-legal">
+            <a
+              v-for="link in footer.legal"
+              :key="link.label"
+              :href="link.href"
+              class="footer-legal-link"
+            >{{ link.label }}</a>
+          </div>
+          <span class="footer-location">{{ footer.location }}</span>
         </div>
-        <span class="footer-location">{{ footer.location }}</span>
       </div>
     </div>
   </footer>
@@ -70,32 +81,38 @@ const route = useRoute()
 .site-footer {
   background-color: var(--color-offBlack);
   color: var(--color-offWhite);
-  padding: 15.385vw 0 8rem;
+  padding: 8vw 0 4rem;
+  margin-top: auto;
+  min-height: 93vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 @media only screen and (min-width: 834px) {
   .site-footer {
-    padding: 5.556vw 0 4.167vw;
+    padding: 6vw 0 3vw;
   }
 }
 
-.footer-container {
-  /* inherits 5-col grid */
+.footer-inner {
+  padding-left: var(--grid-outerGutter);
+  padding-right: var(--grid-outerGutter);
 }
 
 /* ── Top ── */
 .footer-top {
-  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  row-gap: 8rem;
+  row-gap: 5rem;
+  margin-bottom: 100px;
 }
 
 @media only screen and (min-width: 834px) {
   .footer-top {
-    align-items: flex-start;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start;
   }
 }
 
@@ -114,24 +131,33 @@ const route = useRoute()
   opacity: 0.6;
 }
 
-/* Link groups */
-.footer-groups {
+/* Right side groups */
+.footer-right {
   display: flex;
-  column-gap: 10rem;
-  row-gap: 6rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  row-gap: 5rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .footer-groups {
-    column-gap: 8rem;
+  .footer-right {
+    row-gap: 6rem;
   }
 }
 
+/* Each group: label left, links right */
 .footer-group {
   display: flex;
   flex-direction: column;
   row-gap: 3.2rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .footer-group {
+    flex-direction: row;
+    column-gap: 8rem;
+    row-gap: 0;
+    align-items: flex-start;
+  }
 }
 
 .footer-group-label {
@@ -139,22 +165,27 @@ const route = useRoute()
   font-size: 1.2rem;
   font-weight: 350;
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: 1.6;
   opacity: 0.4;
+  min-width: 6rem;
+}
+
+.footer-group-number {
+  display: block;
 }
 
 .footer-links {
   display: flex;
   flex-direction: column;
-  row-gap: 1.6rem;
+  row-gap: 1rem;
 }
 
 .footer-link {
   color: var(--color-offWhite);
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 350;
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: 1.25;
   text-decoration: none;
   transition: opacity 0.2s;
 }
@@ -170,24 +201,21 @@ const route = useRoute()
 /* Hairline */
 .footer-line {
   background-color: rgba(255, 255, 255, 0.1);
-  grid-column: 1 / -1;
   height: 0.5px;
-  margin-top: 8rem;
+  margin-top: 6rem;
 }
 
 @media only screen and (min-width: 834px) {
   .footer-line {
-    margin-top: 5.556vw;
+    margin-top: 6vw;
   }
 }
 
 /* ── Bottom ── */
 .footer-bottom {
-  align-items: center;
   display: flex;
   flex-direction: column;
-  grid-column: 1 / -1;
-  justify-content: space-between;
+  align-items: flex-start;
   margin-top: 3.6rem;
   row-gap: 3rem;
 }
@@ -195,7 +223,34 @@ const route = useRoute()
 @media only screen and (min-width: 834px) {
   .footer-bottom {
     flex-direction: row;
-    row-gap: 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.footer-icon {
+  color: var(--color-offWhite);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.footer-icon:hover {
+  opacity: 0.8;
+}
+
+.footer-bottom-right {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  align-items: flex-start;
+}
+
+@media only screen and (min-width: 834px) {
+  .footer-bottom-right {
+    flex-direction: row;
+    align-items: center;
+    column-gap: 4rem;
   }
 }
 
@@ -204,18 +259,11 @@ const route = useRoute()
   column-gap: 3.2rem;
   flex-wrap: wrap;
   row-gap: 1.6rem;
-  justify-content: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .footer-legal {
-    justify-content: flex-start;
-  }
 }
 
 .footer-legal-link {
   color: var(--color-offWhite);
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -230,7 +278,7 @@ const route = useRoute()
 
 .footer-location {
   color: var(--color-offWhite);
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
