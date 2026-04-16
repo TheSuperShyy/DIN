@@ -58,7 +58,7 @@ onUnmounted(() => {
       class="intro-rat"
     />
 
-    <img src="/eagle.svg" alt="" class="intro-bird reveal" data-delay="2" />
+    <img src="/pigeon.svg" alt="" class="intro-bird reveal" data-delay="2" />
   </section>
 </template>
 
@@ -129,6 +129,8 @@ onUnmounted(() => {
   align-items: center;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
   grid-column: 1 / -1;
 }
 
@@ -191,11 +193,12 @@ onUnmounted(() => {
   .intro-bird {
     display: block;
     position: absolute;
-    bottom: 2vw;
-    right: var(--grid-outerGutter);
+    bottom: 3.5vw;
+    right: calc(var(--grid-outerGutter) + 2vw);
     width: 32rem;
     height: auto;
     pointer-events: none;
+    z-index: 0;
   }
 }
 
