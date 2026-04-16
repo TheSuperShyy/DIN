@@ -40,10 +40,11 @@ export const content = {
   company: {
     titleLine1: 'At DIN /',
     titleLine2: 'We refine what matters',
-    items: [
-      { number: '0.1', label: 'Our Mission', statement: 'Precision tools for augmented humans' },
-      { number: '0.2', label: 'Our Vision', statement: 'Lead the future of Invisible Interfaces' },
-      { number: '0.3', label: 'Our Ambition', statement: 'Distill complexity to its pure form' }
+    steps: [
+      { number: '0.1', title: 'בדיקת האתר', description: 'הצוות יגיע לצורך בדיקה מקיפה של האתר' },
+      { number: '0.2', title: 'הקמת מערך הדברה', description: 'בהתאם להערכת המצב יוקם מערך הדברה מותאם אישית ללקוח' },
+      { number: '0.3', title: 'ביצוע', description: 'הצוות יגיע לצורך ביצוע העבודה' },
+      { number: '0.4', title: 'דוח סיכום עבודה', description: 'לאחר סיום העבודה יופק דוח סיכום עבודה ממוחשב של כלל פעולות ההדברה שבוצעו באתר הלקוח' }
     ],
     cells: [
       { label: 'Industries', value: 'Health, Compute, Wearables' },

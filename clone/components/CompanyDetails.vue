@@ -38,6 +38,11 @@ const { company } = content
             </div>
           </div>
         </div>
+
+        <div class="iso-badges reveal">
+          <img src="/iso-9001.svg" alt="ISO 9001" class="iso-badge" />
+          <img src="/iso-14001.svg" alt="ISO 14001" class="iso-badge" />
+        </div>
       </div>
     </div>
 
@@ -45,24 +50,21 @@ const { company } = content
     <div class="bottom">
       <div class="container home-company-details-container">
         <div class="head reveal">
-          <h3 class="cd-title">
-            <span>{{ company.titleLine1 }}</span>
-            <span class="title-blue">{{ company.titleLine2 }}</span>
-          </h3>
+          <h3 class="cd-title"><span class="title-blue">כיצד השירות מתבצע</span></h3>
         </div>
 
         <ul class="top-items">
           <li
-            v-for="item in company.items"
-            :key="item.number"
+            v-for="(step, i) in company.steps"
+            :key="i"
             class="top-item reveal"
           >
             <div class="item-head">
-              <span class="item-head-number">{{ item.number }}</span>
-              <span>{{ item.label }}</span>
+              <span class="item-head-number">{{ step.number }}</span>
+              <span>{{ step.title }}</span>
             </div>
             <div class="item-head-title">
-              {{ item.statement }}
+              {{ step.description }}
               <div class="item-head-line" />
             </div>
           </li>
@@ -81,10 +83,11 @@ const { company } = content
 /* ── Top ── */
 .top {
   padding: 21.026vw 0;
+  position: relative;
 }
 
 @media only screen and (min-width: 834px) {
-  .top { padding: 5vw 0 7.847vw; }
+  .top { padding: 5vw 0 12vw; }
 }
 
 .home-company-details-container {
@@ -104,17 +107,21 @@ const { company } = content
 
 .head {
   grid-column: 1 / -1;
-}
-
-@media only screen and (min-width: 834px) {
-  .head { grid-column: 3 / 5; }
+  text-align: center;
+  direction: rtl;
 }
 
 .cd-title {
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
+}
+
+@media only screen and (min-width: 834px) {
+  .cd-title {
+    font-size: 3.5rem;
+  }
 }
 
 .cd-title span {
@@ -140,6 +147,7 @@ const { company } = content
     grid-column: 2 / 6;
     margin-top: 8.2rem;
     row-gap: 4.2rem;
+    transform: translateX(-2.4rem);
   }
 }
 
@@ -155,6 +163,7 @@ const { company } = content
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     row-gap: 4.2rem;
+    align-items: center;
   }
 }
 
@@ -178,7 +187,7 @@ const { company } = content
 }
 
 .item-head-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 350;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -360,5 +369,21 @@ const { company } = content
 .check-icon {
   color: var(--color-blue);
   font-size: 1.4rem;
+}
+
+.iso-badges {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 2rem;
+  position: absolute;
+  bottom: 1rem;
+  right: var(--grid-outerGutter);
+}
+
+.iso-badge {
+  width: 14rem;
+  height: auto;
 }
 </style>

@@ -8,6 +8,7 @@ const sectionTheme = ref('off-white')
 const sideLogoTheme = ref('off-white')
 const showSideLogo = ref(false)
 const hideNav = ref(false)
+const menuRef = ref<HTMLElement | null>(null)
 
 function toggleDropdown(key: string) {
   activeDropdown.value = activeDropdown.value === key ? null : key
@@ -68,6 +69,11 @@ function detectTheme() {
 onMounted(() => {
   window.addEventListener('scroll', detectTheme, { passive: true })
   detectTheme()
+  if (menuRef.value) {
+    menuRef.value.addEventListener('animationend', () => {
+      if (menuRef.value) menuRef.value.style.animation = 'none'
+    }, { once: true })
+  }
 })
 onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 </script>
@@ -86,7 +92,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
     </svg>
   </button>
 
-  <div class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
+  <div ref="menuRef" class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
     <!-- Logo beside nav pill -->
     <NuxtLink to="/" class="nav-logo" aria-label="Go to homepage" @click="closeAll">
       <svg class="nav-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -392,12 +398,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 .nav-list-item:hover ~ .nav-list-item .nav-list-item-link,
 .nav-list-item:has(~ .nav-list-item:hover) .nav-list-item-link {
-  opacity: 0.35;
-}
-
-.nav-list-item:hover .nav-list-item-link {
-  opacity: 1;
-  color: var(--color-offBlack);
+  color: gray;
 }
 
 /* ── Dropdown sub-panel ── */
