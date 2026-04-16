@@ -9,15 +9,18 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const videoWrapperRef = ref<HTMLElement | null>(null)
 const sectionRef = ref<HTMLElement | null>(null)
 
-let lastProgress = -1
 let rafId = 0
+let targetTime = 0
+let smoothTime = 0
+let isSeeking = false
+let ctx: CanvasRenderingContext2D | null = null
 
 function drawFrame() {
   const video = themisVideo.value
   const canvas = canvasRef.value
   if (!video || !canvas || !video.videoWidth) return
 
-  const ctx = canvas.getContext('2d')
+  if (!ctx) ctx = canvas.getContext('2d')
   if (!ctx) return
 
   if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
@@ -27,44 +30,57 @@ function drawFrame() {
   ctx.drawImage(video, 0, 0)
 }
 
-function updateVideoTime() {
-  const video = themisVideo.value
+function getScrollProgress(): number {
   const wrapper = videoWrapperRef.value
-  if (!video || !wrapper || !video.duration) return
+  const video = themisVideo.value
+  if (!wrapper || !video || !video.duration) return 0
 
   const rect = wrapper.getBoundingClientRect()
-  const viewportHeight = window.innerHeight
-
-  // Video fully plays from when wrapper top hits viewport bottom
-  // to when wrapper bottom hits viewport top
-  const totalTravel = rect.height + viewportHeight
-  const traveled = viewportHeight - rect.top
-  const progress = Math.min(Math.max(traveled / totalTravel, 0), 1)
-
-  // Only update when progress actually changed
-  if (Math.abs(progress - lastProgress) < 0.0005) return
-  lastProgress = progress
-
-  const targetTime = progress * video.duration
-  video.currentTime = targetTime
-}
-
-function onSeeked() {
-  drawFrame()
+  const vh = window.innerHeight
+  const totalTravel = rect.height + vh
+  const traveled = vh - rect.top
+  return Math.min(Math.max(traveled / totalTravel, 0), 1)
 }
 
 function loop() {
-  updateVideoTime()
+  const video = themisVideo.value
+  if (!video || !video.duration) {
+    rafId = requestAnimationFrame(loop)
+    return
+  }
+
+  targetTime = getScrollProgress() * video.duration
+
+  // Smooth lerp toward target
+  const diff = targetTime - smoothTime
+  if (Math.abs(diff) > 0.001) {
+    smoothTime += diff * 0.12
+  } else {
+    smoothTime = targetTime
+  }
+
+  // Only seek when browser finished previous seek
+  if (!isSeeking && Math.abs(video.currentTime - smoothTime) > 0.01) {
+    isSeeking = true
+    video.currentTime = smoothTime
+  }
+
+  // Always draw latest available frame to canvas
+  drawFrame()
+
   rafId = requestAnimationFrame(loop)
 }
 
 onMounted(() => {
   const video = themisVideo.value
   if (video) {
-    video.addEventListener('seeked', onSeeked)
-    // Draw first frame once metadata is loaded
+    video.addEventListener('seeked', () => {
+      isSeeking = false
+    })
     video.addEventListener('loadeddata', () => {
       video.currentTime = 0
+      smoothTime = 0
+      targetTime = 0
       drawFrame()
     })
   }
@@ -73,7 +89,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   cancelAnimationFrame(rafId)
-  themisVideo.value?.removeEventListener('seeked', onSeeked)
 })
 </script>
 
@@ -106,27 +121,14 @@ onUnmounted(() => {
         <canvas ref="canvasRef" class="product-video" />
       </div>
 
-      <!-- Body copy -->
-      <div class="products-content reveal">
-        <p class="products-copy">
-          <span class="copy-muted">{{ approach.copy }}</span>
-          <span class="copy-sub">{{ approach.subCopy }}</span>
-        </p>
-      </div>
-
-      <!-- Explore links -->
-      <div class="links-wrapper reveal">
-        <div class="links-label">Explore in depth</div>
-        <div class="links">
-          <NuxtLink
-            v-for="pill in approach.pills"
-            :key="pill.label"
-            :to="pill.href"
-            :class="['pill', pill.filled ? 'pill-filled' : 'pill-outline']"
-          >
-            {{ pill.label }}
-          </NuxtLink>
-        </div>
+      <!-- Themis description -->
+      <div class="themis-description reveal-rtl">
+        <p>כחלק מהשירות לקוחותיה, החברה מפעילה את מערכת Themis - מערכת בקרה מתקדמת, המעניקה<br>במהלך העבודה אצל הלקוח שקיפות, שליטה, בטיחות וביטחון מלא בכל משימה, בכל רגע ובכל מקום.</p>
+        <p>לאחר כל ביקור וביצוע המשימות מופק דו"ח דיגיטלי מפורט הכולל:</p>
+        <p class="bullet-line">•&nbsp;&nbsp;תיאור טקסט חופשי • תמונות • סרטוני וידאו</p>
+        <p class="bullet-line">•&nbsp;&nbsp;תאריך, שעה וחתימה ועוד...</p>
+        <p>באמצעות Themis תוכלו לדעת באופן מיידי ומדויק מה נעשה באתרכם, מתי ועל-ידי מי - ולהבטיח<br>תיעוד מלא ושקט נפשי.</p>
+        <p>המערכת גמישה ומותאמת למגוון רחב של בעלי מקצוע, ומאפשרת ניהול יעיל ושקוף בכל סדר גודל של<br>פעילות.</p>
       </div>
     </div>
   </section>
@@ -219,69 +221,36 @@ onUnmounted(() => {
   text-align: center;
 }
 
-/* ── Body copy ── */
-.products-content {
+/* ── Themis description ── */
+.themis-description {
   grid-column: 1 / -1;
-  margin: 10vw auto 0;
-  text-align: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .products-content {
-    grid-column: 2 / 4;
-    margin: 5vw 0 0;
-    text-align: left;
-  }
-}
-
-.products-copy {
-  font-size: 1.6rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  max-width: 31rem;
-}
-
-.copy-muted {
-  opacity: 0.5;
-  display: block;
-}
-
-.copy-sub {
-  display: block;
-  margin-top: 2rem;
-}
-
-/* ── Explore links ── */
-.links-wrapper {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  grid-column: 1 / -1;
-  margin-top: 6.9rem;
-  row-gap: 2.6rem;
+  margin-top: 8vw;
+  direction: rtl;
   text-align: right;
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.6;
+  color: var(--color-offBlack);
+  margin-right: 6vw;
+  padding-right: 3.5rem;
+  border-right: 1px solid var(--color-blue);
 }
 
 @media only screen and (min-width: 834px) {
-  .links-wrapper {
-    align-items: flex-end;
-    grid-column: 4 / 5;
-    justify-content: flex-end;
-    margin-top: 0;
-    row-gap: 2.2rem;
+  .themis-description {
+    grid-column: 2 / 5;
+    margin-top: 5vw;
+    font-size: 1.5rem;
   }
 }
 
-.links-label {
-  font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+.themis-description p {
+  margin-bottom: 1.6rem;
 }
 
-.links {
-  column-gap: 0.6rem;
-  display: flex;
+.themis-description .bullet-line {
+  margin-bottom: 0.4rem;
 }
 </style>

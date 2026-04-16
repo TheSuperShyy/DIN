@@ -19,6 +19,16 @@ function closeAll() {
   isMenuOpen.value = false
 }
 
+function scrollToSection(href: string) {
+  if (href.startsWith('#')) {
+    const el = document.querySelector(href)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+      closeAll()
+    }
+  }
+}
+
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -117,12 +127,14 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
             >
               {{ item.label }}
             </button>
-            <span
+            <a
               v-else-if="item.type === 'link'"
+              :href="item.href"
               class="nav-list-item-link"
+              @click.prevent="scrollToSection(item.href)"
             >
               {{ item.label }}
-            </span>
+            </a>
             <button v-else class="nav-list-item-link" type="button">
               {{ item.label }}
             </button>
@@ -189,12 +201,14 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
             >
               {{ item.label }}
             </button>
-            <span
+            <a
               v-else-if="item.type === 'link'"
+              :href="item.href"
               class="mobile-nav-link"
+              @click.prevent="scrollToSection(item.href)"
             >
               {{ item.label }}
-            </span>
+            </a>
             <button v-else class="mobile-nav-link" type="button">{{ item.label }}</button>
           </div>
           <div v-if="item.type === 'dropdown' && activeDropdown === item.key" class="mobile-sub">

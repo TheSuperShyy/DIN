@@ -6,10 +6,10 @@ useReveal()
   <div>
     <HeroSection />
     <BreakthroughIntro />
-    <CompanyDetails />
-    <InvisibleApproach />
-    <AboutSection />
+    <CompanyDetails id="services" />
+    <InvisibleApproach id="themis" />
     <ScientificEvidence />
-    <TextBlockGrid />
+    <AboutSection id="about" />
+    <TextBlockGrid id="careers" />
   </div>
 </template>

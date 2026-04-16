@@ -10,11 +10,11 @@ export const content = {
 
   nav: {
     items: [
-      { number: '01', label: 'THEMIS', type: 'link' as const, key: null, href: '#', children: [] },
-      { number: '02', label: 'שירותים', type: 'link' as const, key: null, href: '#', children: [] },
-      { number: '03', label: 'עלינו', type: 'link' as const, key: null, href: '#', children: [] },
-      { number: '04', label: 'דרושים', type: 'link' as const, key: null, href: '#', children: [] },
-      { number: '05', label: 'צור קשר', type: 'link' as const, key: null, href: '#', children: [] }
+      { number: '01', label: 'THEMIS', type: 'link' as const, key: null, href: '#themis', children: [] },
+      { number: '02', label: 'שירותים', type: 'link' as const, key: null, href: '#services', children: [] },
+      { number: '03', label: 'עלינו', type: 'link' as const, key: null, href: '#about', children: [] },
+      { number: '04', label: 'דרושים', type: 'link' as const, key: null, href: '#careers', children: [] },
+      { number: '05', label: 'צור קשר', type: 'link' as const, key: null, href: '#careers', children: [] }
     ]
   },
 
@@ -70,30 +70,24 @@ export const content = {
   },
 
   about: {
-    progress: {
-      label: 'Our Progress',
-      subtitle: 'The new Method',
-      linkLabel: 'Go to Updates',
-      linkHref: '/updates',
-      heading: 'Where precision shapes tomorrow',
-      paragraphs: [
-        'The next frontier of personal technology is not louder or brighter — it is quieter, sharper, and closer. DIN devices are built to sense at the edge of human perception.',
-        'We are developing a new class of instruments that work in concert with the human body, augmenting capabilities without altering identity.'
-      ],
-      subCopy: '* Committed to advancing Wearable & Neural Interface Technologies.'
-    },
-    aim: {
-      label: 'Our Aim',
-      subtitle: 'A Measured Impact',
-      linkLabel: 'Go to Programs',
-      linkHref: '/programs',
-      heading: 'The future lies in our hands',
-      paragraphs: [
-        'DIN is designed from first principles — where every gram, every milliwatt, and every interaction is considered. We believe the best technology disappears.',
-        'A pro-human approach means building devices that fit the life you already live, not demanding you adapt to them.'
-      ],
-      subCopy: '* Envisioning the future with a Pro-Human design philosophy.'
-    }
+    title: 'קצת עלינו – TAL',
+    description: 'חברת TAL מעניקה פתרונות הדברה מתקדמים ומקצועיים עם דגש על שקיפות מלאה ושקט נפשי ללקוח. אנו מתמחים בהדברת כל סוגי המזיקים (מכרסמים, זוחלים ומעופפים) תוך שימוש בטכנולוגיות החדישות ביותר.',
+    whyTitle: 'למה לבחור בנו?',
+    features: [
+      {
+        title: 'מומחיות מוסדית',
+        text: 'ניסיון עשיר בעבודה מול מפעלי מזון, בתי חולים ומוסדות הדורשים עמידה בתקנים מחמירים כמו HACCP, GMP ו-FDA.'
+      },
+      {
+        title: 'שקיפות בזמן אמת',
+        text: 'אנו מפעילים את מערכת Themis, המעניקה לכם שליטה מלאה ודו"ח דיגיטלי מפורט (כולל תמונות ווידאו) לאחר כל ביקור.'
+      },
+      {
+        title: 'פתרונות מיוחדים',
+        text: 'התמחות ייחודית בטיפול במטרדי בעלי כנף ובתיקן הגרמני בסטנדרטים הגבוהים ביותר.'
+      }
+    ],
+    tagline: 'אצלנו, המקצועיות היא השקט שלכם.'
   },
 
   evidence: {
@@ -136,10 +130,9 @@ export const content = {
       { label: 'X', href: '#' }
     ],
     legal: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Use', href: '#' },
-      { label: 'Cookie Policy', href: '#' }
-    ],
-    location: 'Switzerland'
+      { label: 'תנאי שימוש', href: '#' },
+      { label: 'פרטיות', href: '#' },
+      { label: 'נגישות', href: '#' }
+    ]
   }
 }
