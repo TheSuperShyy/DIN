@@ -1,11 +1,84 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { content } from '~/content'
 
 const { approach } = content
+
+const themisVideo = ref<HTMLVideoElement | null>(null)
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const videoWrapperRef = ref<HTMLElement | null>(null)
+const sectionRef = ref<HTMLElement | null>(null)
+
+let lastProgress = -1
+let rafId = 0
+
+function drawFrame() {
+  const video = themisVideo.value
+  const canvas = canvasRef.value
+  if (!video || !canvas || !video.videoWidth) return
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+  }
+  ctx.drawImage(video, 0, 0)
+}
+
+function updateVideoTime() {
+  const video = themisVideo.value
+  const wrapper = videoWrapperRef.value
+  if (!video || !wrapper || !video.duration) return
+
+  const rect = wrapper.getBoundingClientRect()
+  const viewportHeight = window.innerHeight
+
+  // Video fully plays from when wrapper top hits viewport bottom
+  // to when wrapper bottom hits viewport top
+  const totalTravel = rect.height + viewportHeight
+  const traveled = viewportHeight - rect.top
+  const progress = Math.min(Math.max(traveled / totalTravel, 0), 1)
+
+  // Only update when progress actually changed
+  if (Math.abs(progress - lastProgress) < 0.0005) return
+  lastProgress = progress
+
+  const targetTime = progress * video.duration
+  video.currentTime = targetTime
+}
+
+function onSeeked() {
+  drawFrame()
+}
+
+function loop() {
+  updateVideoTime()
+  rafId = requestAnimationFrame(loop)
+}
+
+onMounted(() => {
+  const video = themisVideo.value
+  if (video) {
+    video.addEventListener('seeked', onSeeked)
+    // Draw first frame once metadata is loaded
+    video.addEventListener('loadeddata', () => {
+      video.currentTime = 0
+      drawFrame()
+    })
+  }
+  rafId = requestAnimationFrame(loop)
+})
+
+onUnmounted(() => {
+  cancelAnimationFrame(rafId)
+  themisVideo.value?.removeEventListener('seeked', onSeeked)
+})
 </script>
 
 <template>
-  <section class="section bg-off-white home-products" data-section-theme="off-white">
+  <section ref="sectionRef" class="section bg-off-white home-products" data-section-theme="off-white">
     <div class="container home-products-container">
       <!-- Section head (icon + label) -->
       <div class="home-products-section-head reveal">
@@ -20,15 +93,17 @@ const { approach } = content
         <div class="section-head-label">{{ approach.sectionLabel }}</div>
       </div>
 
-      <!-- Big display title -->
-      <div class="title-wrapper reveal">
-        <div class="title-inner">
-          <h2 class="products-title">{{ approach.headline }}</h2>
-        </div>
-        <!-- Floating product placeholder (replaces actual image) -->
-        <div class="product-placeholder" aria-hidden="true">
-          <div class="product-placeholder-inner" />
-        </div>
+      <!-- Video — canvas renders frames, hidden video is the source -->
+      <div ref="videoWrapperRef" class="video-wrapper">
+        <video
+          ref="themisVideo"
+          src="/themis-logo.mp4"
+          muted
+          playsinline
+          preload="auto"
+          class="video-source"
+        />
+        <canvas ref="canvasRef" class="product-video" />
       </div>
 
       <!-- Body copy -->
@@ -60,6 +135,42 @@ const { approach } = content
 <style scoped>
 .home-products {
   background-color: var(--color-offWhite);
+}
+
+/* ── Video wrapper — in-flow, centered ── */
+.video-wrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10vw;
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 834px) {
+  .video-wrapper {
+    margin-top: 5vw;
+  }
+}
+
+.video-source {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.product-video {
+  width: 75vw;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: contrast(1.5) brightness(1.15);
+}
+
+@media only screen and (min-width: 834px) {
+  .product-video {
+    width: 40vw;
+  }
 }
 
 .home-products-container {
@@ -108,85 +219,17 @@ const { approach } = content
   text-align: center;
 }
 
-/* ── Title wrapper ── */
-.title-wrapper {
-  display: flex;
-  grid-column: 1 / -1;
-  justify-content: center;
-  margin-top: 20vw;
-  position: relative;
-  text-align: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .title-wrapper {
-    grid-column: 1 / 6;
-    margin-top: 10.417vw;
-  }
-}
-
-.title-inner {
-  max-width: 84.615vw;
-}
-
-@media only screen and (min-width: 834px) {
-  .title-inner { max-width: 55.556vw; }
-}
-
-.products-title {
-  color: var(--color-blue);
-  font-size: clamp(8rem, 9.722vw, 9.722vw);
-  font-weight: 300;
-  letter-spacing: 0.008em;
-  line-height: 0.9;
-  text-align: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .products-title {
-    line-height: 1.2;
-    max-width: 56.111vw;
-  }
-}
-
-/* Product placeholder */
-.product-placeholder {
-  height: 51.282vw;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 51.282vw;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.05;
-}
-
-@media only screen and (min-width: 834px) {
-  .product-placeholder {
-    height: 18.056vw;
-    width: 18.056vw;
-  }
-}
-
-.product-placeholder-inner {
-  background: radial-gradient(ellipse, var(--color-offBlack) 0%, transparent 70%);
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-}
-
 /* ── Body copy ── */
 .products-content {
   grid-column: 1 / -1;
-  margin: 60vw auto 0;
+  margin: 10vw auto 0;
   text-align: center;
 }
 
 @media only screen and (min-width: 834px) {
   .products-content {
     grid-column: 2 / 4;
-    margin: 11.806vw 0 0;
+    margin: 5vw 0 0;
     text-align: left;
   }
 }
