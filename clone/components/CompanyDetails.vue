@@ -386,4 +386,91 @@ const { company } = content
   width: 14rem;
   height: auto;
 }
+
+/* Mobile RTL — Hebrew step list */
+@media only screen and (max-width: 833px) {
+  .bottom .head {
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .bottom .head .cd-title {
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    display: inline-block;
+    padding-bottom: 1.4rem;
+    position: relative;
+  }
+
+  .bottom .head .cd-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 4rem;
+    height: 2px;
+    background: var(--color-blue);
+    border-radius: 2px;
+  }
+
+  .top-items {
+    direction: rtl;
+    padding: 0 2rem;
+    margin-top: 4.5rem;
+    row-gap: 2.6rem;
+  }
+
+  .top-item {
+    row-gap: 1rem;
+    padding: 2rem 1.8rem 2.2rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-right: 2px solid var(--color-blue);
+    border-radius: 0.8rem;
+  }
+
+  .item-head {
+    flex-direction: row;
+    align-items: baseline;
+    column-gap: 1.2rem;
+    font-size: 1.9rem;
+    font-weight: 500;
+  }
+
+  .item-head-number {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-blue);
+    opacity: 1;
+  }
+
+  .item-head-title {
+    font-size: 1.45rem;
+    line-height: 1.6;
+    padding-bottom: 0;
+    opacity: 0.65;
+    font-weight: 350;
+  }
+
+  .item-head-line {
+    display: none;
+  }
+
+  .iso-badges {
+    position: static;
+    justify-content: center;
+    column-gap: 2.4rem;
+    margin-top: 3.5rem;
+  }
+
+  .iso-badge {
+    width: 12rem;
+  }
+}
 </style>

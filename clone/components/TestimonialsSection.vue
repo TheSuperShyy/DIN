@@ -245,4 +245,91 @@ function closeReview() {
   opacity: 0;
   transform: scale(0.95);
 }
+
+/* Mobile polish */
+@media only screen and (max-width: 833px) {
+  .home-testimonials {
+    padding: 10vw 0 12vw;
+  }
+
+  .testimonials-title {
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    padding: 0 2rem;
+    margin: 0 auto 7vw;
+    position: relative;
+    width: fit-content;
+    padding-bottom: 1.4rem;
+  }
+
+  .testimonials-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 3.6rem;
+    height: 2px;
+    background: var(--color-offWhite);
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+
+  .marquee-wrapper {
+    mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    column-gap: 1.6rem;
+    animation-duration: 40s;
+  }
+
+  .review-card {
+    min-width: 22rem;
+    max-width: 24rem;
+    width: 72vw;
+    padding: 1.8rem 1.8rem;
+    border-radius: 1rem;
+  }
+
+  .review-top {
+    margin-bottom: 1rem;
+  }
+
+  .star {
+    font-size: 1.3rem;
+  }
+
+  .review-time {
+    font-size: 1.1rem;
+  }
+
+  .review-text {
+    font-size: 1.3rem;
+    line-height: 1.55;
+    margin-bottom: 1.2rem;
+  }
+
+  .review-author {
+    font-size: 1.2rem;
+  }
+
+  .popup-card {
+    padding: 2.8rem 2rem 2.4rem;
+    border-radius: 1.4rem;
+  }
+
+  .popup-text {
+    font-size: 1.5rem;
+    line-height: 1.65;
+    margin-bottom: 1.8rem;
+  }
+
+  .popup-author {
+    font-size: 1.3rem;
+  }
+}
 </style>

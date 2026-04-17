@@ -59,7 +59,7 @@ export const content = {
   },
 
   approach: {
-    sectionLabel: 'Meet Our',
+    sectionLabel: 'הכירו את',
     headline: 'Refined Approach',
     copy: 'In active R&D. DIN devices sit at the intersection of sensing, computing, and form — tools that disappear into daily life.',
     subCopy: 'Enhance the way you perceive.',

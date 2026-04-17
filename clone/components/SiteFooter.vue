@@ -188,10 +188,8 @@ function scrollToTop() {
   line-height: 1.25;
   text-decoration: none;
   transition: opacity 0.2s;
-}
-
-.footer-link:hover {
-  opacity: 0.6;
+  pointer-events: none;
+  cursor: default;
 }
 
 .footer-link.is-current {
@@ -273,10 +271,8 @@ function scrollToTop() {
   opacity: 0.4;
   text-decoration: none;
   transition: opacity 0.2s;
-}
-
-.footer-legal-link:hover {
-  opacity: 0.8;
+  pointer-events: none;
+  cursor: default;
 }
 
 </style>

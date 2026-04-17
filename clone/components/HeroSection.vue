@@ -17,8 +17,14 @@ import { content } from '~/content'
         </NuxtLink>
       </div>
 
-      <!-- Hero tagline (bottom-right) -->
+      <!-- Hero tagline (desktop bottom-right) -->
       <p class="hero-tagline">טל שולמרק. השקט שלכם ממזיקים.</p>
+
+      <!-- Mobile hero stack -->
+      <div class="hero-mobile-stack">
+        <span class="hero-brand">טל שולמרק</span>
+        <h1 class="hero-headline">השקט שלכם ממזיקים.</h1>
+      </div>
     </div>
 
     <!-- Hero product image -->
@@ -162,9 +168,46 @@ import { content } from '~/content'
 
 @media only screen and (max-width: 833px) {
   .hero-tagline {
-    bottom: 2rem;
-    right: 2rem;
-    font-size: 1.2rem;
+    display: none;
+  }
+}
+
+/* ── Mobile hero stack ── */
+.hero-mobile-stack {
+  display: none;
+}
+
+@media only screen and (max-width: 833px) {
+  .hero-mobile-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    direction: rtl;
+    grid-column: 1 / -1;
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem;
+    margin-top: 2rem;
+    animation: appearIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  }
+
+  .hero-brand {
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--color-offBlack);
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .hero-headline {
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--color-offBlack);
+    margin: 0;
   }
 }
 
@@ -188,8 +231,14 @@ import { content } from '~/content'
 }
 
 @media only screen and (max-width: 833px) {
+  .hero-image-wrapper {
+    align-items: flex-end;
+    padding-bottom: 6rem;
+  }
+
   .hero-product-image {
-    max-height: 40%;
+    max-height: 45%;
+    margin-top: 0;
   }
 }
 </style>

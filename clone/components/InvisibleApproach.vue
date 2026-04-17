@@ -1,99 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { content } from '~/content'
+import { useScrollScrub } from '~/composables/useScrollScrub'
 
 const { approach } = content
 
 const themisVideo = ref<HTMLVideoElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const videoWrapperRef = ref<HTMLElement | null>(null)
-const sectionRef = ref<HTMLElement | null>(null)
 
-let rafId = 0
-let targetTime = 0
-let smoothTime = 0
-let isSeeking = false
-let ctx: CanvasRenderingContext2D | null = null
-
-function drawFrame() {
-  const video = themisVideo.value
-  const canvas = canvasRef.value
-  if (!video || !canvas || !video.videoWidth) return
-
-  if (!ctx) ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-    canvas.width = video.videoWidth
-    canvas.height = video.videoHeight
-  }
-  ctx.drawImage(video, 0, 0)
-}
-
-function getScrollProgress(): number {
-  const wrapper = videoWrapperRef.value
-  const video = themisVideo.value
-  if (!wrapper || !video || !video.duration) return 0
-
-  const rect = wrapper.getBoundingClientRect()
-  const vh = window.innerHeight
-  const totalTravel = rect.height + vh
-  const traveled = vh - rect.top
-  return Math.min(Math.max(traveled / totalTravel, 0), 1)
-}
-
-function loop() {
-  const video = themisVideo.value
-  if (!video || !video.duration) {
-    rafId = requestAnimationFrame(loop)
-    return
-  }
-
-  targetTime = getScrollProgress() * video.duration
-
-  // Smooth lerp toward target
-  const diff = targetTime - smoothTime
-  if (Math.abs(diff) > 0.001) {
-    smoothTime += diff * 0.12
-  } else {
-    smoothTime = targetTime
-  }
-
-  // Only seek when browser finished previous seek
-  if (!isSeeking && Math.abs(video.currentTime - smoothTime) > 0.01) {
-    isSeeking = true
-    video.currentTime = smoothTime
-  }
-
-  // Always draw latest available frame to canvas
-  drawFrame()
-
-  rafId = requestAnimationFrame(loop)
-}
-
-onMounted(() => {
-  const video = themisVideo.value
-  if (video) {
-    video.addEventListener('seeked', () => {
-      isSeeking = false
-    })
-    video.addEventListener('loadeddata', () => {
-      video.currentTime = 0
-      smoothTime = 0
-      targetTime = 0
-      drawFrame()
-    })
-  }
-  rafId = requestAnimationFrame(loop)
-})
-
-onUnmounted(() => {
-  cancelAnimationFrame(rafId)
-})
+useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef })
 </script>
 
 <template>
-  <section ref="sectionRef" class="section bg-off-white home-products" data-section-theme="off-white">
+  <section class="section bg-off-white home-products" data-section-theme="off-white">
     <div class="container home-products-container">
       <!-- Section head (icon + label) -->
       <div class="home-products-section-head reveal">
@@ -112,7 +32,7 @@ onUnmounted(() => {
       <div ref="videoWrapperRef" class="video-wrapper">
         <video
           ref="themisVideo"
-          src="/themis-logo.mp4"
+          src="/themis-logo-scrub.mp4"
           muted
           playsinline
           preload="auto"
@@ -123,12 +43,12 @@ onUnmounted(() => {
 
       <!-- Themis description -->
       <div class="themis-description reveal-rtl">
-        <p>כחלק מהשירות לקוחותיה, החברה מפעילה את מערכת Themis - מערכת בקרה מתקדמת, המעניקה<br>במהלך העבודה אצל הלקוח שקיפות, שליטה, בטיחות וביטחון מלא בכל משימה, בכל רגע ובכל מקום.</p>
-        <p>לאחר כל ביקור וביצוע המשימות מופק דו"ח דיגיטלי מפורט הכולל:</p>
+        <p class="intro-line">כחלק מהשירות לקוחותיה, החברה מפעילה את מערכת <span class="themis-brand">Themis</span> - מערכת בקרה מתקדמת, המעניקה במהלך העבודה אצל הלקוח שקיפות, שליטה, בטיחות וביטחון מלא בכל משימה, בכל רגע ובכל מקום.</p>
+        <p class="lead-in">לאחר כל ביקור וביצוע המשימות מופק דו"ח דיגיטלי מפורט הכולל:</p>
         <p class="bullet-line">•&nbsp;&nbsp;תיאור טקסט חופשי • תמונות • סרטוני וידאו</p>
         <p class="bullet-line">•&nbsp;&nbsp;תאריך, שעה וחתימה ועוד...</p>
-        <p>באמצעות Themis תוכלו לדעת באופן מיידי ומדויק מה נעשה באתרכם, מתי ועל-ידי מי - ולהבטיח<br>תיעוד מלא ושקט נפשי.</p>
-        <p>המערכת גמישה ומותאמת למגוון רחב של בעלי מקצוע, ומאפשרת ניהול יעיל ושקוף בכל סדר גודל של<br>פעילות.</p>
+        <p>באמצעות <span class="themis-brand">Themis</span> תוכלו לדעת באופן מיידי ומדויק מה נעשה באתרכם, מתי ועל-ידי מי - ולהבטיח תיעוד מלא ושקט נפשי.</p>
+        <p>המערכת גמישה ומותאמת למגוון רחב של בעלי מקצוע, ומאפשרת ניהול יעיל ושקוף בכל סדר גודל של פעילות.</p>
       </div>
     </div>
   </section>
@@ -219,6 +139,7 @@ onUnmounted(() => {
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-align: center;
+  direction: rtl;
 }
 
 /* ── Themis description ── */
@@ -252,5 +173,67 @@ onUnmounted(() => {
 
 .themis-description .bullet-line {
   margin-bottom: 0.4rem;
+}
+
+/* Mobile — Themis description polish */
+@media only screen and (max-width: 833px) {
+  .themis-description {
+    margin: 10vw 1.6rem 0;
+    padding: 2.4rem 2rem;
+    font-family: inherit;
+    font-size: 1.45rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--color-offBlack);
+    border: none;
+    background: var(--color-white);
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .themis-description p {
+    margin-bottom: 1.6rem;
+  }
+
+  .themis-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .themis-description .themis-brand {
+    color: var(--color-blue);
+    font-weight: 600;
+  }
+
+  .themis-description .intro-line {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .themis-description .lead-in {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-blue);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.01em;
+  }
+
+  .themis-description .bullet-line {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0.2rem 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+    box-shadow: none;
+  }
+
+  .themis-description .bullet-line + .bullet-line {
+    margin-bottom: 2rem;
+  }
 }
 </style>

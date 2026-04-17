@@ -183,48 +183,50 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
     <div class="mobile-bg" @click="closeAll" />
 
     <!-- Mobile nav container -->
-    <div v-if="isMenuOpen" class="nav-container">
-      <div class="nav-title">Navigation</div>
-      <ul class="mobile-nav-list">
-        <li
-          v-for="item in content.nav.items"
-          :key="item.number"
-          class="mobile-nav-item"
-        >
-          <div class="mobile-nav-row">
-            <span class="nav-list-item-index">{{ item.number }}</span>
-            <button
-              v-if="item.type === 'dropdown'"
-              class="mobile-nav-link"
-              type="button"
-              @click="toggleDropdown(item.key!)"
-            >
-              {{ item.label }}
-            </button>
-            <a
-              v-else-if="item.type === 'link'"
-              :href="item.href"
-              class="mobile-nav-link"
-              @click.prevent="scrollToSection(item.href)"
-            >
-              {{ item.label }}
-            </a>
-            <button v-else class="mobile-nav-link" type="button">{{ item.label }}</button>
-          </div>
-          <div v-if="item.type === 'dropdown' && activeDropdown === item.key" class="mobile-sub">
-            <NuxtLink
-              v-for="child in item.children"
-              :key="child.label"
-              :to="child.href"
-              class="mobile-sub-link"
-              @click="closeAll"
-            >
-              {{ child.label }}
-            </NuxtLink>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <Transition name="nav-slide">
+      <div v-if="isMenuOpen" class="nav-container">
+        <div class="nav-title">ניווט</div>
+        <ul class="mobile-nav-list">
+          <li
+            v-for="item in content.nav.items"
+            :key="item.number"
+            class="mobile-nav-item"
+          >
+            <div class="mobile-nav-row">
+              <span class="nav-list-item-index">{{ item.number }}</span>
+              <button
+                v-if="item.type === 'dropdown'"
+                class="mobile-nav-link"
+                type="button"
+                @click="toggleDropdown(item.key!)"
+              >
+                {{ item.label }}
+              </button>
+              <a
+                v-else-if="item.type === 'link'"
+                :href="item.href"
+                class="mobile-nav-link"
+                @click.prevent="scrollToSection(item.href)"
+              >
+                {{ item.label }}
+              </a>
+              <button v-else class="mobile-nav-link" type="button">{{ item.label }}</button>
+            </div>
+            <div v-if="item.type === 'dropdown' && activeDropdown === item.key" class="mobile-sub">
+              <NuxtLink
+                v-for="child in item.children"
+                :key="child.label"
+                :to="child.href"
+                class="mobile-sub-link"
+                @click="closeAll"
+              >
+                {{ child.label }}
+              </NuxtLink>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -270,16 +272,24 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   border-radius: 50%;
   height: 4.5rem;
   width: 4.5rem;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
   transition: background-color 0.3s, color 0.3s;
+  position: absolute;
+  left: 0;
+  top: 3rem;
+  margin-left: var(--grid-outerGutter);
+  z-index: 1;
 }
 
 @media only screen and (min-width: 834px) {
-  .nav-logo { display: flex; }
+  .nav-logo {
+    position: static;
+    margin-left: 0;
+  }
 }
 
 .off-white .nav-logo {
@@ -540,7 +550,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   align-items: center;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 50%;
+  border-radius: 1.2rem;
   display: flex;
   flex-direction: column;
   height: 4.5rem;
@@ -571,6 +581,12 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   height: 1px;
   width: 1.9rem;
   transition: transform 0.3s, opacity 0.3s;
+}
+
+.open .burger {
+  background-color: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .open .burger span:first-child {
@@ -620,29 +636,20 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   width: 100%;
 }
 
-.off-white .nav-container {
-  background-color: rgba(120, 120, 120, 0.1);
+.nav-container {
+  background-color: rgba(255, 255, 255, 0.95);
   color: var(--color-offBlack);
-}
-.off-black .nav-container,
-.blue .nav-container {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--color-white);
 }
 
 .nav-title {
   border-bottom: 0.5px solid rgba(15, 16, 18, 0.2);
-  font-size: 1.8rem;
-  font-weight: 350;
+  color: var(--color-offBlack);
+  font-size: 2.8rem;
+  font-weight: 500;
   letter-spacing: -0.02em;
   padding-bottom: 2.5rem;
   text-align: center;
   width: 100%;
-}
-
-.off-black .nav-title,
-.blue .nav-title {
-  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .mobile-nav-list {
@@ -661,6 +668,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 }
 
 .nav-list-item-index {
+  color: var(--color-offBlack);
   font-size: 1rem;
   font-weight: 350;
   letter-spacing: -0.02em;
@@ -668,6 +676,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 }
 
 .mobile-nav-link {
+  color: var(--color-offBlack);
   font-size: 2.5rem;
   font-weight: 350;
   letter-spacing: -0.02em;
@@ -684,6 +693,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 }
 
 .mobile-sub-link {
+  color: var(--color-offBlack);
   font-size: 1.6rem;
   font-weight: 350;
   letter-spacing: -0.02em;
@@ -697,5 +707,52 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 @media only screen and (min-width: 834px) {
   .nav-container { display: none; }
+}
+
+/* Mobile nav slide transition */
+.nav-slide-enter-active {
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease;
+}
+
+.nav-slide-leave-active {
+  transition: transform 1.5s cubic-bezier(0.32, 0, 0.16, 1), opacity 1.2s ease;
+}
+
+.nav-slide-enter-from,
+.nav-slide-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.nav-slide-enter-to,
+.nav-slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.nav-slide-enter-active .nav-title,
+.nav-slide-enter-active .mobile-nav-item {
+  animation: nav-text-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.nav-slide-enter-active .nav-title { animation-delay: 0.25s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(1) { animation-delay: 0.35s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(2) { animation-delay: 0.45s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(3) { animation-delay: 0.55s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(4) { animation-delay: 0.65s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(5) { animation-delay: 0.75s; }
+.nav-slide-enter-active .mobile-nav-item:nth-child(6) { animation-delay: 0.85s; }
+
+@keyframes nav-text-up {
+  from {
+    opacity: 0;
+    transform: translateY(2.2rem);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 </style>

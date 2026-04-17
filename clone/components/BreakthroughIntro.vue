@@ -1,39 +1,31 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { content } from '~/content'
+import { useScrollScrub } from '~/composables/useScrollScrub'
 
 const { breakthrough } = content
 const currentLine = ref(0)
 let interval: ReturnType<typeof setInterval>
 
 const ratVideo = ref<HTMLVideoElement | null>(null)
-let observer: IntersectionObserver | null = null
+const ratCanvas = ref<HTMLCanvasElement | null>(null)
+const ratWrapper = ref<HTMLElement | null>(null)
+
+const pigeonVideo = ref<HTMLVideoElement | null>(null)
+const pigeonCanvas = ref<HTMLCanvasElement | null>(null)
+const pigeonWrapper = ref<HTMLElement | null>(null)
+
+useScrollScrub({ video: ratVideo, canvas: ratCanvas, wrapper: ratWrapper, end: 0.7 })
+useScrollScrub({ video: pigeonVideo, canvas: pigeonCanvas, wrapper: pigeonWrapper, end: 0.7 })
 
 onMounted(() => {
   interval = setInterval(() => {
     currentLine.value = (currentLine.value + 1) % breakthrough.rotatingLines.length
   }, 3000)
-  if (ratVideo.value) {
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (ratVideo.value) ratVideo.value.playbackRate = 1.2
-          ratVideo.value?.play()
-        } else {
-          if (ratVideo.value) {
-            ratVideo.value.pause()
-            ratVideo.value.currentTime = 0
-          }
-        }
-      })
-    }, { threshold: 0.3 })
-    observer.observe(ratVideo.value)
-  }
 })
 
 onUnmounted(() => {
   clearInterval(interval)
-  observer?.disconnect()
 })
 </script>
 
@@ -49,16 +41,29 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <video
-      ref="ratVideo"
-      src="/rat-vid.mp4"
-      muted
-      playsinline
-      preload="auto"
-      class="intro-rat"
-    />
+    <div ref="ratWrapper" class="intro-rat">
+      <video
+        ref="ratVideo"
+        src="/rat-vid-scrub.mp4"
+        muted
+        playsinline
+        preload="auto"
+        class="video-source"
+      />
+      <canvas ref="ratCanvas" class="intro-rat-canvas" />
+    </div>
 
-    <img src="/pigeon.svg" alt="" class="intro-bird reveal" data-delay="2" />
+    <div ref="pigeonWrapper" class="intro-bird reveal" data-delay="2">
+      <video
+        ref="pigeonVideo"
+        src="/pigeon-animation-scrub.mp4"
+        muted
+        playsinline
+        preload="auto"
+        class="video-source"
+      />
+      <canvas ref="pigeonCanvas" class="intro-bird-canvas" />
+    </div>
   </section>
 </template>
 
@@ -166,7 +171,16 @@ onUnmounted(() => {
   }
 }
 
-/* Rat video */
+/* Source videos — hidden, feed the canvases */
+.video-source {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Rat */
 .intro-rat {
   display: none;
 }
@@ -178,13 +192,17 @@ onUnmounted(() => {
     bottom: 2vw;
     left: var(--grid-outerGutter);
     width: 32rem;
-    height: auto;
-    filter: none !important;
     pointer-events: none;
   }
 }
 
-/* Bird image */
+.intro-rat-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Bird */
 .intro-bird {
   display: none;
 }
@@ -194,12 +212,17 @@ onUnmounted(() => {
     display: block;
     position: absolute;
     bottom: 3.5vw;
-    right: calc(var(--grid-outerGutter) + 2vw);
-    width: 32rem;
-    height: auto;
+    right: 0;
+    width: 40rem;
     pointer-events: none;
     z-index: 0;
   }
+}
+
+.intro-bird-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Rotating line */
@@ -245,5 +268,72 @@ onUnmounted(() => {
 
 @media only screen and (min-width: 834px) {
   .intro-link { margin-top: 4.444vw; }
+}
+
+/* Mobile — intro polish */
+@media only screen and (max-width: 833px) {
+  .home-intro {
+    padding: 23vw 0 30vw;
+  }
+
+  .section-header {
+    font-size: 3rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    position: relative;
+    padding-bottom: 1.4rem;
+    width: fit-content;
+    margin: 0 auto 4vw;
+    text-align: center;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 3.6rem;
+    height: 2px;
+    background: var(--color-blue);
+    border-radius: 2px;
+  }
+
+  .intro-content {
+    padding: 0 2.2rem;
+  }
+
+  .intro-copy {
+    margin-top: 6vw;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.85;
+    text-align: right;
+  }
+
+  .intro-copy :deep(.text-blue) {
+    font-weight: 600;
+  }
+
+  .intro-rat {
+    display: block;
+    position: absolute;
+    bottom: 4vw;
+    left: 2vw;
+    width: 16rem;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .intro-bird {
+    display: block;
+    position: absolute;
+    bottom: 6vw;
+    right: -1vw;
+    width: 18rem;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 </style>
