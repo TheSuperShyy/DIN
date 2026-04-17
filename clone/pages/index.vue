@@ -8,7 +8,7 @@ useReveal()
     <BreakthroughIntro />
     <CompanyDetails id="services" />
     <InvisibleApproach id="themis" />
-    <ScientificEvidence />
+    <TestimonialsSection />
     <AboutSection id="about" />
     <TextBlockGrid id="careers" />
   </div>
