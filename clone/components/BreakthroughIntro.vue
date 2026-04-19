@@ -330,7 +330,7 @@ onUnmounted(() => {
     display: block;
     position: absolute;
     bottom: 6vw;
-    right: -1vw;
+    right: 0;
     width: 18rem;
     pointer-events: none;
     z-index: 0;

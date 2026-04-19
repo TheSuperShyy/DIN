@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { content } from '~/content'
+
+const route = useRoute()
+const router = useRouter()
 
 const isMenuOpen = ref(false)
 const activeDropdown = ref<string | null>(null)
@@ -9,6 +13,15 @@ const sideLogoTheme = ref('off-white')
 const showSideLogo = ref(false)
 const hideNav = ref(false)
 const menuRef = ref<HTMLElement | null>(null)
+
+async function goToHero() {
+  closeAll()
+  if (route.path !== '/') {
+    await router.push('/')
+    await new Promise((r) => setTimeout(r, 50))
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 function toggleDropdown(key: string) {
   activeDropdown.value = activeDropdown.value === key ? null : key
@@ -104,11 +117,11 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
   <div ref="menuRef" class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
     <!-- Logo beside nav pill -->
-    <NuxtLink to="/" class="nav-logo" aria-label="Go to homepage" @click="closeAll">
+    <button class="nav-logo" type="button" aria-label="Scroll to top" @click="goToHero">
       <svg class="nav-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
       </svg>
-    </NuxtLink>
+    </button>
 
     <!-- Desktop centered nav pill -->
     <nav class="nav">
