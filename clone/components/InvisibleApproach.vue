@@ -338,7 +338,7 @@ useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef
   gap: 1rem;
   margin-bottom: 3rem;
   padding: 1.6rem 1.8rem;
-  background: rgba(0, 113, 227, 0.06);
+  background: rgba(212, 160, 23, 0.08);
   border-radius: 1rem;
 }
 

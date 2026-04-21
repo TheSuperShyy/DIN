@@ -86,7 +86,7 @@ import { content } from '~/content'
   left: -5%;
   width: 55vw;
   height: 55vw;
-  background: radial-gradient(circle at 30% 30%, rgba(0, 113, 227, 0.35), transparent 65%);
+  background: radial-gradient(circle at 30% 30%, rgba(232, 185, 35, 0.40), transparent 65%);
   animation: blobDrift 22s ease-in-out infinite;
 }
 
@@ -95,7 +95,7 @@ import { content } from '~/content'
   right: -10%;
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle at 60% 60%, rgba(0, 113, 227, 0.22), transparent 70%);
+  background: radial-gradient(circle at 60% 60%, rgba(212, 160, 23, 0.26), transparent 70%);
   animation: blobDrift 28s ease-in-out infinite reverse;
 }
 

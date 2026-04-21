@@ -75,9 +75,9 @@ onUnmounted(() => {
 <style scoped>
 .home-intro {
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(0, 113, 227, 0.08), transparent 55%),
-    radial-gradient(ellipse at 100% 100%, rgba(0, 113, 227, 0.06), transparent 60%),
-    linear-gradient(180deg, var(--color-white) 0%, var(--color-greyLighter) 100%);
+    radial-gradient(ellipse at 20% 0%, rgba(212, 160, 23, 0.10), transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(212, 160, 23, 0.07), transparent 60%),
+    linear-gradient(180deg, var(--color-offWhite) 0%, var(--color-greyLighter) 100%);
   padding: 8vw 0 30vw;
   position: relative;
 }
@@ -237,6 +237,7 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   display: block;
+  mix-blend-mode: multiply;
 }
 
 /* Bird */
@@ -260,6 +261,7 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   display: block;
+  mix-blend-mode: multiply;
 }
 
 /* Rotating line */

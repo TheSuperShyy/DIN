@@ -143,7 +143,7 @@ function handleSubmit() {
 <style scoped>
 .contact-section {
   background:
-    radial-gradient(ellipse at 80% 0%, rgba(0, 113, 227, 0.06), transparent 60%),
+    radial-gradient(ellipse at 80% 0%, rgba(212, 160, 23, 0.08), transparent 60%),
     linear-gradient(180deg, var(--color-offWhite) 0%, var(--color-white) 100%);
   color: var(--color-offBlack);
   padding: 10vw var(--grid-outerGutter);
