@@ -43,12 +43,37 @@ useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef
 
       <!-- Themis description -->
       <div class="themis-description reveal-rtl">
-        <p class="intro-line">כחלק מהשירות לקוחותיה, החברה מפעילה את מערכת <span class="themis-brand">Themis</span> - מערכת בקרה מתקדמת, המעניקה במהלך העבודה אצל הלקוח שקיפות, שליטה, בטיחות וביטחון מלא בכל משימה, בכל רגע ובכל מקום.</p>
-        <p class="lead-in">לאחר כל ביקור וביצוע המשימות מופק דו"ח דיגיטלי מפורט הכולל:</p>
-        <p class="bullet-line">•&nbsp;&nbsp;תיאור טקסט חופשי • תמונות • סרטוני וידאו</p>
-        <p class="bullet-line">•&nbsp;&nbsp;תאריך, שעה וחתימה ועוד...</p>
-        <p>באמצעות <span class="themis-brand">Themis</span> תוכלו לדעת באופן מיידי ומדויק מה נעשה באתרכם, מתי ועל-ידי מי - ולהבטיח תיעוד מלא ושקט נפשי.</p>
-        <p>המערכת גמישה ומותאמת למגוון רחב של בעלי מקצוע, ומאפשרת ניהול יעיל ושקוף בכל סדר גודל של פעילות.</p>
+        <h3 class="themis-headline">{{ approach.headline }}</h3>
+        <p class="intro-line" v-html="approach.intro"></p>
+
+        <p class="pillars-title">{{ approach.pillarsTitle }}</p>
+
+        <div class="pillars">
+          <div
+            v-for="(pillar, i) in approach.pillars"
+            :key="i"
+            class="pillar"
+          >
+            <div class="pillar-head">
+              <span class="pillar-number">{{ pillar.number }}</span>
+              <h4 class="pillar-title">{{ pillar.title }}</h4>
+            </div>
+            <p class="pillar-body" v-html="pillar.body"></p>
+            <ul v-if="pillar.bullets" class="pillar-bullets">
+              <li v-for="(b, j) in pillar.bullets" :key="j">{{ b }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="value-title">{{ approach.valueTitle }}</p>
+        <div class="values">
+          <div v-for="(v, i) in approach.values" :key="i" class="value">
+            <span class="value-label">{{ v.title }}</span>
+            <span class="value-body">{{ v.body }}</span>
+          </div>
+        </div>
+
+        <p class="closing" v-html="approach.closing"></p>
       </div>
     </div>
   </section>
@@ -149,91 +174,225 @@ useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef
   direction: rtl;
   text-align: right;
   font-family: "Heebo", system-ui, sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.6;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.7;
   color: var(--color-offBlack);
-  margin-right: 6vw;
-  padding-right: 3.5rem;
-  border-right: 1px solid var(--color-blue);
 }
 
 @media only screen and (min-width: 834px) {
   .themis-description {
     grid-column: 2 / 5;
     margin-top: 5vw;
+    font-size: 1.6rem;
+  }
+}
+
+.themis-description :deep(.themis-brand) {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.themis-headline {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-offBlack);
+  margin: 0 0 1.6rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .themis-headline {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.intro-line {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0 0 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (min-width: 834px) {
+  .intro-line {
+    font-size: 1.7rem;
+  }
+}
+
+.pillars-title,
+.value-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-offBlack);
+  margin: 0 0 2rem;
+  letter-spacing: -0.01em;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillars-title,
+  .value-title {
+    font-size: 1.9rem;
+  }
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  margin-bottom: 3rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillars {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+  }
+}
+
+.pillar {
+  background: var(--color-white);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-right: 2px solid var(--color-blue);
+  border-radius: 1rem;
+  padding: 1.8rem 1.6rem;
+}
+
+.pillar-head {
+  display: flex;
+  align-items: baseline;
+  column-gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.pillar-number {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-blue);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.pillar-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--color-offBlack);
+}
+
+@media only screen and (min-width: 834px) {
+  .pillar-title {
+    font-size: 1.7rem;
+  }
+}
+
+.pillar-body {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--color-offBlack);
+  opacity: 0.85;
+  margin: 0;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillar-body {
     font-size: 1.5rem;
   }
 }
 
-.themis-description p {
-  margin-bottom: 1.6rem;
+.pillar-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
 }
 
-.themis-description .bullet-line {
+.pillar-bullets li {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--color-offBlack);
+  opacity: 0.75;
+  padding-right: 1.2rem;
+  position: relative;
   margin-bottom: 0.4rem;
+}
+
+.pillar-bullets li::before {
+  content: '•';
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 1.6rem 1.8rem;
+  background: rgba(0, 113, 227, 0.06);
+  border-radius: 1rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .values {
+    padding: 2rem 2.4rem;
+  }
+}
+
+.value {
+  display: flex;
+  column-gap: 1rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: var(--color-offBlack);
+}
+
+@media only screen and (min-width: 834px) {
+  .value {
+    font-size: 1.5rem;
+  }
+}
+
+.value-label {
+  font-weight: 700;
+  color: var(--color-blue);
+  flex-shrink: 0;
+}
+
+.value-body {
+  opacity: 0.85;
+}
+
+.closing {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--color-offBlack);
+  margin: 0;
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (min-width: 834px) {
+  .closing {
+    font-size: 1.6rem;
+  }
 }
 
 /* Mobile — Themis description polish */
 @media only screen and (max-width: 833px) {
   .themis-description {
     margin: 10vw 1.6rem 0;
-    padding: 2.4rem 2rem;
-    font-family: inherit;
-    font-size: 1.45rem;
-    font-weight: 400;
-    line-height: 1.8;
-    color: var(--color-offBlack);
-    border: none;
-    background: var(--color-white);
-    border-radius: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  }
-
-  .themis-description p {
-    margin-bottom: 1.6rem;
-  }
-
-  .themis-description p:last-child {
-    margin-bottom: 0;
-  }
-
-  .themis-description .themis-brand {
-    color: var(--color-blue);
-    font-weight: 600;
-  }
-
-  .themis-description .intro-line {
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-    padding-bottom: 1.8rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  }
-
-  .themis-description .lead-in {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-blue);
-    margin-bottom: 1.2rem;
-    letter-spacing: 0.01em;
-  }
-
-  .themis-description .bullet-line {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0.2rem 0;
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 0.6rem;
-    box-shadow: none;
-  }
-
-  .themis-description .bullet-line + .bullet-line {
-    margin-bottom: 2rem;
   }
 }
 </style>

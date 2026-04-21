@@ -37,7 +37,12 @@ onUnmounted(() => {
     <div class="home-intro-container container">
       <!-- Copy column -->
       <div class="intro-content reveal" data-delay="1">
-        <p class="intro-copy" v-html="breakthrough.copy"></p>
+        <p
+          v-for="(para, i) in breakthrough.paragraphs"
+          :key="i"
+          class="intro-copy"
+          v-html="para"
+        ></p>
       </div>
     </div>
 
@@ -69,9 +74,31 @@ onUnmounted(() => {
 
 <style scoped>
 .home-intro {
-  background-color: var(--color-greyLight);
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(0, 113, 227, 0.08), transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(0, 113, 227, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--color-white) 0%, var(--color-greyLighter) 100%);
   padding: 8vw 0 30vw;
   position: relative;
+}
+
+.home-intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(15, 16, 18, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 16, 18, 0.035) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-intro > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media only screen and (min-width: 834px) {
@@ -148,26 +175,36 @@ onUnmounted(() => {
 
 .intro-copy {
   font-size: 1.6rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
   margin-top: 17.949vw;
   text-align: right;
   direction: rtl;
   color: var(--color-offBlack);
 }
 
+.intro-copy + .intro-copy {
+  margin-top: 2rem;
+}
+
 .intro-copy :deep(.text-blue) {
   color: var(--color-blue);
+  font-weight: 600;
 }
 
 @media only screen and (min-width: 834px) {
   .intro-copy {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    line-height: 1.5;
     margin-top: 0;
     max-width: 100%;
     text-align: right;
     margin-right: -8vw;
+  }
+
+  .intro-copy + .intro-copy {
+    margin-top: 2.4rem;
   }
 }
 
@@ -310,6 +347,10 @@ onUnmounted(() => {
     font-weight: 400;
     line-height: 1.85;
     text-align: right;
+  }
+
+  .intro-copy + .intro-copy {
+    margin-top: 1.6rem;
   }
 
   .intro-copy :deep(.text-blue) {

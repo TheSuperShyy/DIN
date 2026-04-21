@@ -41,15 +41,26 @@ function scrollToTop() {
               <span class="footer-group-number">2.0</span>
               <span class="footer-group-name">Follow</span>
             </div>
-            <div class="footer-links">
+            <div class="footer-socials">
               <a
                 v-for="social in footer.social"
                 :key="social.label"
                 :href="social.href"
-                class="footer-link"
+                class="footer-social"
                 target="_blank"
                 rel="noopener noreferrer"
-              >{{ social.label }}</a>
+                :aria-label="social.label"
+              >
+                <svg v-if="social.icon === 'facebook'" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                  <path d="M13.5 21.95v-8.3h2.79l.42-3.24H13.5V8.35c0-.94.26-1.58 1.6-1.58h1.72V3.87a23 23 0 0 0-2.5-.13c-2.48 0-4.18 1.52-4.18 4.3v2.39H7.33v3.23h2.81v8.3h3.36Z"/>
+                </svg>
+                <svg v-else-if="social.icon === 'instagram'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5"/>
+                  <circle cx="12" cy="12" r="3.8"/>
+                  <circle cx="17.3" cy="6.7" r="0.8" fill="currentColor" stroke="none"/>
+                </svg>
+                <span class="footer-social-label">{{ social.label }}</span>
+              </a>
             </div>
           </div>
         </div>
@@ -65,12 +76,12 @@ function scrollToTop() {
         </button>
         <div class="footer-bottom-right">
           <div class="footer-legal">
-            <a
+            <NuxtLink
               v-for="link in footer.legal"
               :key="link.label"
-              :href="link.href"
+              :to="link.href"
               class="footer-legal-link"
-            >{{ link.label }}</a>
+            >{{ link.label }}</NuxtLink>
           </div>
         </div>
       </div>
@@ -180,6 +191,45 @@ function scrollToTop() {
   row-gap: 1rem;
 }
 
+.footer-socials {
+  display: flex;
+  column-gap: 1.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--color-offWhite);
+  opacity: 0.75;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-social:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.footer-social-label {
+  display: inline;
+}
+
+@media only screen and (max-width: 833px) {
+  .footer-social-label {
+    font-size: 1.3rem;
+  }
+}
+
 .footer-link {
   color: var(--color-offWhite);
   font-size: 2.8rem;
@@ -271,8 +321,10 @@ function scrollToTop() {
   opacity: 0.4;
   text-decoration: none;
   transition: opacity 0.2s;
-  pointer-events: none;
-  cursor: default;
+}
+
+.footer-legal-link:hover {
+  opacity: 0.9;
 }
 
 </style>

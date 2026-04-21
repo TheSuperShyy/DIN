@@ -34,8 +34,8 @@ function handleSubmit() {
       <div class="contact-heading reveal">
         <Transition name="blur-reveal" mode="out-in">
           <div :key="form.purpose">
-            <h2 class="contact-title">{{ form.purpose === 'client' ? 'השאר פרטים' : 'מחפש עבודה?' }}</h2>
-            <p class="contact-subtitle">{{ form.purpose === 'client' ? 'השאר את הפרטים שלך וספר לנו על הצורך שלך — נשמח לעזור ולחזור אליך בהקדם.' : 'השאר את הפרטים שלך וצרף קורות חיים. נשמח לעיין וליצור איתך קשר.' }}</p>
+            <h2 class="contact-title">{{ form.purpose === 'client' ? 'השאירו פרטים' : 'מחפש עבודה?' }}</h2>
+            <p class="contact-subtitle">{{ form.purpose === 'client' ? 'השאירו שם וטלפון, ומומחה הדברה מוסמך מטעמנו יחזור אליכם בהקדם לתיאום ייעוץ וניטור בשטח. פריסה ארצית ומענה מקצועי מובטח.' : 'השאר את הפרטים שלך וצרף קורות חיים. נשמח לעיין וליצור איתך קשר.' }}</p>
           </div>
         </Transition>
       </div>
@@ -142,7 +142,9 @@ function handleSubmit() {
 
 <style scoped>
 .contact-section {
-  background-color: var(--color-offWhite);
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(0, 113, 227, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--color-offWhite) 0%, var(--color-white) 100%);
   color: var(--color-offBlack);
   padding: 10vw var(--grid-outerGutter);
   direction: rtl;
@@ -190,23 +192,32 @@ function handleSubmit() {
 }
 
 .contact-title {
-  font-size: 3.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 3.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.2;
-  margin-bottom: 1rem;
+  margin-bottom: 1.4rem;
   color: var(--color-offBlack);
 }
 
 @media only screen and (min-width: 834px) {
-  .contact-title { font-size: 3.8rem; }
+  .contact-title { font-size: 4.4rem; }
 }
 
 .contact-subtitle {
-  font-size: 1.3rem;
-  font-weight: 350;
-  opacity: 0.5;
-  line-height: 1.6;
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  opacity: 0.7;
+  line-height: 1.7;
+  max-width: 34rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .contact-subtitle {
+    font-size: 1.5rem;
+  }
 }
 
 /* Form card */
@@ -214,14 +225,15 @@ function handleSubmit() {
   flex: 1;
   background: var(--color-white);
   border: 0.5px solid rgba(0, 0, 0, 0.06);
-  border-radius: 1.6rem;
-  padding: 3rem 3.2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 2rem;
+  padding: 3.2rem 2.8rem;
+  box-shadow: 0 12px 40px rgba(15, 16, 18, 0.06);
 }
 
 @media only screen and (min-width: 834px) {
   .form-card {
     max-width: 56rem;
+    padding: 4rem 4rem;
   }
 }
 
@@ -350,7 +362,9 @@ function handleSubmit() {
 .form-toggle {
   display: flex;
   gap: 0.6rem;
-  margin-bottom: 1.8rem;
+  margin-bottom: 2.4rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
 }
 
 .toggle-btn {

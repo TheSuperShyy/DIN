@@ -9,18 +9,24 @@ const { about } = content
     <div class="about-inner">
       <p class="about-heading reveal">{{ about.heading }}</p>
       <h2 class="about-title reveal">{{ about.title }}</h2>
-      <p class="about-description reveal">{{ about.description }}</p>
 
-      <h3 class="about-why reveal">{{ about.whyTitle }}</h3>
+      <p class="about-intro reveal">{{ about.intro }}</p>
+      <p class="about-lead reveal">{{ about.lead }}</p>
 
-      <div class="about-features">
-        <div v-for="(feature, i) in about.features" :key="i" class="about-feature reveal">
-          <h4 class="feature-title">{{ feature.title }}</h4>
-          <p class="feature-text">{{ feature.text }}</p>
-        </div>
+      <div
+        v-for="(section, i) in about.sections"
+        :key="i"
+        class="about-chapter reveal"
+      >
+        <h3 class="about-chapter-title">{{ section.title }}</h3>
+        <p
+          v-for="(para, j) in section.paragraphs"
+          :key="j"
+          class="about-chapter-copy"
+        >{{ para }}</p>
       </div>
 
-      <p class="about-tagline reveal">{{ about.tagline }}</p>
+      <p class="about-closing reveal">{{ about.closing }}</p>
     </div>
   </section>
 </template>
@@ -54,10 +60,11 @@ const { about } = content
 }
 
 .about-title {
+  font-family: "Heebo", system-ui, sans-serif;
   color: var(--color-offWhite);
-  font-size: 3.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.2;
   margin-bottom: 3.2rem;
 }
@@ -66,89 +73,86 @@ const { about } = content
   .about-title { font-size: 4.2rem; }
 }
 
-.about-description {
-  font-size: 1.6rem;
+.about-intro {
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 2.4rem;
+  color: var(--color-offWhite);
+  border-right: 3px solid var(--color-blue);
+  padding-right: 1.8rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .about-intro { font-size: 2.1rem; }
+}
+
+.about-lead {
+  font-size: 1.5rem;
   font-weight: 350;
   line-height: 1.8;
-  margin-bottom: 5.6rem;
-  max-width: 60rem;
-  opacity: 0.7;
+  margin-bottom: 5rem;
+  opacity: 0.8;
 }
 
 @media only screen and (min-width: 834px) {
-  .about-description { font-size: 1.8rem; }
-}
-
-.about-why {
-  color: var(--color-blue);
-  font-size: 2.4rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: 3.2rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .about-why { font-size: 2.8rem; }
-}
-
-.about-features {
-  display: grid;
-  gap: 2.4rem;
-  grid-template-columns: 1fr;
-  margin-bottom: 5.6rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .about-features {
-    gap: var(--grid-gutter);
-    grid-template-columns: repeat(3, 1fr);
+  .about-lead {
+    font-size: 1.7rem;
   }
 }
 
-.about-feature {
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.2rem;
-  padding: 2.8rem 2.4rem;
-  transition: background 0.3s ease, border-color 0.3s ease;
+.about-chapter {
+  margin-bottom: 4rem;
 }
 
-.about-feature:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.feature-title {
-  color: var(--color-offWhite);
-  font-size: 1.8rem;
-  font-weight: 600;
+.about-chapter-title {
+  font-family: "Heebo", system-ui, sans-serif;
+  color: var(--color-blue);
+  font-size: 2rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.3;
-  margin-bottom: 1.2rem;
+  margin: 0 0 1.6rem;
 }
 
-.feature-text {
-  color: var(--color-offWhite);
-  font-size: 1.4rem;
+@media only screen and (min-width: 834px) {
+  .about-chapter-title { font-size: 2.4rem; }
+}
+
+.about-chapter-copy {
+  font-size: 1.5rem;
   font-weight: 350;
-  line-height: 1.7;
-  opacity: 0.6;
+  line-height: 1.8;
+  margin: 0 0 1.6rem;
+  opacity: 0.8;
+  color: var(--color-offWhite);
 }
 
-.about-tagline {
-  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+.about-chapter-copy:last-child {
+  margin-bottom: 0;
+}
+
+@media only screen and (min-width: 834px) {
+  .about-chapter-copy {
+    font-size: 1.7rem;
+  }
+}
+
+.about-closing {
+  border-top: 0.5px solid rgba(255, 255, 255, 0.15);
   color: var(--color-offWhite);
+  font-family: "Heebo", system-ui, sans-serif;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.4;
-  opacity: 0.85;
-  padding-top: 2rem;
+  padding-top: 3rem;
+  margin-top: 3rem;
   text-align: center;
 }
 
 @media only screen and (min-width: 834px) {
-  .about-tagline { font-size: 2.2rem; }
+  .about-closing { font-size: 2.4rem; }
 }
 </style>
