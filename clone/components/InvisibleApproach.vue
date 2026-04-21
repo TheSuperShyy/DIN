@@ -1,7 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { content } from '~/content'
+import { useScrollScrub } from '~/composables/useScrollScrub'
 
 const { approach } = content
+
+const themisVideo = ref<HTMLVideoElement | null>(null)
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const videoWrapperRef = ref<HTMLElement | null>(null)
+
+useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef })
 </script>
 
 <template>
@@ -20,38 +28,52 @@ const { approach } = content
         <div class="section-head-label">{{ approach.sectionLabel }}</div>
       </div>
 
-      <!-- Big display title -->
-      <div class="title-wrapper reveal">
-        <div class="title-inner">
-          <h2 class="products-title">{{ approach.headline }}</h2>
-        </div>
-        <!-- Floating product placeholder (replaces actual image) -->
-        <div class="product-placeholder" aria-hidden="true">
-          <div class="product-placeholder-inner" />
-        </div>
+      <!-- Video — canvas renders frames, hidden video is the source -->
+      <div ref="videoWrapperRef" class="video-wrapper">
+        <video
+          ref="themisVideo"
+          src="/themis-logo-scrub.mp4"
+          muted
+          playsinline
+          preload="auto"
+          class="video-source"
+        />
+        <canvas ref="canvasRef" class="product-video" />
       </div>
 
-      <!-- Body copy -->
-      <div class="products-content reveal">
-        <p class="products-copy">
-          <span class="copy-muted">{{ approach.copy }}</span>
-          <span class="copy-sub">{{ approach.subCopy }}</span>
-        </p>
-      </div>
+      <!-- Themis description -->
+      <div class="themis-description reveal-rtl">
+        <h3 class="themis-headline">{{ approach.headline }}</h3>
+        <p class="intro-line" v-html="approach.intro"></p>
 
-      <!-- Explore links -->
-      <div class="links-wrapper reveal">
-        <div class="links-label">Explore in depth</div>
-        <div class="links">
-          <NuxtLink
-            v-for="pill in approach.pills"
-            :key="pill.label"
-            :to="pill.href"
-            :class="['pill', pill.filled ? 'pill-filled' : 'pill-outline']"
+        <p class="pillars-title">{{ approach.pillarsTitle }}</p>
+
+        <div class="pillars">
+          <div
+            v-for="(pillar, i) in approach.pillars"
+            :key="i"
+            class="pillar"
           >
-            {{ pill.label }}
-          </NuxtLink>
+            <div class="pillar-head">
+              <span class="pillar-number">{{ pillar.number }}</span>
+              <h4 class="pillar-title">{{ pillar.title }}</h4>
+            </div>
+            <p class="pillar-body" v-html="pillar.body"></p>
+            <ul v-if="pillar.bullets" class="pillar-bullets">
+              <li v-for="(b, j) in pillar.bullets" :key="j">{{ b }}</li>
+            </ul>
+          </div>
         </div>
+
+        <p class="value-title">{{ approach.valueTitle }}</p>
+        <div class="values">
+          <div v-for="(v, i) in approach.values" :key="i" class="value">
+            <span class="value-label">{{ v.title }}</span>
+            <span class="value-body">{{ v.body }}</span>
+          </div>
+        </div>
+
+        <p class="closing" v-html="approach.closing"></p>
       </div>
     </div>
   </section>
@@ -60,6 +82,42 @@ const { approach } = content
 <style scoped>
 .home-products {
   background-color: var(--color-offWhite);
+}
+
+/* ── Video wrapper — in-flow, centered ── */
+.video-wrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10vw;
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 834px) {
+  .video-wrapper {
+    margin-top: 5vw;
+  }
+}
+
+.video-source {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.product-video {
+  width: 75vw;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: contrast(1.5) brightness(1.15);
+}
+
+@media only screen and (min-width: 834px) {
+  .product-video {
+    width: 40vw;
+  }
 }
 
 .home-products-container {
@@ -106,139 +164,235 @@ const { approach } = content
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-align: center;
+  direction: rtl;
 }
 
-/* ── Title wrapper ── */
-.title-wrapper {
-  display: flex;
+/* ── Themis description ── */
+.themis-description {
   grid-column: 1 / -1;
-  justify-content: center;
-  margin-top: 20vw;
-  position: relative;
-  text-align: center;
+  margin-top: 8vw;
+  direction: rtl;
+  text-align: right;
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.7;
+  color: var(--color-offBlack);
 }
 
 @media only screen and (min-width: 834px) {
-  .title-wrapper {
-    grid-column: 1 / 6;
-    margin-top: 10.417vw;
+  .themis-description {
+    grid-column: 2 / 5;
+    margin-top: 5vw;
+    font-size: 1.6rem;
   }
 }
 
-.title-inner {
-  max-width: 84.615vw;
-}
-
-@media only screen and (min-width: 834px) {
-  .title-inner { max-width: 55.556vw; }
-}
-
-.products-title {
+.themis-description :deep(.themis-brand) {
   color: var(--color-blue);
-  font-size: clamp(8rem, 9.722vw, 9.722vw);
-  font-weight: 300;
-  letter-spacing: 0.008em;
-  line-height: 0.9;
-  text-align: center;
+  font-weight: 700;
 }
 
-@media only screen and (min-width: 834px) {
-  .products-title {
-    line-height: 1.2;
-    max-width: 56.111vw;
-  }
-}
-
-/* Product placeholder */
-.product-placeholder {
-  height: 51.282vw;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 51.282vw;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.05;
-}
-
-@media only screen and (min-width: 834px) {
-  .product-placeholder {
-    height: 18.056vw;
-    width: 18.056vw;
-  }
-}
-
-.product-placeholder-inner {
-  background: radial-gradient(ellipse, var(--color-offBlack) 0%, transparent 70%);
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-}
-
-/* ── Body copy ── */
-.products-content {
-  grid-column: 1 / -1;
-  margin: 60vw auto 0;
-  text-align: center;
-}
-
-@media only screen and (min-width: 834px) {
-  .products-content {
-    grid-column: 2 / 4;
-    margin: 11.806vw 0 0;
-    text-align: left;
-  }
-}
-
-.products-copy {
-  font-size: 1.6rem;
-  font-weight: 350;
+.themis-headline {
+  font-size: 2.2rem;
+  font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  max-width: 31rem;
+  color: var(--color-offBlack);
+  margin: 0 0 1.6rem;
 }
 
-.copy-muted {
-  opacity: 0.5;
-  display: block;
+@media only screen and (min-width: 834px) {
+  .themis-headline {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+  }
 }
 
-.copy-sub {
-  display: block;
-  margin-top: 2rem;
+.intro-line {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0 0 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ── Explore links ── */
-.links-wrapper {
-  align-items: center;
+@media only screen and (min-width: 834px) {
+  .intro-line {
+    font-size: 1.7rem;
+  }
+}
+
+.pillars-title,
+.value-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-offBlack);
+  margin: 0 0 2rem;
+  letter-spacing: -0.01em;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillars-title,
+  .value-title {
+    font-size: 1.9rem;
+  }
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  margin-bottom: 3rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillars {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+  }
+}
+
+.pillar {
+  background: var(--color-white);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-right: 2px solid var(--color-blue);
+  border-radius: 1rem;
+  padding: 1.8rem 1.6rem;
+}
+
+.pillar-head {
+  display: flex;
+  align-items: baseline;
+  column-gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.pillar-number {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-blue);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.pillar-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--color-offBlack);
+}
+
+@media only screen and (min-width: 834px) {
+  .pillar-title {
+    font-size: 1.7rem;
+  }
+}
+
+.pillar-body {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--color-offBlack);
+  opacity: 0.85;
+  margin: 0;
+}
+
+@media only screen and (min-width: 834px) {
+  .pillar-body {
+    font-size: 1.5rem;
+  }
+}
+
+.pillar-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.pillar-bullets li {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--color-offBlack);
+  opacity: 0.75;
+  padding-right: 1.2rem;
+  position: relative;
+  margin-bottom: 0.4rem;
+}
+
+.pillar-bullets li::before {
+  content: '•';
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.values {
   display: flex;
   flex-direction: column;
-  grid-column: 1 / -1;
-  margin-top: 6.9rem;
-  row-gap: 2.6rem;
-  text-align: right;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 1.6rem 1.8rem;
+  background: rgba(212, 160, 23, 0.08);
+  border-radius: 1rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .links-wrapper {
-    align-items: flex-end;
-    grid-column: 4 / 5;
-    justify-content: flex-end;
-    margin-top: 0;
-    row-gap: 2.2rem;
+  .values {
+    padding: 2rem 2.4rem;
   }
 }
 
-.links-label {
+.value {
+  display: flex;
+  column-gap: 1rem;
   font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: 1.5;
+  color: var(--color-offBlack);
 }
 
-.links {
-  column-gap: 0.6rem;
-  display: flex;
+@media only screen and (min-width: 834px) {
+  .value {
+    font-size: 1.5rem;
+  }
+}
+
+.value-label {
+  font-weight: 700;
+  color: var(--color-blue);
+  flex-shrink: 0;
+}
+
+.value-body {
+  opacity: 0.85;
+}
+
+.closing {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--color-offBlack);
+  margin: 0;
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (min-width: 834px) {
+  .closing {
+    font-size: 1.6rem;
+  }
+}
+
+/* Mobile — Themis description polish */
+@media only screen and (max-width: 833px) {
+  .themis-description {
+    margin: 10vw 1.6rem 0;
+  }
 }
 </style>

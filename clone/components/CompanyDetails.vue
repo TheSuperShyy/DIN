@@ -6,7 +6,7 @@ const { company } = content
 
 <template>
   <section class="section bg-off-black home-company-details" data-section-theme="off-black">
-    <!-- Top: data cells + abbreviations -->
+    <!-- Top: service types -->
     <div class="top">
       <div class="container home-company-details-container">
         <div class="top-header reveal">
@@ -40,35 +40,36 @@ const { company } = content
         </div>
 
         <div class="iso-badges reveal">
-          <img src="/iso-9001.svg" alt="ISO 9001" class="iso-badge" />
-          <img src="/iso-14001.svg" alt="ISO 14001" class="iso-badge" />
+          <img src="/iso-9001.svg" alt="ISO 9001:2015" class="iso-badge iso-badge-9001" />
+          <img src="/iso-14001.svg" alt="ISO 14001:2015" class="iso-badge iso-badge-14001" />
         </div>
       </div>
     </div>
 
-    <!-- Bottom: title + mission items -->
+    <!-- Bottom: 5-step process -->
     <div class="bottom">
       <div class="container home-company-details-container">
         <div class="head reveal">
-          <h3 class="cd-title"><span class="title-blue">כיצד השירות מתבצע</span></h3>
+          <h3 class="cd-title process-title"><span class="title-blue">{{ company.processHeader }}</span></h3>
         </div>
 
-        <ul class="top-items">
+        <ol class="process-list">
           <li
             v-for="(step, i) in company.steps"
             :key="i"
-            class="top-item reveal"
+            class="process-card reveal"
+            :data-delay="(i + 1) + ''"
           >
-            <div class="item-head">
-              <span class="item-head-number">{{ step.number }}</span>
-              <span>{{ step.title }}</span>
+            <div class="process-number-wrap">
+              <span class="process-number">{{ step.number }}</span>
+              <span v-if="i < company.steps.length - 1" class="process-connector" aria-hidden="true" />
             </div>
-            <div class="item-head-title">
-              {{ step.description }}
-              <div class="item-head-line" />
+            <div class="process-body">
+              <h4 class="process-step-title">{{ step.title }}</h4>
+              <p class="process-step-copy">{{ step.description }}</p>
             </div>
           </li>
-        </ul>
+        </ol>
       </div>
     </div>
   </section>
@@ -90,19 +91,21 @@ const { company } = content
   .top { padding: 5vw 0 12vw; }
 }
 
-.home-company-details-container {
-  /* inherits .container 5-col grid */
-}
-
 .top-header {
   grid-column: 1 / -1;
   text-align: center;
 }
 
 .top-header .cd-title {
-  font-size: 3.5rem;
+  font-size: 4rem;
   white-space: nowrap;
   margin-bottom: 3rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .top-header .cd-title {
+    font-size: 5.2rem;
+  }
 }
 
 .head {
@@ -112,15 +115,16 @@ const { company } = content
 }
 
 .cd-title {
-  font-size: 2.4rem;
-  font-weight: 350;
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
 @media only screen and (min-width: 834px) {
   .cd-title {
-    font-size: 3.5rem;
+    font-size: 4.2rem;
   }
 }
 
@@ -132,144 +136,157 @@ const { company } = content
   color: var(--color-blue);
 }
 
-/* Mission items list */
-.top-items {
-  display: flex;
-  flex-direction: column;
-  grid-column: 1 / -1;
-  list-style: none;
-  margin-top: 7rem;
-  row-gap: 5.7rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .top-items {
-    grid-column: 2 / 6;
-    margin-top: 8.2rem;
-    row-gap: 4.2rem;
-    transform: translateX(-2.4rem);
-  }
-}
-
-.top-item {
-  display: flex;
-  flex-direction: column;
-  row-gap: 5.2rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .top-item {
-    column-gap: var(--grid-gutter);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    row-gap: 4.2rem;
-    align-items: center;
-  }
-}
-
-.item-head {
-  display: flex;
-  flex-direction: column;
-  font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-@media only screen and (min-width: 834px) {
-  .item-head { grid-column: 1 / 2; }
-}
-
-.item-head-number {
-  display: block;
-  margin-bottom: 0.5rem;
-  opacity: 0.5;
-}
-
-.item-head-title {
-  font-size: 2rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  padding-bottom: 2.5rem;
-  position: relative;
-  color: var(--color-offWhite);
-}
-
-@media only screen and (min-width: 834px) {
-  .item-head-title {
-    grid-column: 2 / 5;
-    padding-bottom: 2rem;
-  }
-}
-
-.item-head-line {
-  background-color: rgba(255, 255, 255, 0.1);
-  bottom: 0;
-  height: 0.5px;
-  left: 0;
-  position: absolute;
-  transform-origin: left center;
-  width: 100%;
-}
-
-/* ── Bottom ── */
+/* ── Bottom (process) ── */
 .bottom {
-  background-color: rgba(29, 30, 32, 0.5);
+  background: linear-gradient(180deg, rgba(29, 30, 32, 0.5) 0%, rgba(15, 16, 18, 0.9) 100%);
   padding: 23.077vw 0 19.231vw;
 }
 
 @media only screen and (min-width: 834px) {
-  .bottom { padding: 5.208vw 0 7.639vw; }
+  .bottom { padding: 6vw 0 9vw; }
 }
 
-.bottom-items {
-  display: flex;
-  flex-direction: column;
-  grid-column: 1 / -1;
-  list-style: none;
-  margin-bottom: 8.5rem;
-  row-gap: 4.5rem;
+.process-title {
+  margin-bottom: 3rem;
+  font-size: 3.2rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .bottom-items {
-    column-gap: var(--grid-gutter);
-    display: grid;
-    grid-column: 3 / 6;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 0;
+  .process-title {
+    font-size: 4.8rem;
+    margin-bottom: 5rem;
   }
 }
 
-.bottom-item {
+.process-list {
+  list-style: none;
+  margin: 4rem auto 0;
+  padding: 0;
+  grid-column: 1 / -1;
+  direction: rtl;
   display: flex;
   flex-direction: column;
+  row-gap: 2rem;
+  max-width: 88rem;
 }
 
-.bottom-item::before {
-  background-color: var(--color-blue);
-  content: "";
-  height: 1px;
-  margin-bottom: 1rem;
-  width: 0.72rem;
+@media only screen and (min-width: 834px) {
+  .process-list {
+    margin-top: 5rem;
+    row-gap: 2.4rem;
+  }
 }
 
-.bottom-item-title {
-  font-size: 1.4rem;
-  font-weight: 350;
+.process-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 2rem;
+  align-items: flex-start;
+  padding: 2.4rem 2.2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-right: 3px solid var(--color-blue);
+  border-radius: 1.2rem;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+
+.process-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+  border-right-color: var(--color-blue);
+  transform: translateX(-0.4rem);
+}
+
+@media only screen and (min-width: 834px) {
+  .process-card {
+    padding: 3rem 3.2rem;
+    column-gap: 3rem;
+  }
+}
+
+.process-number-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.process-number {
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--color-blue);
+  background: rgba(0, 113, 227, 0.12);
+  border: 1px solid rgba(0, 113, 227, 0.35);
+  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+@media only screen and (min-width: 834px) {
+  .process-number {
+    font-size: 3.6rem;
+    width: 7.2rem;
+    height: 7.2rem;
+  }
+}
+
+.process-connector {
+  position: absolute;
+  top: 6.2rem;
+  width: 1px;
+  height: calc(100% + 2rem);
+  background: linear-gradient(180deg, rgba(0, 113, 227, 0.5), rgba(0, 113, 227, 0));
+}
+
+@media only screen and (min-width: 834px) {
+  .process-connector {
+    top: 7.4rem;
+    height: calc(100% + 2.4rem);
+  }
+}
+
+.process-body {
+  min-width: 0;
+}
+
+.process-step-title {
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  opacity: 0.5;
-}
-
-.bottom-item-copy {
-  font-size: 1.8rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-top: 2rem;
   color: var(--color-offWhite);
+  margin: 0 0 1rem;
+}
+
+@media only screen and (min-width: 834px) {
+  .process-step-title {
+    font-size: 2.4rem;
+  }
+}
+
+.process-step-copy {
+  font-family: "Heebo", system-ui, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-offWhite);
+  opacity: 0.75;
+  margin: 0;
+}
+
+@media only screen and (min-width: 834px) {
+  .process-step-copy {
+    font-size: 1.6rem;
+  }
 }
 
 .bottom-line {
@@ -282,7 +299,7 @@ const { company } = content
   .bottom-line { grid-column: 2 / 6; }
 }
 
-/* Services grid */
+/* ── Services grid ── */
 .services-grid {
   grid-column: 1 / -1;
   padding-top: 4rem;
@@ -316,7 +333,7 @@ const { company } = content
 .services-column {
   display: flex;
   flex-direction: column;
-  row-gap: 1.6rem;
+  row-gap: 1.8rem;
   flex: 1;
   min-width: 0;
   border-bottom: 1px solid var(--color-blue);
@@ -332,6 +349,7 @@ const { company } = content
   .services-column {
     border-bottom: none;
     padding-bottom: 0;
+    row-gap: 2.2rem;
   }
 }
 
@@ -349,28 +367,39 @@ const { company } = content
 }
 
 .services-cell {
+  font-family: "Heebo", system-ui, sans-serif;
   display: flex;
-  align-items: center;
-  column-gap: 0.8rem;
-  font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  align-items: flex-start;
+  column-gap: 1rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
   color: var(--color-offWhite);
   padding: 0.4rem 0;
 }
 
 @media only screen and (min-width: 834px) {
   .services-cell {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 }
 
 .check-icon {
-  color: var(--color-blue);
-  font-size: 1.4rem;
+  color: #00A651;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1.3;
+  flex-shrink: 0;
 }
 
+@media only screen and (min-width: 834px) {
+  .check-icon {
+    font-size: 2.1rem;
+  }
+}
+
+/* ── ISO badges (recolored to ISO green) ── */
 .iso-badges {
   grid-column: 1 / -1;
   display: flex;
@@ -385,5 +414,76 @@ const { company } = content
 .iso-badge {
   width: 14rem;
   height: auto;
+}
+
+/* 9001 stays dark/near-black — desaturate + darken the blue ring */
+.iso-badge-9001 {
+  filter: grayscale(1) brightness(0.55) contrast(1.35);
+}
+
+/* 14001 goes green — shift blue ring toward ISO environmental green */
+.iso-badge-14001 {
+  filter: hue-rotate(-70deg) saturate(1.15);
+}
+
+/* ── Mobile ── */
+@media only screen and (max-width: 833px) {
+  .bottom .head {
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .bottom .head .cd-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    display: inline-block;
+    padding-bottom: 1.4rem;
+    position: relative;
+  }
+
+  .bottom .head .cd-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 4rem;
+    height: 2px;
+    background: var(--color-blue);
+    border-radius: 2px;
+  }
+
+  .process-list {
+    padding: 0 2rem;
+  }
+
+  .process-card {
+    grid-template-columns: auto 1fr;
+    column-gap: 1.6rem;
+    padding: 2rem 1.6rem;
+  }
+
+  .process-number {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2.2rem;
+  }
+
+  .process-connector {
+    top: 5.2rem;
+  }
+
+  .iso-badges {
+    position: static;
+    justify-content: center;
+    column-gap: 2.4rem;
+    margin-top: 3.5rem;
+  }
+
+  .iso-badge {
+    width: 12rem;
+  }
 }
 </style>
