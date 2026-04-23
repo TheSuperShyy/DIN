@@ -15,26 +15,8 @@ function scrollToTop() {
     <div class="footer-inner">
       <!-- Top section -->
       <div class="footer-top reveal">
-        <span class="footer-wordmark">TAL</span>
         <!-- Right side: groups -->
         <div class="footer-right">
-          <!-- Pages -->
-          <div class="footer-group">
-            <div class="footer-group-label">
-              <span class="footer-group-number">1.0</span>
-              <span class="footer-group-name">Pages</span>
-            </div>
-            <nav class="footer-links">
-              <NuxtLink
-                v-for="page in footer.pages"
-                :key="page.href"
-                :to="page.href"
-                class="footer-link"
-                :class="{ 'is-current': route.path === page.href }"
-              >{{ page.label }}</NuxtLink>
-            </nav>
-          </div>
-
           <!-- Follow -->
           <div class="footer-group">
             <div class="footer-group-label">
@@ -63,18 +45,8 @@ function scrollToTop() {
               </a>
             </div>
           </div>
-        </div>
-      </div>
 
-
-      <!-- Bottom row -->
-      <div class="footer-bottom">
-        <button class="footer-icon" type="button" aria-label="Scroll to top" @click="scrollToTop">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
-          </svg>
-        </button>
-        <div class="footer-bottom-right">
+          <!-- Legal links sit directly under Follow -->
           <div class="footer-legal">
             <NuxtLink
               v-for="link in footer.legal"
@@ -84,6 +56,16 @@ function scrollToTop() {
             >{{ link.label }}</NuxtLink>
           </div>
         </div>
+      </div>
+
+
+      <!-- Bottom row: scroll-to-top only -->
+      <div class="footer-bottom">
+        <button class="footer-icon" type="button" aria-label="Scroll to top" @click="scrollToTop">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
+          </svg>
+        </button>
       </div>
     </div>
   </footer>
@@ -95,10 +77,9 @@ function scrollToTop() {
   color: var(--color-offWhite);
   padding: 8vw 0 4rem;
   margin-top: auto;
-  min-height: 93vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  row-gap: 4rem;
 }
 
 @media only screen and (min-width: 834px) {
@@ -110,6 +91,9 @@ function scrollToTop() {
 .footer-inner {
   padding-left: var(--grid-outerGutter);
   padding-right: var(--grid-outerGutter);
+  display: flex;
+  flex-direction: column;
+  row-gap: 5rem;
 }
 
 /* ── Top ── */
@@ -124,7 +108,9 @@ function scrollToTop() {
   .footer-top {
     flex-direction: row;
     align-items: flex-start;
-    column-gap: 44.5vw;
+    /* Anchor Follow group's left edge at the same x as the legal row below.
+       Matches the original visual where both sit at ~50vw from inner-left. */
+    padding-left: 50vw;
   }
 }
 
@@ -262,21 +248,8 @@ function scrollToTop() {
 /* ── Bottom ── */
 .footer-bottom {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   margin-top: 6rem;
-  row-gap: 3rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .footer-bottom {
-    flex-direction: row;
-    align-items: center;
-  }
-  .footer-bottom-right {
-    margin-left: auto;
-    margin-right: 28.5vw;
-  }
 }
 
 .footer-icon {
@@ -284,25 +257,13 @@ function scrollToTop() {
   opacity: 0.4;
   transition: opacity 0.2s;
   flex-shrink: 0;
+  position: relative;
+  /* Paint above the WhatsApp FAB (z-index: 50). */
+  z-index: 60;
 }
 
 .footer-icon:hover {
   opacity: 0.8;
-}
-
-.footer-bottom-right {
-  display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
-  align-items: flex-start;
-}
-
-@media only screen and (min-width: 834px) {
-  .footer-bottom-right {
-    flex-direction: row;
-    align-items: center;
-    column-gap: 4rem;
-  }
 }
 
 .footer-legal {
