@@ -7,16 +7,20 @@ const { breakthrough } = content
 const currentLine = ref(0)
 let interval: ReturnType<typeof setInterval>
 
+const sectionRef = ref<HTMLElement | null>(null)
+
 const ratVideo = ref<HTMLVideoElement | null>(null)
 const ratCanvas = ref<HTMLCanvasElement | null>(null)
-const ratWrapper = ref<HTMLElement | null>(null)
 
 const pigeonVideo = ref<HTMLVideoElement | null>(null)
 const pigeonCanvas = ref<HTMLCanvasElement | null>(null)
-const pigeonWrapper = ref<HTMLElement | null>(null)
 
-useScrollScrub({ video: ratVideo, canvas: ratCanvas, wrapper: ratWrapper, end: 0.7 })
-useScrollScrub({ video: pigeonVideo, canvas: pigeonCanvas, wrapper: pigeonWrapper, end: 0.7 })
+// Anchor progress to the whole section (not the small rat/pigeon wrappers at
+// its bottom). end=0.9 → animation scrubs smoothly across ~90% of the
+// section's scroll travel, landing at 100% as the section's bottom (where
+// the rat/pigeon sit) reaches the top of the viewport.
+useScrollScrub({ video: ratVideo, canvas: ratCanvas, wrapper: sectionRef, end: 0.9 })
+useScrollScrub({ video: pigeonVideo, canvas: pigeonCanvas, wrapper: sectionRef, end: 0.9 })
 
 onMounted(() => {
   interval = setInterval(() => {
@@ -30,7 +34,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="section bg-grey-light home-intro" data-section-theme="off-white">
+  <section ref="sectionRef" class="section bg-grey-light home-intro" data-section-theme="off-white">
     <!-- Section header — top of section -->
     <h1 class="section-header reveal">{{ breakthrough.sectionHeader }}</h1>
 
@@ -46,22 +50,23 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div ref="ratWrapper" class="intro-rat">
+    <div class="intro-rat">
       <video
         ref="ratVideo"
-        src="/rat-vid-scrub.mp4"
+        src="/rat-vid-scrubv2.mp4"
         muted
         playsinline
         preload="auto"
         class="video-source"
+
       />
       <canvas ref="ratCanvas" class="intro-rat-canvas" />
     </div>
 
-    <div ref="pigeonWrapper" class="intro-bird reveal" data-delay="2">
+    <div class="intro-bird">
       <video
         ref="pigeonVideo"
-        src="/pigeon-animation-scrub.mp4"
+        src="/pigeon-animation-scrubv2.mp4"
         muted
         playsinline
         preload="auto"
@@ -77,7 +82,7 @@ onUnmounted(() => {
   background:
     radial-gradient(ellipse at 20% 0%, rgba(212, 160, 23, 0.10), transparent 55%),
     radial-gradient(ellipse at 100% 100%, rgba(212, 160, 23, 0.07), transparent 60%),
-    linear-gradient(180deg, var(--color-offWhite) 0%, var(--color-greyLighter) 100%);
+    #faf4ea;
   padding: 8vw 0 30vw;
   position: relative;
 }
@@ -99,6 +104,13 @@ onUnmounted(() => {
 .home-intro > * {
   position: relative;
   z-index: 1;
+}
+
+/* Keep rat/bird wrappers out of an isolated stacking context so the
+   canvas's mix-blend-mode can reach the section background. */
+.intro-rat,
+.intro-bird {
+  z-index: auto;
 }
 
 @media only screen and (min-width: 834px) {
@@ -237,7 +249,7 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   display: block;
-  mix-blend-mode: multiply;
+  mix-blend-mode: darken;
 }
 
 /* Bird */
@@ -253,7 +265,6 @@ onUnmounted(() => {
     right: 0;
     width: 40rem;
     pointer-events: none;
-    z-index: 0;
   }
 }
 
@@ -261,7 +272,7 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   display: block;
-  mix-blend-mode: multiply;
+  mix-blend-mode: darken;
 }
 
 /* Rotating line */
@@ -366,7 +377,6 @@ onUnmounted(() => {
     left: 2vw;
     width: 16rem;
     pointer-events: none;
-    z-index: 0;
   }
 
   .intro-bird {
@@ -376,7 +386,6 @@ onUnmounted(() => {
     right: 0;
     width: 18rem;
     pointer-events: none;
-    z-index: 0;
   }
 }
 </style>
