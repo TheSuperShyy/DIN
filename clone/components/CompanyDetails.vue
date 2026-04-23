@@ -416,15 +416,14 @@ const { company } = content
   height: auto;
 }
 
-/* 9001 stays dark/near-black — desaturate + darken the blue ring */
-.iso-badge-9001 {
-  filter: grayscale(1) brightness(0.55) contrast(1.35);
+/* 14001 SVG's drawn content is slightly smaller inside its viewBox than
+   9001's (measured content-width ratio ~1.02). Compensate for visual match. */
+.iso-badge-14001 {
+  width: 14.3rem;
 }
 
-/* 14001 goes green — shift blue ring toward ISO environmental green */
-.iso-badge-14001 {
-  filter: hue-rotate(-70deg) saturate(1.15);
-}
+
+
 
 /* ── Mobile ── */
 @media only screen and (max-width: 833px) {
@@ -484,6 +483,10 @@ const { company } = content
 
   .iso-badge {
     width: 12rem;
+  }
+
+  .iso-badge-14001 {
+    width: 12.3rem;
   }
 }
 </style>
