@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { content } from '~/content'
 
@@ -34,12 +34,23 @@ function closeAll() {
 
 function scrollToSection(href: string) {
   if (href.startsWith('#')) {
-    const el = document.querySelector(href)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-      closeAll()
+    // In-page anchor: try smooth-scroll to the target if it exists on this page,
+    // otherwise route home with the hash so it lands at the right section.
+    if (route.path === '/') {
+      const el = document.querySelector(href)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+        closeAll()
+        return
+      }
     }
+    router.push({ path: '/', hash: href })
+    closeAll()
+    return
   }
+  // Real path (e.g. /birds): just navigate.
+  router.push(href)
+  closeAll()
 }
 
 function scrollToTop() {
@@ -89,6 +100,18 @@ function detectTheme() {
   }
 }
 
+// On route change the SiteNav stays mounted (it's in the layout), so
+// detectTheme doesn't re-run and stale state from the previous page leaks
+// through — most visibly: hideNav stuck true after navigating from a
+// footer link, leaving the nav invisible until the user scrolls.
+watch(() => route.path, async () => {
+  await nextTick()
+  hideNav.value = false
+  showSideLogo.value = false
+  // Small delay so the new page's DOM is in place before measuring.
+  setTimeout(detectTheme, 80)
+})
+
 onMounted(() => {
   window.addEventListener('scroll', detectTheme, { passive: true })
   detectTheme()
@@ -110,17 +133,13 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
     aria-label="Scroll to top"
     @click="scrollToTop"
   >
-    <svg class="side-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
-    </svg>
+    <img class="side-logo-icon" src="/TAL-logov2.svg" alt="TAL" />
   </button>
 
   <div ref="menuRef" class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
     <!-- Logo beside nav pill -->
     <button class="nav-logo" type="button" aria-label="Scroll to top" @click="goToHero">
-      <svg class="nav-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
-      </svg>
+      <img class="nav-logo-icon" src="/TAL-logov2.svg" alt="TAL" />
     </button>
 
     <!-- Desktop centered nav pill -->
@@ -278,42 +297,42 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   pointer-events: none;
 }
 
-/* ── Nav logo (beside nav pill) ── */
+/* ── Nav logo (beside nav pill) — bare logo, no container ── */
 .nav-logo {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 50%;
-  height: 4.5rem;
-  width: 4.5rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  height: 7rem;
+  width: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
-  transition: background-color 0.3s, color 0.3s;
+  transition: opacity 0.2s;
   position: absolute;
   left: 0;
-  top: 3rem;
+  top: 2rem;
   margin-left: var(--grid-outerGutter);
   z-index: 1;
 }
+
+.nav-logo:hover { opacity: 0.7; }
 
 @media only screen and (min-width: 834px) {
   .nav-logo {
     position: static;
     margin-left: 0;
+    /* Pull up so logo center aligns with the pill center
+       (logo 7rem vs pill 4.5rem → 1.25rem of overhang). */
+    margin-top: -1.25rem;
   }
 }
 
-.off-white .nav-logo {
-  background-color: rgba(15, 16, 18, 0.06);
-  color: var(--color-offBlack);
-}
-
-.off-black .nav-logo,
-.blue .nav-logo {
-  background-color: rgba(255, 255, 255, 0.12);
-  color: var(--color-white);
+.nav-logo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-logo-text {
@@ -322,13 +341,13 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   letter-spacing: 0.04em;
 }
 
-/* ── Side logo (fixed left-center) ── */
+/* ── Side logo (fixed left-center) — bare logo, no container ── */
 .side-logo {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 1.6rem;
-  height: 4.5rem;
-  width: 4.5rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  height: 7rem;
+  width: 7rem;
   display: none;
   align-items: center;
   justify-content: center;
@@ -340,7 +359,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
-  transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+  transition: opacity 0.3s;
 }
 
 @media only screen and (min-width: 834px) {
@@ -356,15 +375,11 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   opacity: 0.7;
 }
 
-.side-logo.off-white {
-  background-color: rgba(15, 16, 18, 0.06);
-  color: var(--color-offBlack);
-}
-
-.side-logo.off-black,
-.side-logo.blue {
-  background-color: rgba(255, 255, 255, 0.12);
-  color: var(--color-white);
+.side-logo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .side-logo-text {

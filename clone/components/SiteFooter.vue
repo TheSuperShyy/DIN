@@ -62,9 +62,7 @@ function scrollToTop() {
       <!-- Bottom row: scroll-to-top only -->
       <div class="footer-bottom">
         <button class="footer-icon" type="button" aria-label="Scroll to top" @click="scrollToTop">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0L13.8 8.4L20.5 3.5L15.6 10.2L24 12L15.6 13.8L20.5 20.5L13.8 15.6L12 24L10.2 15.6L3.5 20.5L8.4 13.8L0 12L8.4 10.2L3.5 3.5L10.2 8.4L12 0Z" fill="currentColor"/>
-          </svg>
+          <img class="footer-icon-img" src="/TAL-logov2.svg" alt="TAL — scroll to top" />
         </button>
       </div>
     </div>
@@ -80,6 +78,9 @@ function scrollToTop() {
   display: flex;
   flex-direction: column;
   row-gap: 4rem;
+  /* Hairline separator so the footer reads as its own surface even when
+     the page above is also off-black (e.g. /birds, About section). */
+  border-top: 0.5px solid rgba(255, 255, 255, 0.12);
 }
 
 @media only screen and (min-width: 834px) {
@@ -260,10 +261,21 @@ function scrollToTop() {
   position: relative;
   /* Paint above the WhatsApp FAB (z-index: 50). */
   z-index: 60;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 .footer-icon:hover {
   opacity: 0.8;
+}
+
+.footer-icon-img {
+  width: 8rem;
+  height: 8rem;
+  object-fit: contain;
+  display: block;
 }
 
 .footer-legal {
