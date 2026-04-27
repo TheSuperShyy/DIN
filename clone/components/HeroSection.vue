@@ -77,16 +77,17 @@ import { content } from '~/content'
 .hero-bg-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(110px);
   will-change: transform;
 }
 
+/* Subtle warm-grey wash, like cement with a hint of warmth from the TAL palette */
 .hero-bg-blob--one {
   top: -10%;
   left: -5%;
   width: 55vw;
   height: 55vw;
-  background: radial-gradient(circle at 30% 30%, rgba(232, 185, 35, 0.40), transparent 65%);
+  background: radial-gradient(circle at 30% 30%, rgba(180, 165, 140, 0.18), transparent 65%);
   animation: blobDrift 22s ease-in-out infinite;
 }
 
@@ -95,7 +96,7 @@ import { content } from '~/content'
   right: -10%;
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle at 60% 60%, rgba(212, 160, 23, 0.26), transparent 70%);
+  background: radial-gradient(circle at 60% 60%, rgba(150, 140, 125, 0.14), transparent 70%);
   animation: blobDrift 28s ease-in-out infinite reverse;
 }
 
@@ -104,16 +105,28 @@ import { content } from '~/content'
   left: 45%;
   width: 32vw;
   height: 32vw;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 70%);
   animation: blobDrift 34s ease-in-out infinite;
 }
 
+/* Fine concrete grain — higher frequency for tighter texture, lower opacity,
+   multiply blend so it darkens the wash subtly instead of glowing over it. */
 .hero-bg-noise {
   position: absolute;
   inset: 0;
-  opacity: 0.35;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Soft vignette so edges read as deeper concrete, center stays open */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(60, 50, 35, 0.08) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .home-hero-container {
@@ -204,7 +217,9 @@ import { content } from '~/content'
   max-height: 40vh;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 1.5rem 4rem rgba(0, 0, 0, 0.18));
+  filter:
+    drop-shadow(0 2.4rem 5rem rgba(0, 0, 0, 0.42))
+    drop-shadow(0 0.8rem 1.6rem rgba(0, 0, 0, 0.28));
 }
 
 .hero-tagline {

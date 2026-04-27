@@ -19,14 +19,14 @@ const { company } = content
           <div class="services-columns">
             <div class="services-divider" />
             <div class="services-column">
+              <div class="services-cell"><span class="check-icon">✓</span> חברתנו מתמחה בכל סוגי הדברת המזיקים - מכרסמים / זוחלים / מעופפים</div>
+              <div class="services-cell"><span class="check-icon">✓</span> טיפול במטרדי בעלי כנף - יונים, דרורים, עורבים, מיינות, דררות ועוד</div>
               <div class="services-cell"><span class="check-icon">✓</span> הקמת מערך ניטור והדברה ממוחשב</div>
               <div class="services-cell"><span class="check-icon">✓</span> הדברת מזיקי מחסן - ממגורות, מכולות, ספריות ועוד...</div>
-              <div class="services-cell"><span class="check-icon">✓</span> חברתנו מתמחה בכל סוגי הדברת המזיקים - מכרסמים / זוחלים / מעופפים</div>
-              <div class="services-cell"><span class="check-icon">✓</span> טיפול במטרדי בעלי כנף</div>
             </div>
             <div class="services-divider" />
             <div class="services-column">
-              <div class="services-cell"><span class="check-icon">✓</span> איוד בגז, ערפול חם / קר</div>
+              <div class="services-cell"><span class="check-icon">✓</span> איוד בגז</div>
               <div class="services-cell"><span class="check-icon">✓</span> התמחות מיוחדת בהדברת התיקן הגרמני בבתי מלון, בתי חולים, מפעלי מזון, אולמות אירועים, שירותי הסעדה ועוד...</div>
               <div class="services-cell"><span class="check-icon">✓</span> חיטוי נגד מזהמים בקטריאליים, עובשים ושמרים.</div>
             </div>
@@ -40,8 +40,8 @@ const { company } = content
         </div>
 
         <div class="iso-badges reveal">
-          <img src="/iso-9001.svg" alt="ISO 9001:2015" class="iso-badge iso-badge-9001" />
           <img src="/iso-14001.svg" alt="ISO 14001:2015" class="iso-badge iso-badge-14001" />
+          <img src="/iso-9001.svg" alt="ISO 9001:2015" class="iso-badge iso-badge-9001" />
         </div>
       </div>
     </div>
@@ -416,10 +416,14 @@ const { company } = content
   height: auto;
 }
 
-/* 14001 SVG's drawn content is slightly smaller inside its viewBox than
-   9001's (measured content-width ratio ~1.02). Compensate for visual match. */
+/* 14001 SVG's outer ring artwork is drawn meaningfully smaller inside its
+   viewBox than 9001's, so its rendered ring looks ~20-25% smaller at the
+   same CSS width. Bump width to compensate so the two rings visually match.
+   Filter (invert + hue-rotate) flips the dark MIQC text to white while
+   preserving the green ring. */
 .iso-badge-14001 {
-  width: 14.3rem;
+  width: 16rem;
+  filter: invert(1) hue-rotate(180deg);
 }
 
 
@@ -486,7 +490,7 @@ const { company } = content
   }
 
   .iso-badge-14001 {
-    width: 12.3rem;
+    width: 13.5rem;
   }
 }
 </style>

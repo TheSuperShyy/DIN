@@ -5,11 +5,80 @@
 }
 
 html {
-  font-size: 10px;
+  /* AccessibilityWidget overrides --a11y-font-scale at runtime; default = 1 */
+  --a11y-font-scale: 1;
+  font-size: calc(10px * var(--a11y-font-scale));
   scrollbar-width: none;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   AccessibilityWidget toggles
+   ============================================================ */
+
+/* High-contrast — invert just the page content wrapper. Images/SVGs/videos
+   are double-inverted so they keep their natural appearance while text and
+   backgrounds flip. The widget itself sits OUTSIDE .layout-content so it
+   stays unaffected and remains usable. */
+html[data-a11y-contrast] .layout-content {
+  filter: invert(1) hue-rotate(180deg);
+  background: #fff;
+}
+
+html[data-a11y-contrast] .layout-content img,
+html[data-a11y-contrast] .layout-content video,
+html[data-a11y-contrast] .layout-content picture,
+html[data-a11y-contrast] .layout-content svg {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* The rat/pigeon scrub canvases are decorative video animations. They
+   use mix-blend-mode: darken against a textured cream bg (radial
+   gradients + grid overlay), and there's no clean way to make them blend
+   correctly through the HC invert. Hide them — standard practice for
+   purely decorative motion in high-contrast mode. */
+html[data-a11y-contrast] .intro-rat,
+html[data-a11y-contrast] .intro-bird {
+  display: none !important;
+}
+
+/* The 14001 badge has a manual invert filter to flip its dark text white.
+   In HC mode the parent invert is already doing that, so the local filter
+   double-inverts and makes the text dark again. Drop it. */
+html[data-a11y-contrast] .iso-badge-14001 {
+  filter: none !important;
+}
+
+/* Stop motion — required for users with vestibular disorders. Cuts every
+   transition and animation across the site to ~zero duration so reduced
+   motion is enforced even where prefers-reduced-motion isn't honored. */
+html[data-a11y-no-motion] *,
+html[data-a11y-no-motion] *::before,
+html[data-a11y-no-motion] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Highlight links — bold + underline every <a> sitewide for low-vision users. */
+html[data-a11y-links] a {
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.2rem !important;
+  text-underline-offset: 0.3rem !important;
+  font-weight: 700 !important;
+}
+
+/* Readable font — switch to Heebo (already loaded), widen letter/word spacing
+   and bump line-height for easier reading. */
+html[data-a11y-font] body,
+html[data-a11y-font] body * {
+  font-family: "Heebo", "Arial", system-ui, sans-serif !important;
+  letter-spacing: 0.04em !important;
+  word-spacing: 0.08em !important;
+  line-height: 1.7 !important;
 }
 
 html::-webkit-scrollbar {
