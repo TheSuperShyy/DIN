@@ -1,67 +1,63 @@
 <script setup lang="ts">
 import { content } from '~/content'
 
-useHead({ title: 'יונים / בעלי כנף — טל שולמרק' })
-useReveal()
-
 const { birds } = content
 </script>
 
 <template>
-  <div class="birds-page">
-    <!-- Hero -->
-    <section class="section bg-off-black birds-hero" data-section-theme="off-black">
-      <div class="birds-wrap birds-hero-inner">
-        <p class="birds-eyebrow reveal">{{ birds.navLabel }}</p>
-        <h1 class="birds-title reveal">{{ birds.title }}</h1>
-      </div>
-    </section>
+  <section class="section bg-off-black birds-section" data-section-theme="off-black">
+    <!-- Header -->
+    <div class="birds-wrap birds-header reveal">
+      <p class="birds-eyebrow">{{ birds.navLabel }}</p>
+      <h2 class="birds-title">{{ birds.title }}</h2>
+    </div>
 
     <!-- Two numbered approach cards -->
-    <section class="section bg-off-black birds-cards" data-section-theme="off-black">
-      <div class="birds-wrap birds-cards-inner">
-        <ol class="birds-list">
-          <li
-            v-for="(item, i) in birds.sections"
-            :key="i"
-            class="birds-card reveal"
-            :data-delay="(i + 1) + ''"
-          >
-            <div class="birds-number-wrap">
-              <span class="birds-number">{{ item.number }}</span>
-              <span v-if="i < birds.sections.length - 1" class="birds-connector" aria-hidden="true" />
-            </div>
-            <div class="birds-body">
-              <h2 class="birds-card-title">{{ item.title }}</h2>
-              <p class="birds-card-copy">{{ item.body }}</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
+    <div class="birds-wrap birds-cards-inner">
+      <ol class="birds-list">
+        <li
+          v-for="(item, i) in birds.sections"
+          :key="i"
+          class="birds-card reveal"
+          :data-delay="(i + 1) + ''"
+        >
+          <div class="birds-number-wrap">
+            <span class="birds-number">{{ item.number }}</span>
+            <span v-if="i < birds.sections.length - 1" class="birds-connector" aria-hidden="true" />
+          </div>
+          <div class="birds-body">
+            <h3 class="birds-card-title">{{ item.title }}</h3>
+            <p class="birds-card-copy" style="white-space: pre-line">{{ item.body }}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
 
     <!-- Owner's word -->
-    <section class="section bg-off-black birds-owner-section" data-section-theme="off-black">
-      <div class="birds-wrap birds-owner-inner reveal">
-        <figure class="birds-owner-card">
-          <span class="birds-owner-quote-mark" aria-hidden="true">״</span>
-          <blockquote class="birds-owner-quote">{{ birds.ownersWord.quote }}</blockquote>
-          <figcaption class="birds-owner-label">— {{ birds.ownersWord.label }}</figcaption>
-        </figure>
-      </div>
-    </section>
-  </div>
+    <div class="birds-wrap birds-owner-inner reveal">
+      <figure class="birds-owner-card">
+        <span class="birds-owner-quote-mark" aria-hidden="true">״</span>
+        <blockquote class="birds-owner-quote">{{ birds.ownersWord.quote }}</blockquote>
+        <figcaption class="birds-owner-label">— {{ birds.ownersWord.label }}</figcaption>
+      </figure>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-.birds-page {
+.birds-section {
   background-color: var(--color-offBlack);
   color: var(--color-offWhite);
   direction: rtl;
+  padding: 12vw 0 8vw;
 }
 
-/* Simple max-width wrapper — sidesteps the global .container 5-col grid
-   that would otherwise squeeze the page content into one narrow column. */
+@media only screen and (min-width: 834px) {
+  .birds-section {
+    padding: 6vw 0 5vw;
+  }
+}
+
 .birds-wrap {
   width: 100%;
   max-width: 110rem;
@@ -70,19 +66,10 @@ const { birds } = content
   padding-right: var(--grid-outerGutter);
 }
 
-/* ── Hero ── */
-.birds-hero {
-  padding: 22vw 0 8vw;
-}
-
-@media only screen and (min-width: 834px) {
-  .birds-hero {
-    padding: 12vw 0 5vw;
-  }
-}
-
-.birds-hero-inner {
+/* Header */
+.birds-header {
   text-align: center;
+  margin-bottom: 4vw;
 }
 
 .birds-eyebrow {
@@ -90,39 +77,34 @@ const { birds } = content
   color: var(--color-blue);
   font-size: 1.4rem;
   font-weight: 500;
-  letter-spacing: 0;
-  opacity: 0.85;
+  opacity: 0.9;
   margin: 0 0 1.6rem;
 }
 
 .birds-title {
   font-family: "Heebo", system-ui, sans-serif;
   color: var(--color-offWhite);
-  font-size: 3rem;
+  font-size: 2.1rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.3;
   margin: 0 auto;
   max-width: 90rem;
+  /* Prevent any single token from forcing horizontal overflow on narrow
+     viewports (the em-dash separator can otherwise stretch a line wider
+     than the device width). */
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 }
 
 @media only screen and (min-width: 834px) {
   .birds-title {
-    font-size: 4.6rem;
+    font-size: 4rem;
   }
 }
 
-/* ── Numbered cards ── */
-.birds-cards {
-  padding: 4vw 0 8vw;
-}
-
-@media only screen and (min-width: 834px) {
-  .birds-cards {
-    padding: 3vw 0 8vw;
-  }
-}
-
+/* Cards */
 .birds-cards-inner {
   display: flex;
   justify-content: center;
@@ -221,9 +203,7 @@ const { birds } = content
   }
 }
 
-.birds-body {
-  min-width: 0;
-}
+.birds-body { min-width: 0; }
 
 .birds-card-title {
   font-family: "Heebo", system-ui, sans-serif;
@@ -237,7 +217,7 @@ const { birds } = content
 
 @media only screen and (min-width: 834px) {
   .birds-card-title {
-    font-size: 2.6rem;
+    font-size: 2.4rem;
   }
 }
 
@@ -253,26 +233,20 @@ const { birds } = content
 
 @media only screen and (min-width: 834px) {
   .birds-card-copy {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
   }
 }
 
-/* ── Owner's word ── */
-.birds-owner-section {
-  /* Tighter top padding so it reads as the natural conclusion of the
-     two cards above, not a separate floating section. */
-  padding: 2vw 0 10vw;
+/* Owner's word */
+.birds-owner-inner {
+  max-width: 78rem;
+  margin: 4vw auto 0;
 }
 
 @media only screen and (min-width: 834px) {
-  .birds-owner-section {
-    padding: 1vw 0 7vw;
+  .birds-owner-inner {
+    margin-top: 3vw;
   }
-}
-
-.birds-owner-inner {
-  max-width: 78rem;
-  margin: 0 auto;
 }
 
 .birds-owner-card {
@@ -321,7 +295,7 @@ const { birds } = content
 
 @media only screen and (min-width: 834px) {
   .birds-owner-quote {
-    font-size: 3.2rem;
+    font-size: 3rem;
   }
 }
 

@@ -32,7 +32,12 @@ function closeAll() {
   isMenuOpen.value = false
 }
 
-function scrollToSection(href: string) {
+function scrollToSection(href: string, formPurpose?: 'job' | 'client') {
+  // If the nav item carries a formPurpose, broadcast it so the careers
+  // form can sync its purpose toggle (e.g. דרושים → מעוניין בעבודה).
+  if (formPurpose && typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('form-set-purpose', { detail: formPurpose }))
+  }
   if (href.startsWith('#')) {
     // In-page anchor: try smooth-scroll to the target if it exists on this page,
     // otherwise route home with the hash so it lands at the right section.
@@ -125,17 +130,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 </script>
 
 <template>
-  <!-- Side logo (fixed left-center, visible between hero and footer) -->
-  <button
-    class="side-logo"
-    :class="[sideLogoTheme, { 'is-visible': showSideLogo }]"
-    type="button"
-    aria-label="Scroll to top"
-    @click="scrollToTop"
-  >
-    <img class="side-logo-icon" src="/TAL-logov2.svg" alt="TAL" />
-  </button>
-
   <div ref="menuRef" class="menu" :class="[sectionTheme, { open: isMenuOpen, 'sub-menu-open': activeDropdown, 'is-hidden': hideNav }]">
     <!-- Logo beside nav pill -->
     <button class="nav-logo" type="button" aria-label="Scroll to top" @click="goToHero">
@@ -163,7 +157,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
               v-else-if="item.type === 'link'"
               :href="item.href"
               class="nav-list-item-link"
-              @click.prevent="scrollToSection(item.href)"
+              @click.prevent="scrollToSection(item.href, (item as any).formPurpose)"
             >
               {{ item.label }}
             </a>
@@ -238,7 +232,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
                 v-else-if="item.type === 'link'"
                 :href="item.href"
                 class="mobile-nav-link"
-                @click.prevent="scrollToSection(item.href)"
+                @click.prevent="scrollToSection(item.href, (item as any).formPurpose)"
               >
                 {{ item.label }}
               </a>
@@ -302,8 +296,8 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   background: transparent;
   border: 0;
   padding: 0;
-  height: 7rem;
-  width: 7rem;
+  height: 8rem;
+  width: 8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,7 +305,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   transition: opacity 0.2s;
   position: absolute;
   left: 0;
-  top: 2rem;
+  top: 1.5rem;
   margin-left: var(--grid-outerGutter);
   z-index: 1;
 }
@@ -323,8 +317,11 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
     position: static;
     margin-left: 0;
     /* Pull up so logo center aligns with the pill center
-       (logo 7rem vs pill 4.5rem → 1.25rem of overhang). */
-    margin-top: -1.25rem;
+       (logo 8rem vs pill 4.5rem → 1.75rem of overhang). */
+    margin-top: -1.75rem;
+    /* In the RTL flex container, a high `order` value places this item
+       LAST in the flex line, which in RTL means visually LEFT. */
+    order: 99;
   }
 }
 

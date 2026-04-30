@@ -13,18 +13,6 @@ import { content } from '~/content'
     </div>
 
     <div class="container home-hero-container">
-      <!-- Announcement bar (desktop top) -->
-      <div class="head">
-        <NuxtLink :to="content.brand.announcement.href" class="hero-link">
-          <span>{{ content.brand.announcement.text }}</span>
-          <span class="link-icon-wrapper">
-            <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.18252 2.51959L4.71493 1.05199L5.19807 0.568848L7.30658 2.67736L7.54815 2.91893L7.30658 3.1605L5.19807 5.26902L4.71493 4.78588L6.29795 3.20285H0.972656V2.51959H6.18252Z" fill="currentColor"/>
-            </svg>
-          </span>
-        </NuxtLink>
-      </div>
-
       <!-- Centered logo + tagline stack -->
       <div class="hero-stack">
         <div class="hero-logo-wrapper">

@@ -7,6 +7,7 @@ useReveal()
     <HeroSection />
     <BreakthroughIntro />
     <CompanyDetails id="services" />
+    <BirdsSection id="birds" />
     <InvisibleApproach id="themis" />
     <TestimonialsSection />
     <AboutSection id="about" />

@@ -1,13 +1,26 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tokens.css', '~/assets/css/global.css'],
+  runtimeConfig: {
+    // Server-only — read by /api/contact when relaying form submissions.
+    // Set these in clone/.env locally and in Vercel → Settings → Environment
+    // Variables for production.
+    smtpHost: process.env.NUXT_SMTP_HOST || '',
+    smtpPort: process.env.NUXT_SMTP_PORT || '465',
+    smtpUser: process.env.NUXT_SMTP_USER || '',
+    smtpPass: process.env.NUXT_SMTP_PASS || '',
+    mailFrom: process.env.NUXT_MAIL_FROM || '',
+    mailTo: process.env.NUXT_MAIL_TO || ''
+  },
   app: {
     head: {
-      title: 'TAL',
+      title: 'טל שולמרק — שירותי הדברה מקצועיים',
+      htmlAttrs: { lang: 'he', dir: 'rtl' },
       meta: [
-        { name: 'description', content: 'DIN: precision computing for the human scale.' }
+        { name: 'description', content: 'טל שולמרק בע"מ — החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף. שירות מקצועי בפריסה ארצית, בעמידה בתקני ISO 9001 ו-ISO 14001.' }
       ],
       link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/TAL-logov2.svg' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
         {

@@ -13,53 +13,40 @@ function scrollToTop() {
 <template>
   <footer class="site-footer" data-section-theme="off-black">
     <div class="footer-inner">
-      <!-- Top section -->
-      <div class="footer-top reveal">
-        <!-- Right side: groups -->
-        <div class="footer-right">
-          <!-- Follow -->
-          <div class="footer-group">
-            <div class="footer-group-label">
-              <span class="footer-group-number">2.0</span>
-              <span class="footer-group-name">Follow</span>
-            </div>
-            <div class="footer-socials">
-              <a
-                v-for="social in footer.social"
-                :key="social.label"
-                :href="social.href"
-                class="footer-social"
-                target="_blank"
-                rel="noopener noreferrer"
-                :aria-label="social.label"
-              >
-                <svg v-if="social.icon === 'facebook'" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                  <path d="M13.5 21.95v-8.3h2.79l.42-3.24H13.5V8.35c0-.94.26-1.58 1.6-1.58h1.72V3.87a23 23 0 0 0-2.5-.13c-2.48 0-4.18 1.52-4.18 4.3v2.39H7.33v3.23h2.81v8.3h3.36Z"/>
-                </svg>
-                <svg v-else-if="social.icon === 'instagram'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="5"/>
-                  <circle cx="12" cy="12" r="3.8"/>
-                  <circle cx="17.3" cy="6.7" r="0.8" fill="currentColor" stroke="none"/>
-                </svg>
-                <span class="footer-social-label">{{ social.label }}</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Legal links sit directly under Follow -->
-          <div class="footer-legal">
-            <NuxtLink
-              v-for="link in footer.legal"
-              :key="link.label"
-              :to="link.href"
-              class="footer-legal-link"
-            >{{ link.label }}</NuxtLink>
-          </div>
-        </div>
+      <!-- Socials — left aligned -->
+      <div class="footer-socials reveal">
+        <a
+          v-for="social in footer.social"
+          :key="social.label"
+          :href="social.href"
+          class="footer-social"
+          target="_blank"
+          rel="noopener noreferrer"
+          :aria-label="social.label"
+        >
+          <svg v-if="social.icon === 'facebook'" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M13.5 21.95v-8.3h2.79l.42-3.24H13.5V8.35c0-.94.26-1.58 1.6-1.58h1.72V3.87a23 23 0 0 0-2.5-.13c-2.48 0-4.18 1.52-4.18 4.3v2.39H7.33v3.23h2.81v8.3h3.36Z"/>
+          </svg>
+          <svg v-else-if="social.icon === 'instagram'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="3.8"/>
+            <circle cx="17.3" cy="6.7" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="footer-social-label">{{ social.label }}</span>
+        </a>
       </div>
 
+      <!-- Legal — centered -->
+      <div class="footer-legal reveal">
+        <NuxtLink
+          v-for="link in footer.legal"
+          :key="link.label"
+          :to="link.href"
+          class="footer-legal-link"
+        >{{ link.label }}</NuxtLink>
+      </div>
 
-      <!-- Bottom row: scroll-to-top only -->
+      <!-- Bottom row: scroll-to-top -->
       <div class="footer-bottom">
         <button class="footer-icon" type="button" aria-label="Scroll to top" @click="scrollToTop">
           <img class="footer-icon-img" src="/TAL-logov2.svg" alt="TAL — scroll to top" />
@@ -94,95 +81,23 @@ function scrollToTop() {
   padding-right: var(--grid-outerGutter);
   display: flex;
   flex-direction: column;
-  row-gap: 5rem;
-}
-
-/* ── Top ── */
-.footer-top {
-  display: flex;
-  flex-direction: column;
-  row-gap: 5rem;
-  margin-bottom: 0;
+  row-gap: 3rem;
 }
 
 @media only screen and (min-width: 834px) {
-  .footer-top {
-    flex-direction: row;
-    align-items: flex-start;
-    /* Anchor Follow group's left edge at the same x as the legal row below.
-       Matches the original visual where both sit at ~50vw from inner-left. */
-    padding-left: 50vw;
+  .footer-inner {
+    row-gap: 4rem;
   }
 }
 
-/* Wordmark */
-.footer-wordmark {
-  color: var(--color-offWhite);
-  font-size: 2.5rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-/* Right side groups */
-.footer-right {
-  display: flex;
-  flex-direction: column;
-  row-gap: 5rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .footer-right {
-    row-gap: 10rem;
-  }
-}
-
-/* Each group: label left, links right */
-.footer-group {
-  display: flex;
-  flex-direction: column;
-  row-gap: 3.2rem;
-}
-
-@media only screen and (min-width: 834px) {
-  .footer-group {
-    flex-direction: row;
-    column-gap: 8rem;
-    row-gap: 0;
-    align-items: flex-start;
-  }
-}
-
-.footer-group-label {
-  color: var(--color-offWhite);
-  font-size: 1.2rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
-  line-height: 1.6;
-  min-width: 6rem;
-}
-
-.footer-group-number {
-  display: block;
-  opacity: 0.4;
-}
-
-.footer-group-name {
-  color: var(--color-white);
-  font-size: 1.56rem;
-}
-
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
-}
-
+/* Socials — flush left in the layout */
 .footer-socials {
   display: flex;
   column-gap: 1.4rem;
   align-items: center;
   flex-wrap: wrap;
+  /* In RTL, flex-end visually puts items on the LEFT. */
+  justify-content: flex-end;
 }
 
 .footer-social {
@@ -283,6 +198,7 @@ function scrollToTop() {
   column-gap: 3.2rem;
   flex-wrap: wrap;
   row-gap: 1.6rem;
+  justify-content: center;
 }
 
 .footer-legal-link {
