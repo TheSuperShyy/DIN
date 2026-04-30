@@ -50,13 +50,19 @@ const { about } = content
 }
 
 .about-heading {
-  color: var(--color-offWhite);
-  font-size: 1.4rem;
-  font-weight: 350;
-  letter-spacing: -0.02em;
+  color: var(--color-blue);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1.2;
   margin-bottom: 1.6rem;
-  opacity: 0.5;
+  opacity: 0.95;
+}
+
+@media only screen and (min-width: 834px) {
+  .about-heading {
+    font-size: 1.9rem;
+  }
 }
 
 .about-title {

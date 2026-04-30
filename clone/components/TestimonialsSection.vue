@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { content } from '~/content'
 
 const { testimonials } = content
 const activeReview = ref<null | (typeof testimonials.items)[number]>(null)
+
+// Doubled items for seamless marquee loop.
+const loopedItems = computed(() => [...testimonials.items, ...testimonials.items])
 
 function openReview(item: (typeof testimonials.items)[number]) {
   activeReview.value = item
@@ -11,16 +14,66 @@ function openReview(item: (typeof testimonials.items)[number]) {
 function closeReview() {
   activeReview.value = null
 }
+
+// JS-driven marquee instead of CSS animation. CSS animations get killed by
+// the accessibility widget's "stop animations" toggle and by browser
+// prefers-reduced-motion settings; the cards then freeze and the section
+// looks broken. requestAnimationFrame transforms aren't subject to those
+// overrides, so the cycle keeps running.
+const trackRef = ref<HTMLElement | null>(null)
+const SPEED_PX_PER_SEC = 50
+let rafId = 0
+let lastTs = 0
+let position = 0
+let paused = false
+
+function tick(ts: number) {
+  if (!trackRef.value) {
+    rafId = requestAnimationFrame(tick)
+    return
+  }
+  const dt = lastTs ? (ts - lastTs) / 1000 : 0
+  lastTs = ts
+  if (!paused) {
+    // Loop distance is the pixel offset where the second copy of the items
+    // starts (i.e. the offsetLeft of the duplicate's first card). Wrapping
+    // by exactly this amount lands the duplicate's first card where the
+    // original first card was — visually identical, hence seamless.
+    // scrollWidth/2 is slightly off because of the column-gap between the
+    // two copies that doesn't get counted symmetrically.
+    const itemsCount = testimonials.items.length
+    const secondCopyFirst = trackRef.value.children[itemsCount] as HTMLElement | undefined
+    const loopDistance = secondCopyFirst ? secondCopyFirst.offsetLeft : trackRef.value.scrollWidth / 2
+
+    position -= SPEED_PX_PER_SEC * dt
+    if (loopDistance > 0 && -position >= loopDistance) position += loopDistance
+    trackRef.value.style.transform = `translateX(${position}px)`
+  }
+  rafId = requestAnimationFrame(tick)
+}
+
+function handleEnter() { paused = true }
+function handleLeave() { paused = false }
+
+watch(activeReview, (val) => { paused = !!val })
+
+onMounted(() => {
+  rafId = requestAnimationFrame(tick)
+})
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(rafId)
+})
 </script>
 
 <template>
   <section class="section bg-blue home-testimonials" data-section-theme="blue">
     <h2 class="testimonials-title reveal">{{ testimonials.heading }}</h2>
 
-    <div class="marquee-wrapper">
-      <div class="marquee-track" :class="{ paused: activeReview }">
+    <div class="marquee-wrapper" @mouseenter="handleEnter" @mouseleave="handleLeave">
+      <div ref="trackRef" class="marquee-track">
         <div
-          v-for="(item, i) in [...testimonials.items, ...testimonials.items]"
+          v-for="(item, i) in loopedItems"
           :key="i"
           class="review-card"
           @click="openReview(item)"
@@ -83,6 +136,12 @@ function closeReview() {
 }
 
 .marquee-wrapper {
+  /* Force LTR so that the wider track child anchors its LEFT edge to the
+     wrapper's left edge (instead of right edge under inherited RTL). With
+     RTL inherited from the html document, translateX(0) was showing the
+     last cards of the doubled list and the JS wrap created a visible
+     jump back to the start. Inner card text keeps its own direction:rtl. */
+  direction: ltr;
   mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent);
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent);
   overflow: hidden;
@@ -91,21 +150,14 @@ function closeReview() {
 }
 
 .marquee-track {
-  animation: marquee 50s linear infinite;
+  /* Force LTR so flex lays cards out left→right (the JS animation expects
+     this). Inner card text keeps direction:rtl. */
+  direction: ltr;
   column-gap: 2.5rem;
   display: flex;
   padding: 1rem 0;
   width: max-content;
-}
-
-.marquee-track.paused,
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  will-change: transform;
 }
 
 .review-card {

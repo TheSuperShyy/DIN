@@ -180,8 +180,8 @@ onUnmounted(() => {
 
 @media only screen and (min-width: 834px) {
   .intro-content {
-    align-items: flex-end;
-    grid-column: 1 / 5;
+    align-items: center;
+    grid-column: 1 / -1;
   }
 }
 
@@ -210,9 +210,9 @@ onUnmounted(() => {
     font-size: 2rem;
     line-height: 1.5;
     margin-top: 0;
-    max-width: 100%;
+    max-width: 110rem;
     text-align: right;
-    margin-right: -8vw;
+    margin-right: 0;
   }
 
   .intro-copy + .intro-copy {
@@ -370,21 +370,23 @@ onUnmounted(() => {
     font-weight: 600;
   }
 
+  /* Smaller on mobile so the decorative critters don't risk covering body
+     copy when sections compress on small screens. */
   .intro-rat {
     display: block;
     position: absolute;
-    bottom: 4vw;
+    bottom: 2vw;
     left: 2vw;
-    width: 16rem;
+    width: 11rem;
     pointer-events: none;
   }
 
   .intro-bird {
     display: block;
     position: absolute;
-    bottom: 6vw;
+    bottom: 3vw;
     right: 0;
-    width: 18rem;
+    width: 12rem;
     pointer-events: none;
   }
 }

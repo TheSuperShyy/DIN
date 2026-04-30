@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const form = ref({
   purpose: 'client',
@@ -11,6 +11,9 @@ const form = ref({
 })
 
 const resumeName = ref('')
+const submitted = ref(false)
+const submitting = ref(false)
+const submitError = ref('')
 
 function handleFileChange(e: Event) {
   const target = e.target as HTMLInputElement
@@ -20,11 +23,60 @@ function handleFileChange(e: Event) {
   }
 }
 
-const submitted = ref(false)
+async function handleSubmit() {
+  submitError.value = ''
 
-function handleSubmit() {
-  submitted.value = true
+  // The file input is hidden via display:none for custom styling, which
+  // prevents the browser from anchoring its native validation popup. Do
+  // the resume-required check ourselves so the user sees a clear Hebrew
+  // message instead of a silent no-op submit.
+  if (form.value.purpose === 'job' && !form.value.resume) {
+    submitError.value = 'נא לצרף קובץ קורות חיים לפני השליחה.'
+    return
+  }
+
+  submitting.value = true
+  try {
+    const fd = new FormData()
+    fd.append('purpose', form.value.purpose)
+    fd.append('fullName', form.value.fullName)
+    fd.append('phone', form.value.phone)
+    fd.append('email', form.value.email)
+    if (form.value.note) fd.append('note', form.value.note)
+    if (form.value.resume) fd.append('resume', form.value.resume)
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      body: fd
+    })
+    if (!res.ok) {
+      const data = await res.json().catch(() => null)
+      throw new Error(data?.statusMessage || 'שליחה נכשלה')
+    }
+    submitted.value = true
+  } catch (err) {
+    submitError.value = 'אירעה שגיאה בשליחה. נסו שוב או התקשרו אלינו ישירות.'
+  } finally {
+    submitting.value = false
+  }
 }
+
+// Sync the form's purpose toggle when the user clicks a nav item with a
+// formPurpose hint (דרושים → 'job', צור קשר → 'client').
+function onSetPurpose(e: Event) {
+  const detail = (e as CustomEvent).detail
+  if (detail === 'job' || detail === 'client') {
+    form.value.purpose = detail
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('form-set-purpose', onSetPurpose as EventListener)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('form-set-purpose', onSetPurpose as EventListener)
+})
 </script>
 
 <template>
@@ -35,7 +87,16 @@ function handleSubmit() {
         <Transition name="blur-reveal" mode="out-in">
           <div :key="form.purpose">
             <h2 class="contact-title">{{ form.purpose === 'client' ? 'השאירו פרטים' : 'מחפש עבודה?' }}</h2>
-            <p class="contact-subtitle">{{ form.purpose === 'client' ? 'השאירו שם וטלפון, ומומחה הדברה מוסמך מטעמנו יחזור אליכם בהקדם לתיאום ייעוץ וניטור בשטח. פריסה ארצית ומענה מקצועי מובטח.' : 'השאר את הפרטים שלך וצרף קורות חיים. נשמח לעיין וליצור איתך קשר.' }}</p>
+            <p class="contact-subtitle">
+              <template v-if="form.purpose === 'client'">
+                השאירו שם וטלפון, או לנוחיותכם התקשרו
+                <a class="contact-phone" href="tel:+972543199289">054-319-9289</a>
+                ומומחה הדברה מוסמך מטעמנו יחזור אליכם בהקדם לתיאום ייעוץ וניטור בשטח. פריסה ארצית ומענה מקצועי מובטח.
+              </template>
+              <template v-else>
+                השאירו את הפרטים שלכם וצרפו קורות חיים. נשמח לעיין וליצור איתכם קשר.
+              </template>
+            </p>
           </div>
         </Transition>
       </div>
@@ -115,23 +176,26 @@ function handleSubmit() {
               </div>
 
               <div v-if="form.purpose === 'job'" class="form-group">
-                <label for="resume">קורות חיים (PDF, DOC)</label>
-                <label class="file-upload" :class="{ 'has-file': resumeName }">
+                <label for="resume">
+                  קורות חיים (PDF, DOC) <span class="required-mark">*</span>
+                </label>
+                <label class="file-upload" :class="{ 'has-file': resumeName, 'is-missing': submitError && !form.resume }">
                   <input
                     id="resume"
                     type="file"
                     accept=".pdf,.doc,.docx"
-                    required
                     @change="handleFileChange"
                   />
                   <span class="file-upload-icon">📎</span>
-                  <span class="file-upload-text">{{ resumeName || 'העלה קובץ' }}</span>
+                  <span class="file-upload-text">{{ resumeName || 'העלה קובץ קו"ח (חובה)' }}</span>
                 </label>
+                <p class="field-hint">חובה לצרף קובץ כדי לשלוח את הפנייה.</p>
               </div>
 
-              <button type="submit" class="submit-btn">
-                שליחה
+              <button type="submit" class="submit-btn" :disabled="submitting">
+                {{ submitting ? 'שולח…' : 'שליחה' }}
               </button>
+              <p v-if="submitError" class="submit-error" role="alert">{{ submitError }}</p>
             </div>
           </Transition>
         </form>
@@ -209,9 +273,52 @@ function handleSubmit() {
   font-family: "Heebo", system-ui, sans-serif;
   font-size: 1.4rem;
   font-weight: 400;
-  opacity: 0.7;
-  line-height: 1.7;
-  max-width: 34rem;
+  opacity: 0.78;
+  line-height: 1.85;
+  max-width: 38rem;
+  text-align: right;
+}
+
+.contact-phone {
+  color: var(--color-blue);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  margin: 0 0.2rem;
+}
+
+.contact-phone:hover {
+  text-decoration: underline;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-error {
+  margin-top: 1rem;
+  color: #b00020;
+  font-size: 1.3rem;
+  text-align: right;
+}
+
+.required-mark {
+  color: #b00020;
+  font-weight: 700;
+  margin-right: 0.2rem;
+}
+
+.field-hint {
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 350;
+}
+
+.file-upload.is-missing {
+  border-color: #b00020;
+  background: rgba(176, 0, 32, 0.04);
 }
 
 @media only screen and (min-width: 834px) {
