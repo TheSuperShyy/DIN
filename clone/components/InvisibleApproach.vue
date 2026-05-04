@@ -238,6 +238,8 @@ useScrollScrub({ video: themisVideo, canvas: canvasRef, wrapper: videoWrapperRef
 @media only screen and (min-width: 834px) {
   .pillars {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-auto-flow: column;
     gap: 1.8rem;
   }
 }
