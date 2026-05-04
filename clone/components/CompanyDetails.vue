@@ -19,7 +19,7 @@ const { company } = content
           <div class="services-columns">
             <div class="services-divider" />
             <div class="services-column">
-              <div class="services-cell"><span class="check-icon">✓</span> חברתנו מתמחה בכל סוגי הדברת המזיקים - מכרסמים / זוחלים / מעופפים</div>
+              <div class="services-cell"><span class="check-icon">✓</span> חברתנו מתמחה בכל סוגי הדברת המזיקים - מכרסמים / חרקים / מעופפים / פרעושים</div>
               <div class="services-cell"><span class="check-icon">✓</span> טיפול במטרדי בעלי כנף - יונים, דרורים, עורבים, מיינות, דררות ועוד...</div>
               <div class="services-cell"><span class="check-icon">✓</span> הקמת מערך ניטור והדברה ממוחשב</div>
               <div class="services-cell"><span class="check-icon">✓</span> הדברת מזיקי מחסן - ממגורות, מכולות, ספריות ועוד...</div>

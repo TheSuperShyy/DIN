@@ -18,7 +18,7 @@ import { content } from '~/content'
         <div class="hero-logo-wrapper">
           <img src="/TAL-logo.png" alt="TAL" class="hero-logo" />
         </div>
-        <h1 class="hero-tagline">השקט שלכם ממזיקים.</h1>
+        <h1 class="hero-tagline">השקט שלכם ממזיקים</h1>
       </div>
     </div>
   </header>

@@ -10,12 +10,12 @@ export const content = {
 
   nav: {
     items: [
-      { number: '01', label: 'THEMIS', type: 'link' as const, key: null, href: '#themis', children: [] },
-      { number: '02', label: 'שירותים', type: 'link' as const, key: null, href: '#services', children: [] },
-      { number: '03', label: 'עלינו', type: 'link' as const, key: null, href: '#about', children: [] },
-      { number: '04', label: 'דרושים', type: 'link' as const, key: null, href: '#careers', formPurpose: 'job' as const, children: [] },
+      { number: '01', label: 'שירותי הדברה', type: 'link' as const, key: null, href: '#services', children: [] },
+      { number: '02', label: 'יונים / בעלי כנף', type: 'link' as const, key: null, href: '#birds', children: [] },
+      { number: '03', label: 'THEMIS', type: 'link' as const, key: null, href: '#themis', children: [] },
+      { number: '04', label: 'עלינו', type: 'link' as const, key: null, href: '#about', children: [] },
       { number: '05', label: 'צור קשר', type: 'link' as const, key: null, href: '#careers', formPurpose: 'client' as const, children: [] },
-      { number: '06', label: 'יונים / בעלי כנף', type: 'link' as const, key: null, href: '#birds', children: [] }
+      { number: '06', label: 'דרושים', type: 'link' as const, key: null, href: '#careers', formPurpose: 'job' as const, children: [] }
     ]
   },
 
@@ -70,7 +70,7 @@ export const content = {
       {
         number: '05',
         title: 'סיכום פעילות',
-        description: 'אנחנו לא נעלמים. בסיום העבודה אנו מוודאים את אפקטיביות הטיפול, מספקים דוח עבודה ממוחשב ומפורט על ידי מערכת הבקרה הייחודית לנו.'
+        description: 'בסיום העבודה אנו מוודאים את אפקטיביות הטיפול, מספקים דוח עבודה ממוחשב ומפורט על ידי מערכת הבקרה הייחודית לנו.'
       }
     ],
     cells: [
@@ -123,7 +123,7 @@ export const content = {
       { title: 'ביטחון ובטיחות', body: 'ידיעה ודאית שהעבודה בוצעה לפי הנהלים, ללא קיצורי דרך.' },
       { title: 'חיסכון בזמן', body: 'דוחות אוטומטיים שנשלחים ישירות למייל, ללא ניירת מיותרת.' }
     ],
-    closing: 'השילוב בין הניסיון המקצועי של המדבירים שלנו לבין הטכנולוגיה של <span class="themis-brand">Themis</span> מבטיח לכם את המענה המקצועי, האמין והמתקדם ביותר בישראל.',
+    closing: 'השילוב בין הניסיון המקצועי שלנו לבין הטכנולוגיה של <span class="themis-brand">Themis</span> מבטיח לכם את המענה המקצועי, האמין והמתקדם ביותר בישראל.',
     pills: [
       { label: 'D¹ Sight', href: '/products/a1-sense', filled: true },
       { label: 'D¹ Form', href: '/products/b1-eye', filled: false }
@@ -134,7 +134,7 @@ export const content = {
     heading: 'קצת עלינו',
     title: 'הסיפור שמאחורי המותג: כשהתשוקה לטבע הופכת לשליחות',
     intro: 'עבור רוב האנשים, מפגש עם מזיק או מטרד של בעלי כנף הוא רגע של רתיעה. עבור טל שולמרק, זה היה תמיד רגע של סקרנות.',
-    lead: 'הסיפור של חברת "טל שולמרק בע"מ" לא התחיל במשרדים מפוארים או בתוכניות עסקיות, אלא הרבה שנים קודם לכן – בילד שהוקסם מעולם החרקים, מהתנהגות בעלי החיים ומהאיזון העדין של הטבע. אותה תשוקה ילדותית לא נעלמה עם השנים; היא הפכה למנוע הצמיחה של חברה שחורטת על דגלה מקצוענות ללא פשרות.',
+    lead: 'הסיפור של חברת "טל שולמרק בע"מ" לא התחיל במשרדים מפוארים או בתוכניות עסקיות, אלא הרבה שנים קודם לכן – בילד שהוקסם מעולם החרקים, מהתנהגות בעלי החיים ומהאיזון העדין של הטבע. אותה תשוקה לא נעלמה עם השנים; היא הפכה למנוע הצמיחה של חברה שחורטת על דגלה מקצוענות ללא פשרות.',
     sections: [
       {
         title: 'מהילד עם זכוכית המגדלת – לחברה המובילה בישראל',
@@ -220,7 +220,7 @@ export const content = {
 
   birds: {
     navLabel: 'יונים / בעלי כנף',
-    title: 'הקו האחרון לטיפול במפגעי יונים / בעלי כנף – פתרונות קצה לאתרים מאתגרים',
+    title: 'אנחנו הקו האחרון לטיפול במפגעי יונים / בעלי כנף – פתרונות קצה לאתרים מאתגרים',
     sections: [
       {
         number: '01',
@@ -229,7 +229,7 @@ export const content = {
       },
       {
         number: '02',
-        title: 'ירי כירורגי וממוקד ל-100% פגיעה',
+        title: 'ירי כירורגי וממוקד ל - 100% פגיעה',
         body: 'במקרים בהם פתרונות ההרחקה הרגילים אינם נותנים מענה מלא, אנו מחזיקים במומחיות ייחודית לביצוע ירי מדויק וכירורגי אשר מבוסס על ניסיון של 3 דורות בתחום הציד המקצועי לדילול מטרדים. הפעילות מתבצעת על ידי עובדים שעברו התאמות לביצוע, תחת מתן רישיונות והיתרים מתאימים ובכפוף לכל נהלי הבטיחות והוראות החוק המחמירות ביותר.'
       }
     ],
