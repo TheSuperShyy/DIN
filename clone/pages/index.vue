@@ -8,6 +8,7 @@ useReveal()
     <BreakthroughIntro />
     <CompanyDetails id="services" />
     <BirdsSection id="birds" />
+    <ProcessSteps />
     <InvisibleApproach id="themis" />
     <TestimonialsSection />
     <AboutSection id="about" />
