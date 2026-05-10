@@ -1,6 +1,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tokens.css', '~/assets/css/global.css'],
+  routeRules: {
+    '/updates':     { redirect: { to: '/', statusCode: 301 } },
+    '/programs':    { redirect: { to: '/', statusCode: 301 } },
+    '/products/**': { redirect: { to: '/', statusCode: 301 } },
+    '/neurals/**':  { redirect: { to: '/', statusCode: 301 } }
+  },
   runtimeConfig: {
     // Server-only — read by /api/contact when relaying form submissions.
     // Set these in clone/.env locally and in Vercel → Settings → Environment
