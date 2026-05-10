@@ -236,7 +236,7 @@ export const content = {
     ],
     ownersWord: {
       label: 'דבר הבעלים והמנכ"ל',
-      quote: 'אנחנו מבטחים ומקיימים'
+      quote: 'אנחנו מבטיחים ומקיימים'
     }
   }
 }
