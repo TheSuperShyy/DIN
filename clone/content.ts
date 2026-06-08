@@ -16,7 +16,8 @@ export const content = {
       { number: '04', label: 'עלינו', type: 'link' as const, key: null, href: '#about', children: [] },
       { number: '05', label: 'צור קשר', type: 'link' as const, key: null, href: '#careers', formPurpose: 'client' as const, children: [] },
       { number: '06', label: 'דרושים', type: 'link' as const, key: null, href: '#careers', formPurpose: 'job' as const, children: [] }
-    ]
+    ],
+    portal: { label: 'לפורטל לקוחותינו', href: 'https://stage-themis.otech.digital/client/login' }
   },
 
   hero: {
