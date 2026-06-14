@@ -365,6 +365,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 /* ── Client portal link — bolder so it stands apart ── */
 .nav-list-item-link.nav-portal-link {
   font-weight: 500;
+  color: var(--color-blue);
 }
 
 /* ── Side logo (fixed left-center) — bare logo, no container ── */
@@ -761,6 +762,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 .mobile-nav-link.mobile-nav-portal {
   font-weight: 500;
+  color: var(--color-blue);
 }
 
 @media only screen and (min-width: 834px) {
