@@ -264,7 +264,7 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
             <div class="mobile-nav-row">
               <span class="nav-list-item-index">07</span>
               <a
-                class="mobile-nav-link"
+                class="mobile-nav-link mobile-nav-portal"
                 :href="content.nav.portal.href"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -360,6 +360,11 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   font-size: 1.2rem;
   font-weight: 350;
   letter-spacing: 0.04em;
+}
+
+/* ── Client portal link — bolder so it stands apart ── */
+.nav-list-item-link.nav-portal-link {
+  font-weight: 500;
 }
 
 /* ── Side logo (fixed left-center) — bare logo, no container ── */
@@ -752,6 +757,10 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 
 .mobile-sub-link:hover {
   opacity: 1;
+}
+
+.mobile-nav-link.mobile-nav-portal {
+  font-weight: 500;
 }
 
 @media only screen and (min-width: 834px) {
