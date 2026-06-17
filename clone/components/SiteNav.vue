@@ -165,16 +165,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
               {{ item.label }}
             </button>
           </li>
-          <li class="nav-list-item nav-portal-item">
-            <a
-              class="nav-list-item-link nav-portal-link"
-              :href="content.nav.portal.href"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {{ content.nav.portal.label }}
-            </a>
-          </li>
         </ul>
 
         <!-- Dropdown sub-panel (overlays the pill) -->
@@ -258,20 +248,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
               >
                 {{ child.label }}
               </NuxtLink>
-            </div>
-          </li>
-          <li class="mobile-nav-item">
-            <div class="mobile-nav-row">
-              <span class="nav-list-item-index">07</span>
-              <a
-                class="mobile-nav-link mobile-nav-portal"
-                :href="content.nav.portal.href"
-                target="_blank"
-                rel="noopener noreferrer"
-                @click="closeAll"
-              >
-                {{ content.nav.portal.label }}
-              </a>
             </div>
           </li>
         </ul>
@@ -360,12 +336,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   font-size: 1.2rem;
   font-weight: 350;
   letter-spacing: 0.04em;
-}
-
-/* ── Client portal link — bolder so it stands apart ── */
-.nav-list-item-link.nav-portal-link {
-  font-weight: 500;
-  color: var(--color-blue);
 }
 
 /* ── Side logo (fixed left-center) — bare logo, no container ── */
@@ -760,11 +730,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
   opacity: 1;
 }
 
-.mobile-nav-link.mobile-nav-portal {
-  font-weight: 500;
-  color: var(--color-blue);
-}
-
 @media only screen and (min-width: 834px) {
   .nav-container { display: none; }
 }
@@ -802,7 +767,6 @@ onUnmounted(() => window.removeEventListener('scroll', detectTheme))
 .nav-slide-enter-active .mobile-nav-item:nth-child(4) { animation-delay: 0.65s; }
 .nav-slide-enter-active .mobile-nav-item:nth-child(5) { animation-delay: 0.75s; }
 .nav-slide-enter-active .mobile-nav-item:nth-child(6) { animation-delay: 0.85s; }
-.nav-slide-enter-active .mobile-nav-item:nth-child(7) { animation-delay: 0.95s; }
 
 @keyframes nav-text-up {
   from {

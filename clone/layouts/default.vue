@@ -8,6 +8,7 @@
       </main>
       <SiteFooter />
     </div>
+    <FloatingPortal />
     <FloatingWhatsApp />
     <AccessibilityWidget />
   </div>
