@@ -65,12 +65,14 @@ import { content } from '~/content'
 
 @media only screen and (max-width: 833px) {
   .portal-fab {
-    /* Top bar is taken by the logo + burger on mobile, so stack the
-       labeled pill above the WhatsApp FAB (bottom 1.6rem + 4.8rem + 1rem). */
+    /* Bottom, centered between the WhatsApp button (left) and the
+       accessibility/utility icon (right) so it's easy to reach. */
     top: auto;
-    right: auto;
-    bottom: 7.4rem;
-    left: 1.6rem;
+    bottom: 1.6rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
     height: 4.4rem;
     padding: 0 0.5rem 0 1.5rem;
   }
