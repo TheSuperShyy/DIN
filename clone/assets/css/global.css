@@ -148,6 +148,12 @@ img, svg {
   opacity: 1;
 }
 
+/* Hide the floating portal pill while the mobile nav overlay is open, so it
+   doesn't float on top of the full-screen menu. */
+@media only screen and (max-width: 833px) {
+  body:has(.menu.open) .portal-fab { display: none; }
+}
+
 /* Stagger delays */
 .reveal[data-delay="1"] { transition-delay: 0.1s; }
 .reveal[data-delay="2"] { transition-delay: 0.2s; }
