@@ -4,46 +4,41 @@ import { content } from '~/content'
 
 <template>
   <a
-    class="portal-fab"
+    class="portal-fab notranslate"
+    translate="no"
     :href="content.nav.portal.href"
     target="_blank"
     rel="noopener noreferrer"
     :aria-label="content.nav.portal.label"
-    :title="content.nav.portal.label"
   >
     <img class="portal-fab-icon" src="/logo-button.png" alt="" aria-hidden="true" />
+    <span class="portal-fab-label">{{ content.nav.portal.label }}</span>
   </a>
 </template>
 
 <style scoped>
 .portal-fab {
   position: fixed;
-  /* Stack directly above the WhatsApp FAB (bottom 2.4rem + 5.4rem + 1.2rem gap) */
-  bottom: 9rem;
-  left: 2.4rem;
-  z-index: 50;
-  width: 5.4rem;
-  height: 5.4rem;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff;
+  /* Top-right, aligned with the navbar band (toolbar area) */
+  top: 3rem;
+  right: var(--grid-outerGutter);
+  /* Sit above the nav menu (z-index 101) so it stays clickable */
+  z-index: 103;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+  height: 4.6rem;
+  padding: 0 0.6rem 0 1.8rem;
+  border-radius: 5.4rem;
+  background: var(--color-blue);
+  color: #fff;
   box-shadow: 0 10px 30px rgba(0, 113, 227, 0.35), 0 4px 10px rgba(0, 0, 0, 0.12);
   text-decoration: none;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.portal-fab-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
 .portal-fab:hover {
-  transform: translateY(-2px) scale(1.05);
+  transform: translateY(-2px);
   box-shadow: 0 16px 40px rgba(0, 113, 227, 0.45), 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
@@ -52,13 +47,41 @@ import { content } from '~/content'
   outline-offset: 3px;
 }
 
+.portal-fab-icon {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 1rem;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+.portal-fab-label {
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
 @media only screen and (max-width: 833px) {
   .portal-fab {
-    /* WhatsApp on mobile: bottom 1.6rem + 4.8rem + 1rem gap */
+    /* Top bar is taken by the logo + burger on mobile, so stack the
+       labeled pill above the WhatsApp FAB (bottom 1.6rem + 4.8rem + 1rem). */
+    top: auto;
+    right: auto;
     bottom: 7.4rem;
     left: 1.6rem;
-    width: 4.8rem;
-    height: 4.8rem;
+    height: 4.4rem;
+    padding: 0 0.5rem 0 1.5rem;
+  }
+
+  .portal-fab-icon {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  .portal-fab-label {
+    font-size: 1.4rem;
   }
 }
 
