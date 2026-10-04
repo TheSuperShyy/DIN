@@ -16,7 +16,11 @@ export default defineNuxtConfig({
     smtpUser: process.env.NUXT_SMTP_USER || '',
     smtpPass: process.env.NUXT_SMTP_PASS || '',
     mailFrom: process.env.NUXT_MAIL_FROM || '',
-    mailTo: process.env.NUXT_MAIL_TO || ''
+    mailTo: process.env.NUXT_MAIL_TO || '',
+    public: {
+      // Primary host — used for canonical URLs (override: NUXT_PUBLIC_SITE_URL).
+      siteUrl: 'https://www.shulmarkcontrol.com'
+    }
   },
   app: {
     head: {
