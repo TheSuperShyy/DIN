@@ -1,3 +1,5 @@
+import { content } from './content'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tokens.css', '~/assets/css/global.css'],
@@ -16,11 +18,15 @@ export default defineNuxtConfig({
     smtpUser: process.env.NUXT_SMTP_USER || '',
     smtpPass: process.env.NUXT_SMTP_PASS || '',
     mailFrom: process.env.NUXT_MAIL_FROM || '',
-    mailTo: process.env.NUXT_MAIL_TO || ''
+    mailTo: process.env.NUXT_MAIL_TO || '',
+    public: {
+      // Primary host — used for canonical URLs (override: NUXT_PUBLIC_SITE_URL).
+      siteUrl: 'https://www.shulmarkcontrol.com'
+    }
   },
   app: {
     head: {
-      title: 'טל שולמרק בע"מ - שירותי הדברה מקצועיים',
+      title: content.seo.siteTitle,
       htmlAttrs: { lang: 'he', dir: 'rtl' },
       meta: [
         { name: 'description', content: 'טל שולמרק בע"מ — החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף. שירות מקצועי בפריסה ארצית, בעמידה בתקני ISO 9001 ו-ISO 14001.' }
