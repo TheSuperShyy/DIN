@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { content } from '~/content'
+
 // The site chrome lives here instead of layouts/default.vue on purpose: Nuxt
 // loads layouts as separate async chunks *during* hydration, and if that chunk
 // fails to load the whole page is swapped for Nuxt's error screen (see
@@ -6,9 +8,12 @@
 const route = useRoute()
 const { siteUrl } = useRuntimeConfig().public
 
-// Self-referencing canonical on the www host so Google consolidates the
-// apex (shulmarkcontrol.com) and www duplicates onto one URL per page.
 useHead({
+  // Fallback title for pages without their own (the homepage). Set here so it's
+  // restored on client-side navigation back from a page that overrides it.
+  title: content.seo.siteTitle,
+  // Self-referencing canonical on the www host so Google consolidates the
+  // apex (shulmarkcontrol.com) and www duplicates onto one URL per page.
   link: [{ rel: 'canonical', href: computed(() => siteUrl + route.path) }]
 })
 </script>

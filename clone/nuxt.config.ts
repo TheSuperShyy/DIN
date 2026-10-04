@@ -1,3 +1,5 @@
+import { content } from './content'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tokens.css', '~/assets/css/global.css'],
@@ -24,7 +26,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: 'טל שולמרק בע"מ - שירותי הדברה מקצועיים',
+      title: content.seo.siteTitle,
       htmlAttrs: { lang: 'he', dir: 'rtl' },
       meta: [
         { name: 'description', content: 'טל שולמרק בע"מ — החברה המובילה בישראל בתחום הדברת מזיקים וטיפול במטרדי בעלי כנף. שירות מקצועי בפריסה ארצית, בעמידה בתקני ISO 9001 ו-ISO 14001.' }

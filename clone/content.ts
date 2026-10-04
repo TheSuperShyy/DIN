@@ -241,6 +241,10 @@ export const content = {
     }
   },
 
+  seo: {
+    siteTitle: 'טל שולמרק בע"מ - שירותי הדברה מקצועיים'
+  },
+
   errorPage: {
     logoAlt: 'טל שולמרק בע"מ',
     homeCta: 'חזרה לדף הבית',
